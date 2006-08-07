@@ -34,7 +34,7 @@ class Fade(lib.input.input.Input):
         else:
             self.step = 3
 
-    def loop(self):
+    def execute(self):
         self.running = True
         while self.run:
             for b in range(self.min, self.max, self.step):

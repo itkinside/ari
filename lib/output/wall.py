@@ -5,6 +5,8 @@ import struct
 import lib.output.output
 
 class Wall(lib.output.output.Output):
+    """The wall of diodes in Bodegaen at Studentersamfundet."""
+
     def __init__(self):
         # FIXME: Read from config!
         self.hostprefix = '192.168.0.'
@@ -15,14 +17,20 @@ class Wall(lib.output.output.Output):
         self.udpsock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     def pack(self, data):
-        """Pack data into and UDP packet.
+        """
+        Pack data into an UDP packet.
 
-        One UDP pack is 26 bytes, 0x01 and one byte for each LED. First byte
-        must always be 0x01, or the board will stop responding to network
-        traffic.
+        One UDP pack has 26 bytes, the init byte and one byte for each of the
+        25 LEDS on a board. The bytes represents a brightness value.
         
-        Takes an list with 25 brightness values between 0 and 99.
-        Returns an UDP packet."""
+        WARNING! First/init byte must always be 0x01, or the board will stop
+        responding to network traffic.
+        
+        Input:
+            A list with 25 brightness values between 0 and 99.
+        Returns:
+            A UDP packet.
+        """
 
         packet = struct.pack('bbbbbbbbbbbbbbbbbbbbbbbbbb', 1,
             data[0], data[1], data[2], data[3], data[4],
@@ -33,12 +41,30 @@ class Wall(lib.output.output.Output):
 
         return packet
 
-    def sendall(self, data):
-        """FIXME"""
+    def send(self, data, host):
+        """
+        Send data to one board.
+
+        Input:
+            data: Data to send.
+            host: Destination for the data.
+        """
+
+        if len(str(host)) <= 3:
+            host = self.hostprefix + str(host)
 
         packet = self.pack(data)
+        address = (host, self.port)
+        self.udpsock.sendto(packet, address)
 
-        # Send to all boards
+    def sendtoall(self, data):
+        """
+        Send data to all boards.
+        
+        Input:
+            data: Data to send.
+        """
+
         for host in self.hosts:
-            address = (self.hostprefix + str(host), self.port)
-            self.udpsock.sendto(packet, address)
+            self.send(data, host)
+

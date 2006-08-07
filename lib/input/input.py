@@ -23,7 +23,7 @@ class Input:
         self.run = True
         if not self.running:
             try:
-                self.loop()
+                self.execute()
             except KeyboardInterrupt, e:
                 pass
 
