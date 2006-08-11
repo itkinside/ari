@@ -1,0 +1,18 @@
+ari - a light fontain implementation
+====================================
+See http://itk.samfundet.no/dok/ari for more/updated information.
+
+Modules
+-------
+libari
+	The basic library for communcating with the wall.
+arid
+	The daemon which runs the demos et al.
+aric
+	The config client.
+martha
+	The simulator.
+tools
+	Misc standalone tools.
+
+
