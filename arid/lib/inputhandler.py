@@ -9,7 +9,7 @@ class InputHandler:
         self.canvas = canvas
 
         # FIXME: Read from config
-        self.input = lib.input.fade.Fade(canvas, 10, 60)
+        #self.input = input.fade.Fade(canvas, 10, 60)
         self.input = lib.input.chess.Chess(canvas)
 
     def start(self):

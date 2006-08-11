@@ -9,6 +9,7 @@ class Canvas:
         self.oh = lib.outputhandler.OutputHandler()
         self.output = self.oh.getOutput()
 
+        # FIXME: Read from config
         self.model = {
             '0': {
                 'xpos': 0,
