@@ -31,9 +31,9 @@ class Chess(lib.input.input.Input):
         b1, b2 = 0, self.max
         while self.run:
             for panelno in self.canvas.model:
-                if int(panelno) == 1:
-                    continue
-                panel = self.canvas.model['%s' % panelno]
+#                if panelno == 1:
+#                    continue
+                panel = self.canvas.model[panelno]
                 for y in range(panel['height']):
                     if panel['width'] % 2 == 0:
                         b1, b2 = b2, b1

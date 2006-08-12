@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math
 import lib.outputhandler
 
 class Canvas:
@@ -11,7 +12,7 @@ class Canvas:
 
         # FIXME: Read from config
         self.model = {
-            '0': {
+            0: {
                 'xpos': 0,
                 'ypos': 0,
                 'width': 2,
@@ -23,7 +24,7 @@ class Canvas:
                 '0,4':  4, '1,4':  5,
                 '0,5':  2, '1,5':  3
             },
-            '1': {
+            1: {
                 'xpos': 0,
                 'ypos': 7,
                 'width': 9,
@@ -41,7 +42,7 @@ class Canvas:
                 '0,5': 14, '1,5': 15, '2,5': 16, '3,5': 17, '4,5': 18,
                     '5,5': 19, '6,5': 20, '7,5': 21, '8,5': 22
             },
-            '2': {
+            2: {
                 'xpos': 0,
                 'ypos': 25,
                 'width': 3,
@@ -53,7 +54,7 @@ class Canvas:
                 '0,4': 71, '1,4': 72, '2,4': 73,
                 '0,5': 68, '1,5': 69, '2,5': 70
             },
-            '3': {
+            3: {
                 'xpos': 0,
                 'ypos': 49,
                 'width': 6,
@@ -71,7 +72,7 @@ class Canvas:
                 '0,5':  86, '1,5':  87, '2,5':  88, '3,5':  89, '4,5':  90,
                     '5,5':  91
             },
-            '4': {
+            4: {
                 'xpos': 0,
                 'ypos': 67,
                 'width': 1,
@@ -85,14 +86,85 @@ class Canvas:
             },
         }
 
-    def fillboard(self, brightness, panel, xpos, ypos):
+        self.struct = self.createstruct()
 
-        panel = int(panel)
+    def createstruct(self):
+        struct = {}
+        for p in self.model:
+            panel = self.model[p]
+            struct[p] = {}
+            for bx in range(panel['width']):
+                struct[p][bx] = {}
+                for by in range(panel['height']):
+                    struct[p][bx][by] = {}
+                    for px in range(5):
+                        struct[p][bx][by][px] = {}
+                        for py in range(5):
+                            struct[p][bx][by][px][py] = 0
+        return struct
+
+    def getstructpos(self, x, y):
+        # Find panel
+        p = 0
+        dx = 0
+        for p in range(len(self.model)):
+            dx += self.model[p]['width'] * 5
+            if x < dx:
+                dx -= self.model[p]['width'] * 5
+                break
+
+        # Find board positions
+        bx = int(math.floor((x - dx) / 5))
+        by = int(math.floor(y / 5))
+
+        # Find pixel positions
+        px = (x - dx) % 5
+        py = y % 5
+
+        return (p, bx, by, px, py)
+
+    def getallboards(self):
+        boards = []
+        for p in self.struct:
+            for bx in self.struct[p]:
+                for by in self.struct[p][bx]:
+                    boards.append((p, bx, by))
+        return boards
+
+    def getpixel(self, x, y):
+        if x < 0 or x >= 105 or y < 0 or y >= 30:
+            return False
+        
+        (p, bx, by, px, py) = self.getstructpos(x, y)
+        return self.struct[p][bx][by][px][py]
+
+    def setpixel(self, x, y, b):
+        if x < 0 or x >= 105 or y < 0 or y >= 30:
+            return False
+
+        (p, bx, by, px, py) = self.getstructpos(x, y)
+        self.struct[p][bx][by][px][py] = b
+
+    def updateboard(self, p, bx, by):
+        data = []
+        for px in range(5):
+            for py in range(5):
+                data.append(self.struct[p][bx][by][px][py])
+        self.output.send(data, self.model[p]['%d,%d' % (bx, by)])
+
+    def updateall(self):
+        for board in self.getallboards():
+            (p, bx, by) = board
+            self.updateboard(p, bx, by)
+
+# OLD STUFF
+
+    def fillboard(self, brightness, panel, xpos, ypos):
         data = []
         for i in range(25):
             data.append(brightness)
         self.output.send(data,
-            self.model['%d' % panel]['%d,%d' % (xpos, ypos)])
+            self.model[panel]['%d,%d' % (xpos, ypos)])
 
     def fill(self, brightness, startx = 0, starty = 0, endx = 105, endy = 30):
         """

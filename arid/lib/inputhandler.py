@@ -2,6 +2,7 @@
 
 import lib.input.fade
 import lib.input.chess
+import lib.input.stars
 
 class InputHandler:
     """Handles input plugins: input connection, input selection."""
@@ -9,8 +10,9 @@ class InputHandler:
         self.canvas = canvas
 
         # FIXME: Read from config
-        #self.input = input.fade.Fade(canvas, 10, 60)
-        self.input = lib.input.chess.Chess(canvas)
+        #self.input = lib.input.fade.Fade(canvas, 10, 60)
+        #self.input = lib.input.chess.Chess(canvas)
+        self.input = lib.input.stars.Stars(canvas, 0, 60)
 
     def start(self):
         self.input.start()
