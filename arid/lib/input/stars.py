@@ -28,7 +28,7 @@ class Stars(lib.input.input.Input):
 
     def execute(self):
         self.running = True
-        self.canvas.fill(0)
+        self.canvas.blank(0)
         xmax = 104
         ymax = 29
         b = 0
@@ -47,6 +47,6 @@ class Stars(lib.input.input.Input):
 #                self.canvas.setpixel(x-1, y-1, 0)
 #                self.canvas.setpixel(x-1, y,   0)
 #                self.canvas.setpixel(x-1, y+1, 0)
-            self.canvas.updateall()
+            self.canvas.update()
             time.sleep(0.0)
         self.running = False

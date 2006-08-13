@@ -131,7 +131,8 @@ class Canvas:
 
         """
 
-        if x < 0 or x >= self.wallsizex or y < 0 or y >= self.wallsizey:
+        if x < 0 or x >= self.config.wallsizex or \
+            y < 0 or y >= self.config.wallsizey:
             return False
         
         (p, bx, by, px, py) = self.__getcanvaspos(x, y)
@@ -151,10 +152,11 @@ class Canvas:
 
         """
 
-        if x < 0 or x >= self.wallsizex or y < 0 or y >= self.wallsizey:
+        if x < 0 or x >= self.config.wallsizex or \
+            y < 0 or y >= self.config.wallsizey:
             return False
 
-        (p, bx, by, px, py) = self.getcanvaspos(x, y)
+        (p, bx, by, px, py) = self.__getcanvaspos(x, y)
         self.canvas[p][bx][by][px][py] = b
         return True
 

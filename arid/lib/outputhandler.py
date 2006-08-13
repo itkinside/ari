@@ -1,14 +1,21 @@
 #! /usr/bin/env python
 
-import lib.output.simulator
-import lib.output.wall
+import libari.wall
+import libari.canvas
 
 class OutputHandler:
     """Connects canvas with chosen output."""
 
     def __init__(self):
+        # Init output device
         # FIXME: Read from config
-        self.output = lib.output.wall.Wall()
+        self.output = libari.wall.Wall()
 
-    def getOutput(self):
+        # Init canvas
+        self.canvas = libari.canvas.Canvas(self.output)
+
+    def getoutput(self):
         return self.output
+
+    def getcanvas(self):
+        return self.canvas

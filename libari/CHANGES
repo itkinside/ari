@@ -1,4 +1,37 @@
 ------------------------------------------------------------
+revno: 8
+committer: Stein Magnus Jodal <jodal@samfundet.no>
+branch nick: ari
+timestamp: Sun 2006-08-13 23:25:39 +0200
+message:
+  * Create libari based on parts of arid
+  * Add CHANGES, COPYING and README
+  * Add debian/ and create Debian package of libari
+------------------------------------------------------------
+revno: 7
+committer: Stein Magnus Jodal <jodal@samfundet.no>
+branch nick: ari
+timestamp: Sun 2006-08-13 19:54:44 +0200
+message:
+  * Created libari based on code from arid.
+  * Created libari/setup.py based on bzrtools package in Debian
+------------------------------------------------------------
+revno: 6
+committer: Stein Magnus Jodal <jodal@samfundet.no>
+branch nick: ari
+timestamp: Sat 2006-08-12 02:38:28 +0200
+message:
+  * Add simple unfinished stars plugin
+  * Add data struct and pixel methods to Canvas
+  * Some other small changes
+------------------------------------------------------------
+revno: 5
+committer: Stein Magnus Jodal <jodal@samfundet.no>
+branch nick: ari
+timestamp: Fri 2006-08-11 21:38:40 +0200
+message:
+  * Add README
+------------------------------------------------------------
 revno: 4
 committer: Stein Magnus Jodal <jodal@samfundet.no>
 branch nick: ari
@@ -6,3 +39,25 @@ timestamp: Fri 2006-08-11 21:31:23 +0200
 message:
   * New file structure
   * Add tools/setipandmac.py
+------------------------------------------------------------
+revno: 3
+committer: Stein Magnus Jodal <jodal@samfundet.no>
+branch nick: lysfontene
+timestamp: Mon 2006-08-07 14:28:30 +0200
+message:
+  - Added chess plugin
+  - Reordered a bit... still trying out things
+------------------------------------------------------------
+revno: 2
+committer: Stein Magnus Jodal <jodal@samfundet.no>
+branch nick: lysfontene
+timestamp: Sun 2006-08-06 00:20:03 +0200
+message:
+  Introducing canvas, input/output handlers, input plugins.
+------------------------------------------------------------
+revno: 1
+committer: Stein Magnus Jodal <jodal@samfundet.no>
+branch nick: lysfontene
+timestamp: Sat 2006-08-05 22:25:09 +0200
+message:
+  * Initial version, only testing!

@@ -1,19 +1,15 @@
 #! /usr/bin/env python
 
 import sys
+import lib.outputhandler
 import lib.inputhandler
-import lib.canvas
 
 def main(args):
-    # Get brightness
-    if len(args) and int(args[0]) >= 0 and int(args[0]) < 100:
-        brightness = int(args[0])
-    else:
-        brightness = 99 # 0..99
+    # Init handlers
+    oh = lib.outputhandler.OutputHandler()
+    ih = lib.inputhandler.InputHandler(oh.getcanvas())
 
-    canvas = lib.canvas.Canvas()
-    ih = lib.inputhandler.InputHandler(canvas)
-
+    # Start rolling demos! ;-)
     ih.start()
 
 if __name__ == '__main__':
