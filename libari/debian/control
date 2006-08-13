@@ -1,0 +1,17 @@
+Source: libari
+Section: python
+Priority: optional
+Maintainer: Stein Magnus Jodal <jodal@samfundet.no>
+Build-Depends: debhelper (>= 5.0.37.2), python-all-dev (>= 2.3.5-11), python-central (>= 0.5)
+Standards-Version: 3.7.2
+XS-Python-Version: all
+
+Package: libari
+Architecture: all
+Depends: ${python:Depends} 
+Provides: ${python:Provides}
+XB-Python-Version: ${python:Versions}
+Description: Library for manipulating a diode wall 
+ libari provides simple interfaces for programming demos on a diode wall.
+ Created for the diode wall in Bodegaen at the student society in Trondheim,
+ Norway.

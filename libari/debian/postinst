@@ -1,0 +1,5 @@
+#! /bin/sh
+set -e
+pycentral pkginstall libari
+#DEBHELPER#
+exit 0

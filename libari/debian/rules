@@ -1,0 +1,53 @@
+#! /usr/bin/make -f
+
+# Uncomment this to turn on verbose mode
+#export DH_VERBOSE=1
+
+PYVERS=$(shell pyversions -vr)
+
+build: $(PYVERS:%=build-python%)
+#	touch $@
+
+build-python%:
+	dh_testdir
+	python$* setup.py build
+
+clean:
+	dh_testdir
+	dh_testroot 
+	rm -f build-stamp
+	rm -rf build
+	-find . -name '*.py[co]' | xargs rm -f
+	dh_clean
+
+install: build $(PYVERS:%=install-python%)
+
+install-python%:
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	python$* setup.py install --root $(CURDIR)/debian/libari
+
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs CHANGES
+	dh_installdocs README
+#	dh_installexamples examples/*
+#	dh_installman
+#	FIXME: Replace #! calls to python?
+	dh_pycentral
+	dh_python
+	dh_compress -X.py
+	dh_fixperms
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary-arch: build install
+
+binary: binary-indep binary-arch
+
+.PHONY: build clean install binary-indep binary-arch binary
