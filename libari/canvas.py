@@ -39,11 +39,17 @@ class Canvas:
         self.config = self.output.config
 
         # Build canvas
-        self.canvas = self.__createcanvas()
+        self.canvas = self.__createcanvas(0)
 
-    def __createcanvas(self):
+    def __createcanvas(self, b = 0):
         """
         Create a canvas for storing brightness values
+
+        Input:
+            b   Inital brightness
+
+        Returns:
+            The canvas
 
         """
 
@@ -54,11 +60,12 @@ class Canvas:
             for bx in range(panel['width']):
                 canvas[p][bx] = {}
                 for by in range(panel['height']):
+                    canvas[p][bx][by]['changed'] = 0
                     canvas[p][bx][by] = {}
                     for px in range(5):
                         canvas[p][bx][by][px] = {}
                         for py in range(5):
-                            canvas[p][bx][by][px][py] = 0
+                            canvas[p][bx][by][px][py] = b
         return canvas
 
     def __getcanvaspos(self, x, y):
@@ -131,10 +138,12 @@ class Canvas:
 
         """
 
+        # Check boundaries
         if x < 0 or x >= self.config.wallsizex or \
             y < 0 or y >= self.config.wallsizey:
             return False
         
+        # Get pixel from canvas
         (p, bx, by, px, py) = self.__getcanvaspos(x, y)
         return self.canvas[p][bx][by][px][py]
 
@@ -152,19 +161,31 @@ class Canvas:
 
         """
 
+        # Check boundaries
         if x < 0 or x >= self.config.wallsizex or \
             y < 0 or y >= self.config.wallsizey:
             return False
 
         (p, bx, by, px, py) = self.__getcanvaspos(x, y)
-        self.canvas[p][bx][by][px][py] = b
+
+        # Check previous brightness of this pixel
+        if self.canvas[p][bx][by][px][py] == b:
+            # Pixel already has correct brightness, do not update
+            pass
+        else:
+            # Set pixel in canvas
+            self.canvas[p][bx][by][px][py] = b
+
+            # Update the number of changed pixels on the board
+            self.canvas[p][bx][by]['changed'] += 1
+
         return True
 
     def update(self):
         """
         Paint the canvas to the wall
 
-        Only boards with changed pixels are updated
+        Only boards with changed pixels are updated.
 
         Returns:
             n   Number of boards updated
@@ -176,19 +197,29 @@ class Canvas:
             # Read board position
             (p, bx, by) = board
 
+            # Check if changed since last update
+            if not self.canvas[p][bx][by]['changed']:
+                # Skip to next board
+                continue
+            else:
+                # Reset counter
+                self.canvas[p][bx][by]['changed'] = 0
+
             # Init data struct
             data = []
             # Loop over all pixels on the board
-            for px in range(self.config.boardsizex):
+            # FIXME: px is reversed because of the orientation of the cards.
+            #        This should be read from config.
+            for px in reverse(range(self.config.boardsizex)):
                 for py in range(self.config.boardsizey):
                     # Add brightness value to the data struct
                     data.append(self.canvas[p][bx][by][px][py])
 
             # Get address of board
-            host = self.config.model[p]['%d,%d' % (bx, by)]
+            address = self.config.model[p]['%d,%d' % (bx, by)]
 
             # Send data to board
-            self.output.sendto(data, host)
+            self.output.sendto(data, address)
             n += 1
 
         return n
@@ -196,6 +227,8 @@ class Canvas:
     def blank(self, b = 0):
         """
         Blank entire wall
+
+        Also updates the canvas with then new state of the wall.
 
         Input:
             b   Brightness, default 0
@@ -222,5 +255,8 @@ class Canvas:
             # Send data to board
             self.output.sendto(data, host)
             n += 1
+
+        # Update canvas with the current brightness
+        self.canvas = self.__createcanvas(b)
 
         return (b, n)
