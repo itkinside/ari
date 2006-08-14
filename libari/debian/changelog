@@ -1,3 +1,10 @@
+libari (0.2) unstable; urgency=low
+
+  * Implemented update-only-on-change.
+  * Fix writing direction of pixels on boards.
+
+ -- Stein Magnus Jodal <jodal@samfundet.no>  Mon, 14 Aug 2006 21:56:11 +0200
+
 libari (0.1) unstable; urgency=low
 
   * Initial release.

@@ -60,8 +60,8 @@ class Canvas:
             for bx in range(panel['width']):
                 canvas[p][bx] = {}
                 for by in range(panel['height']):
-                    canvas[p][bx][by]['changed'] = 0
                     canvas[p][bx][by] = {}
+                    canvas[p][bx][by]['changed'] = 0
                     for px in range(5):
                         canvas[p][bx][by][px] = {}
                         for py in range(5):
@@ -210,7 +210,7 @@ class Canvas:
             # Loop over all pixels on the board
             # FIXME: px is reversed because of the orientation of the cards.
             #        This should be read from config.
-            for px in reverse(range(self.config.boardsizex)):
+            for px in range(self.config.boardsizex):
                 for py in range(self.config.boardsizey):
                     # Add brightness value to the data struct
                     data.append(self.canvas[p][bx][by][px][py])

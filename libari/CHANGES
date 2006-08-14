@@ -1,4 +1,44 @@
 ------------------------------------------------------------
+revno: 12
+committer: Stein Magnus Jodal <jodal@samfundet.no>
+branch nick: ari
+timestamp: Mon 2006-08-14 21:32:47 +0200
+message:
+  - Simplify design and remove too small classes
+------------------------------------------------------------
+revno: 11
+committer: Stein Magnus Jodal <jodal@samfundet.no>
+branch nick: ari
+timestamp: Mon 2006-08-14 17:04:37 +0200
+message:
+  - Playing around with PyGTK.
+------------------------------------------------------------
+revno: 10
+committer: Stein Magnus Jodal <jodal@samfundet.no>
+branch nick: ari
+timestamp: Mon 2006-08-14 14:17:28 +0200
+message:
+  libari/wall.py:
+  - Include libari.config, not config.
+  
+  libari/canvas.py
+  - Implement update-only-on-change, to reduce network traffic.
+------------------------------------------------------------
+revno: 9
+committer: Stein Magnus Jodal <jodal@samfundet.no>
+branch nick: ari
+timestamp: Sun 2006-08-13 23:50:16 +0200
+message:
+  libari/canvas.py:
+  * Fix two bugs
+  
+  arid:
+  * Update arid/start.py, arid/lib/inputhandler.py, arid/lib/outputhandler.py to
+    use libari
+  * Update arid/lib/input/stars.py to use new canvas methods (other input plugins
+    still broken)
+  * Remove files redundant when using libari
+------------------------------------------------------------
 revno: 8
 committer: Stein Magnus Jodal <jodal@samfundet.no>
 branch nick: ari
