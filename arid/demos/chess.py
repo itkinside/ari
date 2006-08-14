@@ -2,9 +2,8 @@
 
 import random
 import time
-import lib.input.input
 
-class Chess(lib.input.input.Input):
+class Chess:
     """Color every second board."""
 
     def __init__(self, canvas, min = 1, max = 99):

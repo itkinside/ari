@@ -1,16 +1,37 @@
 #! /usr/bin/env python
 
 import sys
-import lib.outputhandler
-import lib.inputhandler
+import libari.wall
+import libari.canvas
+import demos.fade
+import demos.chess
+import demos.stars
 
-def main(args):
-    # Init handlers
-    oh = lib.outputhandler.OutputHandler()
-    ih = lib.inputhandler.InputHandler(oh.getcanvas())
+class Arid:
+    def __init__(self):
+        pass
 
-    # Start rolling demos! ;-)
-    ih.start()
+    def main(self, args):
+        # Init output device
+        # FIXME: Read from config
+        self.output = libari.wall.Wall()
+
+        # Init canvas
+        self.canvas = libari.canvas.Canvas(self.output)
+
+        # Load demos
+        self.demos = {}
+        self.demos['fade'] = demos.fade.Fade(self.canvas, 10, 60)
+        self.demos['chess'] = demos.chess.Chess(self.canvas)
+        self.demos['stars'] = demos.stars.Stars(self.canvas, 0, 60)
+
+        # Start rolling demos!
+        # FIXME!
+        try:
+            self.demos['stars'].execute()
+        except KeyboardInterrupt, e:
+            pass
 
 if __name__ == '__main__':
-    main(sys.argv[1:])
+    arid = Arid()
+    arid.main(sys.argv[1:])

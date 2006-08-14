@@ -2,9 +2,8 @@
 
 import random
 import time
-import lib.input.input
 
-class Stars(lib.input.input.Input):
+class Stars:
     """A heaven of stars."""
 
     def __init__(self, canvas, min = 1, max = 99):

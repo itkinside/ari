@@ -1,9 +1,8 @@
 #! /usr/bin/env python
 
 import time
-import lib.input.input
 
-class Fade(lib.input.input.Input):
+class Fade:
     """Fade between to brightness values."""
 
     def __init__(self, canvas, min = 0, max = 99, step = 3):
