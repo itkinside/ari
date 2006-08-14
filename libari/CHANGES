@@ -1,4 +1,13 @@
 ------------------------------------------------------------
+revno: 13
+committer: Stein Magnus Jodal <jodal@samfundet.no>
+branch nick: ari
+timestamp: Mon 2006-08-14 22:08:03 +0200
+message:
+  - Implemented update-only-on-change.
+  - Fix writing direction of pixels on boards.
+  - Prepared libari 0.2.
+------------------------------------------------------------
 revno: 12
 committer: Stein Magnus Jodal <jodal@samfundet.no>
 branch nick: ari

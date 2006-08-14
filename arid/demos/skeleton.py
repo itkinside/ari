@@ -18,19 +18,20 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-import random
 import threading
 import time
 
-class Stars(threading.Thread):
-    """A heaven of stars."""
+class Skeleton(threading.Thread):
+    """
+    Skeleton for demos
+    
+    Demos should be based on this skeleton.
+    """
 
-    def __init__(self, canvas, min = 1, max = 99):
+    def __init__(self, canvas):
         """
         Input:
-            canvas  Canvas to paint on
-            min     Minimum brightness, default 0
-            max     Maximum brightness, default 99
+            canvas  Canvas to paint on.
         """
 
         threading.Thread.__init__(self)
@@ -38,33 +39,10 @@ class Stars(threading.Thread):
         self.canvas = canvas
         self.running = True
 
-        if int(min) > 0 and int(min) < 100:
-            self.min = int(min)
-        else:
-            self.min = 1
-
-        if int(max) >= 0 and int(max) < 100:
-            self.max = int(max)
-        else:
-            self.max = 99
-
-        if self.min > self.max:
-            self.min, self.max = self.max, self.min
-
     def stop(self):
         self.running = False
 
     def run(self):
-        xmax = 104
-        ymax = 29
-        b = 0
-        self.canvas.blank()
         while self.running:
-            for i in range(10):
-                x = random.randint(0, xmax)
-                y = random.randint(0, ymax)
-                b = random.randint(self.min, self.max)
-                for c in range(0, b, 3):
-                    self.canvas.setpixel(x, y, b)
-            self.canvas.update()
-            time.sleep(0.5)
+            pass # Do you magic
+            time.sleep(1)
