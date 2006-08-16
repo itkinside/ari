@@ -1,4 +1,52 @@
 ------------------------------------------------------------
+revno: 17
+committer: Stein Magnus Jodal <jodal@samfundet.no>
+branch nick: ari
+timestamp: Wed 2006-08-16 22:14:27 +0200
+message:
+  - Implement support for simulator in arid.
+  - Add aric.py skel.
+  - Move demos from arid/demos to libari.demos and update setup.py to install
+    them.
+  - Move executables to root folder and remove subsystem folders.
+  - Add README.
+  - Make all modules load libari.config on their own.
+------------------------------------------------------------
+revno: 16
+committer: Stein Magnus Jodal <jodal@samfundet.no>
+branch nick: ari
+timestamp: Wed 2006-08-16 11:56:58 +0200
+message:
+  libari: 
+  - Add simulator preferences.
+  
+  martha:
+  - Add spacing between panels.
+  - Add escape/close event handling.
+  - Add comments.
+  - Extend test script.
+------------------------------------------------------------
+revno: 15
+committer: Stein Magnus Jodal <stein.magnus@jodal.no>
+branch nick: ari
+timestamp: Wed 2006-08-16 00:29:39 +0200
+message:
+  - Created starting point for Martha, based on Adamcik's arisim. More tomorrow...
+------------------------------------------------------------
+revno: 14
+committer: Stein Magnus Jodal <jodal@samfundet.no>
+branch nick: ari
+timestamp: Tue 2006-08-15 00:17:53 +0200
+message:
+  arid:
+  - Support command line options.
+  - Some support for threading.
+  - Add licensing info in all files.
+  - Make demos.fade use libari. demos.chess still not fixed.
+  
+  libari:
+  - Updated CHANGES after libari 0.2 release.
+------------------------------------------------------------
 revno: 13
 committer: Stein Magnus Jodal <jodal@samfundet.no>
 branch nick: ari

@@ -1,3 +1,10 @@
+libari (0.3) unstable; urgency=low
+
+  * Added martha simulator.
+  * Added libari.demos package with demos for ari.
+
+ -- Stein Magnus Jodal <jodal@samfundet.no>  Wed, 16 Aug 2006 22:16:58 +0200
+
 libari (0.2) unstable; urgency=low
 
   * Implemented update-only-on-change.
