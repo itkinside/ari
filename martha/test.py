@@ -21,15 +21,24 @@
 # Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
+import random
 import time
 
+import libari.config
 import simulator
 
+config = libari.config.Config()
 sim = simulator.Simulator()
 
 while True:
-    for x in xrange(0, 105, 1):
-        for y in xrange(0, 30, 1):
-            sim.setpixel(x, y, 99)
-    sim.update()
-    time.sleep(1)
+    for b in range(40, 100, 3) + range(99, 40, -3):
+        for x in range(config.wallsizex):
+            if x % config.boardsizex == 0 \
+                or x % config.boardsizex == config.boardsizex - 1:
+                for y in range(config.wallsizey):
+                    sim.setpixel(x, y, b)
+            else:
+                sim.setpixel(x, 0, b)
+                sim.setpixel(x, config.wallsizey - 1, b)
+        sim.update()
+        time.sleep(0.02)

@@ -23,38 +23,126 @@
 #
 
 import pygame
+from pygame.locals import *
+import sys
+
+import libari.config
 
 class Simulator:
-	def __init__(self, w = 105, h = 30, p = 1, d = 9):
-		pygame.init()
-		self.w = w
-		self.h = h
-		self.p = p
-		self.d = d
-		pygame.display.set_caption('Martha')
-		self.screen = pygame.display.set_mode((self.__convert(w),
-											   self.__convert(h)))
+    def __init__(self, dw = False, dh = False, ps = False, pd = False):
+        # Load config
+        self.config = libari.config.Config()
 
-	def __convert(self, i):
-		return i * (self.d + self.p)
+        # Get arguments
+        # Display size
+        if dw:
+            self.dw = dw
+        else:
+            self.dw = self.config.wallsizex
+        if dh:
+            self.dh = dh
+        else:
+            self.dh = self.config.wallsizey
+        # Pixel size and spacing
+        if ps:
+            self.ps = ps
+        else:
+            self.ps = self.config.simpixelsize
+        if pd:
+            self.pd = pd
+        else:
+            self.pd = self.config.simpixeldistance
 
-	def setpixel(self, x, y, i):
-		i = (i / 99) * 255
-		self.screen.fill((i, i, i),
-						 pygame.Rect(self.__convert(x),
-									 self.__convert(y),
-									 self.p,
-									 self.p))
+        # Calculate panel spacing
+        self.panelcount = len(self.config.model)
+        self.paneldistance = self.config.simpixelsize * 20
 
-	def getpixel(self, x, y):
-		(r, g, b) = self.screen.get_at(self.__convert(x),
-									   self.__convert(y))
-		return (r / 255) * 99
+        # Create screen
+        pygame.init()
+        pygame.display.set_caption('Martha')
+        self.screen = pygame.display.set_mode(self.__convert((self.dw,
+                                                              self.dh)))
+    
+        # Add panel spacing
+        px = 0
+        for p in range(len(self.config.model) - 1):
+            # Panel start in x direction
+            px += self.config.model[p]['width'] * self.config.boardsizex
 
-	def update(self):
-		pygame.display.update()
+            # Convert to simulator coordinates
+            # Add distance to skip the panel spacers
+            x = self.__convert(px) + (p * self.paneldistance)
+            y = 0
+            
+            # Get size of panel spacer
+            dx = self.paneldistance
+            dy = self.__convert(self.dh)
 
-	def blank(self, b = 0):
-		for x in range(self.w):
-			for y in range(self.h):
-				self.setpixel(x, y, b)
+            # Paint panel spacer
+            self.screen.fill((119, 49, 0), pygame.Rect(x, y, dx, dy))
+            
+    def __convert(self, i):
+        if type(i) is tuple:
+            (x, y) = i
+            # Find panel
+            p = 0
+            dx = 0
+            for p in range(len(self.config.model)):
+                dx += self.config.model[p]['width'] * self.config.boardsizex
+                if x < dx:
+                    dx -= self.config.model[p]['width'] * self.config.boardsizex
+                    break
+
+            # Add paneldistance, so we do not paint on the panel spacers
+            x = x * (self.pd + self.ps) + (p * self.paneldistance)
+
+            # No panel spacers in the y direction
+            y = y * (self.pd + self.ps)
+
+            return (x, y)
+        if type(i) is int:
+            return (i * (self.pd + self.ps))
+
+    def getpixel(self, x, y):
+        # Calculate position
+        (x, y) = self.__convert((x, y))
+        x = x + self.pd / 2
+        y = y + self.pd / 2
+
+        # Read from screen
+        (r, g, b) = self.screen.get_at((x, y))
+        return (99 * b) / 255
+
+    def setpixel(self, x, y, b):
+        # Calculate brightness and position
+        b = (255 * b) / 99
+        (x, y) = self.__convert((x, y))
+        x = x + self.pd / 2
+        y = y + self.pd / 2
+    
+        # Paint on screen
+        self.screen.fill((b, b, b), pygame.Rect(x, y, self.ps, self.ps))
+
+    def update(self):
+        # Update screen
+        pygame.display.update()
+
+        # Check events
+        if not self.__processEvents():
+            sys.exit(0)
+
+    def blank(self, b = 0):
+        # Loop over all pixels and set brightness
+        for x in range(self.dw):
+            for y in range(self.dh):
+                self.setpixel(x, y, b)
+
+    def __processEvents(self):
+        """Process events and take appropriate action"""
+
+        for event in pygame.event.get():
+            if event.type is QUIT:
+                return False
+            elif event.type is KEYDOWN and event.key is K_ESCAPE:
+                return False
+        return True

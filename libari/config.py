@@ -34,6 +34,10 @@ class Config:
         self.boardsizex = 5
         self.boardsizey = 5
 
+        # Simulator settings
+        self.simpixelsize = 2
+        self.simpixeldistance = 6
+
         # A model of the physical and logical layout of the wall
         #
         # Panels
