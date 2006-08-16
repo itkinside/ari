@@ -21,9 +21,10 @@
 """
 arid - Daemon for running demos on a diode wall
 
-Usage: arid [-h] [-l] [-d demo]
+Usage: arid [-h] [-s] [-l] [-d demo]
 
   -h, --help        Show this help text
+  -s, --simulate    Start simulator and use as output
   -l, --list        List loaded demos
   -d, --demo        Run given demo
 """
@@ -35,60 +36,75 @@ import time
 
 import libari.wall
 import libari.canvas
-import demos.blank
-import demos.chess
-import demos.fade
-import demos.stars
+import libari.martha
+import libari.demos.blank
+import libari.demos.chess
+import libari.demos.fade
+import libari.demos.stars
 
 class Arid:
     def __init__(self):
-        # Init output device
-        # FIXME: Read from config
-        self.output = libari.wall.Wall()
-
-        # Init canvas
-        self.canvas = libari.canvas.Canvas(self.output)
-
-        # Load demos
-        self.demos = {}
-        self.demos['blank'] = demos.blank.Blank(self.canvas)
-        self.demos['chess'] = demos.chess.Chess(self.canvas)
-        self.demos['fade'] = demos.fade.Fade(self.canvas, 10, 60)
-        self.demos['stars'] = demos.stars.Stars(self.canvas, 0, 60)
-        self.defaultdemos = ['stars', 'fade']
-        self.currentdemo = None
+        pass
 
     def main(self, args):
         # Get command line arguments
         try:
-            opts, args = getopt.getopt(args, 'hld:', ['help', 'list', 'demo='])
+            opts, args = getopt.getopt(args, 'hsld:',
+                ['help', 'simulate', 'list', 'demo='])
         except getopt.GetoptError, error:
             print >> sys.stderr, 'Option does not exist.'
             sys.exit(1)
+        optsim = False
+        optlist = False
         optdemo = False
         for opt, val in opts:
             # Show help
             if opt in ('-h', '--help'):
                 print >> sys.stderr, __doc__
                 sys.exit(0)
+            # Simulate diode wall
+            if opt in ('-s', '--simulate'):
+                optsim = True
             # List demos
             if opt in ('-l', '--list'):
-                if len(self.demos):
-                    print 'Loaded demos:'
-                    demos = self.demos.keys()
-                    demos.sort()
-                    for demo in demos:
-                        if self.defaultdemos.count(demo):
-                            print "  " + demo + " [default]"
-                        else:
-                            print "  " + demo
-                    sys.exit(0)
-                else:
-                    print 'No demos loaded.'
-                    sys.exit(1)
-            # Run demo
+                optlist = True
+            # Run requested demo
             if opt in ('-d', '--demo'):
                 optdemo = val
+
+        # Init output device and canvas
+        if optsim:
+            # Simulate diode wall
+            self.canvas = libari.martha.Martha()
+        else:
+            # Output to physical wall
+            self.output = libari.wall.Wall()
+            self.canvas = libari.canvas.Canvas(self.output)
+
+        # Load demos
+        self.demos = {}
+        self.demos['blank'] = libari.demos.blank.Blank(self.canvas)
+        self.demos['chess'] = libari.demos.chess.Chess(self.canvas)
+        self.demos['fade'] = libari.demos.fade.Fade(self.canvas, 10, 60)
+        self.demos['stars'] = libari.demos.stars.Stars(self.canvas, 0, 60)
+        self.defaultdemos = ['stars', 'fade']
+        self.currentdemo = None
+
+        # List demos
+        if optlist:
+            if len(self.demos):
+                print 'Loaded demos:'
+                demos = self.demos.keys()
+                demos.sort()
+                for demo in demos:
+                    if self.defaultdemos.count(demo):
+                        print "  " + demo + " [default]"
+                    else:
+                        print "  " + demo
+                sys.exit(0)
+            else:
+                print 'No demos loaded.'
+                sys.exit(1)
 
         # Run requested demo
         if optdemo:
@@ -104,7 +120,7 @@ class Arid:
                 print >> sys.stderr, "No '%s' demo loaded." % optdemo
             self.currentdemo = self.defaultdemo
 
-        # Run a carusel of demos
+        # Default: Run a carusel of demos
         try:
             while True:
                 for demo in self.defaultdemos:

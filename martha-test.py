@@ -25,10 +25,10 @@ import random
 import time
 
 import libari.config
-import simulator
+import libari.martha
 
 config = libari.config.Config()
-sim = simulator.Simulator()
+canvas = libari.martha.Martha()
 
 while True:
     for b in range(40, 100, 3) + range(99, 40, -3):
@@ -36,9 +36,9 @@ while True:
             if x % config.boardsizex == 0 \
                 or x % config.boardsizex == config.boardsizex - 1:
                 for y in range(config.wallsizey):
-                    sim.setpixel(x, y, b)
+                    canvas.setpixel(x, y, b)
             else:
-                sim.setpixel(x, 0, b)
-                sim.setpixel(x, config.wallsizey - 1, b)
-        sim.update()
+                canvas.setpixel(x, 0, b)
+                canvas.setpixel(x, config.wallsizey - 1, b)
+        canvas.update()
         time.sleep(0.02)

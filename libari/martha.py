@@ -28,7 +28,7 @@ import sys
 
 import libari.config
 
-class Simulator:
+class Martha:
     def __init__(self, dw = False, dh = False, ps = False, pd = False):
         # Load config
         self.config = libari.config.Config()

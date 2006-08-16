@@ -20,6 +20,8 @@
 
 import math
 
+import libari.config
+
 class Canvas:
     """Paint on the canvas, and the wall shows your art!"""
 
@@ -32,11 +34,11 @@ class Canvas:
 
         """
 
+        # Load config
+        self.config = libari.config.Config()
+
         # Read input
         self.output = output
-
-        # Get config object from output class
-        self.config = self.output.config
 
         # Build canvas
         self.canvas = self.__createcanvas(0)

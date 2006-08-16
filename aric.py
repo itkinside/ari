@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 #
-# libari - Library for manipulating a diode wall
+# aric - Client for controlling the arid daemon
 # Copyright (C) 2006 Stein Magnus Jodal
 #
 # This program is free software; you can redistribute it and/or modify
@@ -18,13 +18,20 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-from distutils.core import setup
-setup(name = "libari",
-      version = "0.1",
-      description = "Library for manipulating a diode wall.",
-      author = "Stein Magnus Jodal",
-      author_email = "jodal@samfundet.no",
-      license = "GNU GPL v2",
-      url = "http://itk.samfundet.no/dok/ari",
-      packages = ['libari', 'libari.demos'],
-      package_dir = {'libari': '.', 'libari.demos': './demos'})
+"""
+FIXME
+"""
+
+import sys
+
+class Aric:
+    def __init__(self):
+        pass
+
+    def main(self, args):
+            print "Not implemented"
+            sys.exit(0)
+
+if __name__ == '__main__':
+    aric = Aric()
+    aric.main(sys.argv[1:])

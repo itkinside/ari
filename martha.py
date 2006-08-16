@@ -25,27 +25,27 @@ import sys
 import time
 
 import libari.config
-import simulator
+import libari.martha
 
 class Martha:
-	def __init__(self):
-		# Set variables
-		pixelsize = 1
-		pixelspacing = 9
+    def __init__(self):
+        # Set variables
+        pixelsize = 1
+        pixelspacing = 9
 
-		# Get config
-		self.config = libari.config.Config()
+        # Get config
+        self.config = libari.config.Config()
 
-		# Get simulator
-		self.sim = simulator.Simulator(self.config.wallsizex,
-									   self.config.wallsizey,
-									   pixelsize,
-									   pixelspacing)
-	
-	def main(self, args):
-		time.sleep(10)
-		pass
+        # Get simulator canvas
+        self.canvas = libari.martha.Martha(self.config.wallsizex,
+                                           self.config.wallsizey,
+                                           pixelsize,
+                                           pixelspacing)
+    
+    def main(self, args):
+        time.sleep(10)
+        # FIXME: Implement demo loading et al here
 
 if __name__ == '__main__':
-	martha = Martha()
-	martha.main(sys.argv[1:])
+    martha = Martha()
+    martha.main(sys.argv[1:])
