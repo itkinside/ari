@@ -42,9 +42,9 @@ import libari.demos.chess
 import libari.demos.fade
 import libari.demos.stars
 
-class Arid:
+class Arid(threading.Thread):
     def __init__(self):
-        pass
+        threading.Thread.__init__(self)
 
     def main(self, args):
         # Get command line arguments
@@ -86,8 +86,8 @@ class Arid:
         self.demos['blank'] = libari.demos.blank.Blank(self.canvas)
         self.demos['chess'] = libari.demos.chess.Chess(self.canvas)
         self.demos['fade'] = libari.demos.fade.Fade(self.canvas, 10, 60)
-        self.demos['stars'] = libari.demos.stars.Stars(self.canvas, 0, 60)
-        self.defaultdemos = ['stars', 'fade']
+        self.demos['stars'] = libari.demos.stars.Stars(self.canvas, 10, 99)
+        self.defaultdemos = ['stars', 'chess']
         self.currentdemo = None
 
         # List demos
@@ -109,33 +109,52 @@ class Arid:
         # Run requested demo
         if optdemo:
             if self.demos.has_key(optdemo):
+                # Start demo
                 self.demos[optdemo].start()
                 try:
-                    while True:
-                        time.sleep(60)
+                    # Wait until it joins or it's interrupted
+                    self.demos[optdemo].join()
                 except KeyboardInterrupt, e:
-                    self.demos[optdemo].stop()
-                    sys.exit(0)
+                    # Ask the demo nicely to stop
+                    while self.demos[optdemo].isAlive():
+                        self.demos[optdemo].stop()
+                        self.demos[optdemo].join(10)
+                sys.exit(0)
             else:
                 print >> sys.stderr, "No '%s' demo loaded." % optdemo
-            self.currentdemo = self.defaultdemo
 
-        # Default: Run a carusel of demos
+        # Default: Run a carousel of demos
         try:
             while True:
                 for demo in self.defaultdemos:
                     self.currentdemo = demo
-                    self.demos[demo].start()
-                    self.demos[demo].join(10)
+                    print "%s: Running demo: %s" % (self.getName(), demo)
+
+                    # Start/run demo
+                    if not self.demos[demo].started:
+                        self.demos[demo].start()
+                    else:
+                        self.demos[demo].run()
+                    
+                    # Wait for demo to end
+                    print "%s: Asking '%s' to join()..." % (self.getName(), demo)
+                    self.demos[demo].join(5)
+                    print "%s: '%s' join()-ed" % (self.getName(), demo)
+
+                    # Timeout reached, ask it to stop
                     while self.demos[demo].isAlive():
+                        print "%s: Is alive, asking '%s' to stop." % (self.getName(), demo)
                         self.demos[demo].stop()
                         self.demos[demo].join(10)
+                    print "%s: '%s' done" % (self.getName(), demo)
+
                     self.currentdemo = None
-                break # FIXME run() vs start()
         except KeyboardInterrupt, e:
-            self.demos[self.currentdemo].stop()
-            self.demos[self.currentdemo].join()
-            sys.exit(0)
+            # Interrupt recieved, ask it to stop
+            while self.demos[self.currentdemo].isAlive():
+                self.demos[self.currentdemo].stop()
+                self.demos[self.currentdemo].join(10)
+        sys.exit(0)
 
 if __name__ == '__main__':
     arid = Arid()

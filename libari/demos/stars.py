@@ -22,21 +22,29 @@ import random
 import threading
 import time
 
-class Stars(threading.Thread):
-    """A heaven of stars."""
+import libari.config
 
-    def __init__(self, canvas, min = 1, max = 99):
+class Stars(threading.Thread):
+    """A heaven of stars"""
+
+    def __init__(self, canvas, min = 1, max = 99, stars = 300):
         """
         Input:
-            canvas  Canvas to paint on
-            min     Minimum brightness, default 0
-            max     Maximum brightness, default 99
+            canvas      Canvas to paint on
+            min         Minimum brightness, default 0
+            max         Maximum brightness, default 99
+            stars       Number of stars, default 300
         """
 
+        # Init thread
         threading.Thread.__init__(self)
 
+        # Load config
+        self.config = libari.config.Config()
+
+        # Setup canvas and variables
         self.canvas = canvas
-        self.running = True
+        self.started = False
 
         if int(min) > 0 and int(min) < 100:
             self.min = int(min)
@@ -51,20 +59,75 @@ class Stars(threading.Thread):
         if self.min > self.max:
             self.min, self.max = self.max, self.min
 
+        if int(stars) > 0:
+            self.starcount = int(stars)
+
+        # Create stars
+        self.stars = []
+        for i in range(self.starcount):
+            self.stars.append(Star(self.config.wallsizex,
+                                   self.config.wallsizey,
+                                   self.min,
+                                   self.max))
     def stop(self):
         self.running = False
 
     def run(self):
-        xmax = 104
-        ymax = 29
-        b = 0
+        # Threading
+        print "%s: Starting run()" % self.getName()
+        self.running = True
+        if not self.started:
+            self.started = True
+
+        # The demo
         self.canvas.blank()
         while self.running:
-            for i in range(10):
-                x = random.randint(0, xmax)
-                y = random.randint(0, ymax)
-                b = random.randint(self.min, self.max)
-                for c in range(0, b, 3):
-                    self.canvas.setpixel(x, y, b)
+            for i in range(self.starcount):
+                self.stars[i].run()
+                (x, y, b) = self.stars[i].get()
+                self.canvas.setpixel(x, y, b)
             self.canvas.update()
-            time.sleep(0.5)
+            time.sleep(0.2)
+        print "%s: Ending run()" % self.getName()
+
+class Star:
+    def __init__(self, wx, wy, min, max):
+        self.min = min
+        self.max = random.randint(min, max)
+
+        self.setpos(wx, wy)
+        self.b = self.min
+        self.rising = True
+
+    def setpos(self, wx = False, wy = False):
+        if wx:
+            self.wx = wx
+        if wy:
+            self.wy = wy
+        self.x = random.randint(0, self.wx)
+        self.y = random.randint(0, self.wy)
+
+    def run(self):
+        # If star is dead, make another one
+        if self.b == 0:
+            self.setpos()
+            self.b = self.min
+            self.rising = True
+
+        # Fade
+        if self.rising:
+            self.b += random.randint(1, 5)
+        else:
+            self.b -= random.randint(1, 5)
+
+        # Fade in done, start fade out
+        if self.b >= self.max:
+            self.b = self.max
+            self.rising = False
+
+        # Faded out, clean up
+        if not self.rising and self.b <= self.min:
+            self.b = 0
+
+    def get(self):
+        return (self.x, self.y, self.b)

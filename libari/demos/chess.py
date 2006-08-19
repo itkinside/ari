@@ -22,45 +22,94 @@ import random
 import threading
 import time
 
-class Chess(threading.Thread):
-    """Color every second board."""
+import libari.config
 
-    def __init__(self, canvas, min = 1, max = 99):
+class Chess(threading.Thread):
+    """A flashy chess game"""
+
+    def __init__(self, canvas, min = 0, max = 99, blocksize = False):
         """
         Input:
-            canvas  Canvas to paint on.
+            canvas      Canvas to paint on
+            min         Minimum brightness, default 0
+            max         Maximum brightness, default 99
+            blocksize   Size of chess fields, default to board size
         """
 
+        # Init thread
         threading.Thread.__init__(self)
 
-        self.canvas = canvas
-        self.running = True
+        # Load config
+        self.config = libari.config.Config()
 
-        if int(min) > 0 and int(min) < 100:
+        # Setup canvas and variables
+        self.canvas = canvas
+        self.started = False
+
+        if int(min) >= 0 and int(min) < 100:
             self.min = int(min)
         else:
-            self.min = 1
+            self.min = 0
 
         if int(max) >= 0 and int(max) < 100:
             self.max = int(max)
         else:
             self.max = 99
 
+        if self.min > self.max:
+            self.min, self.max = self.max, self.min
+
+        if int(blocksize) > 0:
+            self.blocksize = int(blocksize)
+        else:
+            self.blocksize = self.config.boardsizex
+
     def stop(self):
         self.running = False
 
     def run(self):
-        b1, b2 = 0, self.max
+        # Threading
+        print "%s: Starting run()" % self.getName()
+        self.running = True
+        if not self.started:
+            self.started = True
+
+        # The demo
+        b = Cycler(0, self.max)
         while self.running:
-            for panelno in self.canvas.model:
-                panel = self.canvas.model[panelno]
-                for y in range(panel['height']):
-                    if panel['width'] % 2 == 0:
-                        b1, b2 = b2, b1
-                    for x in range(panel['width']):
-                        b1, b2 = b2, b1
-                        if b1 > 0:
-                            b1 = random.randint(self.min, self.max)
-                        self.canvas.fillboard(b1, panelno, x, y)
+            for x in range(0, self.config.wallsizex, self.blocksize):
+                for y in range(0, self.config.wallsizey, self.blocksize):
+                    for bx in range(x, x + self.blocksize):
+                        for by in range(y, y + self.blocksize):
+                            self.canvas.setpixel(bx, by, b.get())
+                    b.cycle(True)
+                b.cycle(True)
+            self.canvas.update()
             time.sleep(0.2)
-            b1, b2 = b2, b1
+        print "%s: Ending run()" % self.getName()
+
+class Cycler:
+    def __init__(self, v1, v2):
+        self.v1 = v1
+        self.v2 = v2
+        self.current = self.v1
+        if self.v1 > self.v2:
+            self.max = self.v1
+            self.min = self.v2
+        else:
+            self.max = self.v2
+            self.min = self.v1
+
+    def get(self):
+        return self.current
+
+    def cycle(self, rand = False):
+        # Switch value
+        if self.current == self.v1:
+            self.current = self.v2
+        else:
+            self.current = self.v1
+
+        # Randomize value
+        if self.current and rand:
+            self.current = random.randint(1, self.max)

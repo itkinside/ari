@@ -36,7 +36,7 @@ class Config:
 
         # Simulator settings
         self.simpixelsize = 2
-        self.simpixeldistance = 6
+        self.simpixeldistance = 8
 
         # A model of the physical and logical layout of the wall
         #

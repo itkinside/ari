@@ -58,7 +58,7 @@ class Martha:
         self.paneldistance = self.config.simpixelsize * 20
 
         # Create screen
-        pygame.init()
+        pygame.display.init()
         pygame.display.set_caption('Martha')
         self.screen = pygame.display.set_mode(self.__convert((self.dw,
                                                               self.dh)))
@@ -79,7 +79,7 @@ class Martha:
             dy = self.__convert(self.dh)
 
             # Paint panel spacer
-            self.screen.fill((119, 49, 0), pygame.Rect(x, y, dx, dy))
+            self.screen.fill((70, 20, 0), pygame.Rect(x, y, dx, dy))
             
     def __convert(self, i):
         if type(i) is tuple:
@@ -136,6 +136,7 @@ class Martha:
         for x in range(self.dw):
             for y in range(self.dh):
                 self.setpixel(x, y, b)
+        self.update()
 
     def __processEvents(self):
         """Process events and take appropriate action"""

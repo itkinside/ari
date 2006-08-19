@@ -36,7 +36,7 @@ class Blank(threading.Thread):
         self.canvas = canvas
 
     def stop(self):
-        stop
+        pass
 
     def run(self):
         self.canvas.blank(0)
