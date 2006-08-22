@@ -210,10 +210,8 @@ class Canvas:
             # Init data struct
             data = []
             # Loop over all pixels on the board
-            # FIXME: px is reversed because of the orientation of the cards.
-            #        This should be read from config.
-            for px in range(self.config.boardsizex):
-                for py in range(self.config.boardsizey):
+            for py in range(self.config.boardsizey):
+                for px in range(self.config.boardsizex):
                     # Add brightness value to the data struct
                     data.append(self.canvas[p][bx][by][px][py])
 
