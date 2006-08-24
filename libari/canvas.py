@@ -149,13 +149,14 @@ class Canvas:
         (p, bx, by, px, py) = self.__getcanvaspos(x, y)
         return self.canvas[p][bx][by][px][py]
 
-    def setpixel(self, x, y, b):
+    def setpixel(self, x, y, b, o = 100):
         """
         Set brightness of pixel at pos x,y
 
         Input:
             x   Position in canvas, x direction
             y   Position in canvas, y direction
+            o   Opacity (0-100), default 100
 
         Returns:
             True if brightness is set 
@@ -169,6 +170,10 @@ class Canvas:
             return False
 
         (p, bx, by, px, py) = self.__getcanvaspos(x, y)
+
+        if o < 100:
+            # Set opacity
+            b = self.canvas[p][bx][by][px][py] * (100.0 - o) / 100.0 + b * o / 100.0
 
         # Check previous brightness of this pixel
         if self.canvas[p][bx][by][px][py] == b:
