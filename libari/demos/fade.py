@@ -18,26 +18,20 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-import threading
-import time
+import libari.demos.base
 
-class Fade(threading.Thread):
+class Fade(libari.demos.base.Base):
     """Fade between to brightness values."""
 
-    def __init__(self, canvas, min = 0, max = 99, step = 3):
+    def setup(self, min = 0, max = 99, step = 3):
         """
         Input:
-            canvas  Canvas to paint on
             min     Minimum brightness, default 0
             max     Maximum brightness, default 99
             step    Brightness steps, default 3
         """
 
-        threading.Thread.__init__(self)
-
-        self.canvas = canvas
-        self.running = True
-
+        # Check input
         if int(min) >= 0 and int(min) < 100:
             self.min = int(min)
         else:
@@ -56,14 +50,12 @@ class Fade(threading.Thread):
         else:
             self.step = 3
 
-    def stop(self):
-        self.running = False
-
     def run(self):
-        while self.running:
-            for b in range(self.min, self.max, self.step):
-                self.canvas.blank(b)
-                time.sleep(0.01)
-            for b in range(self.max, self.min, -self.step): 
-                self.canvas.blank(b)
-                time.sleep(0.01)
+        while True:
+            if self.drawable:
+                for b in range(self.min, self.max, self.step):
+                    self.canvas.blank(b)
+                    self.sleep()
+                for b in range(self.max, self.min, -self.step): 
+                    self.canvas.blank(b)
+                    self.sleep()

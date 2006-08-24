@@ -18,25 +18,12 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-import threading
+import libari.demos.base
 
-class Blank(threading.Thread):
+class Blank(libari.demos.base.Base):
     """
     Blank wall and exit.
     """
-
-    def __init__(self, canvas):
-        """
-        Input:
-            canvas  Canvas to paint on
-        """
-
-        threading.Thread.__init__(self)
-
-        self.canvas = canvas
-
-    def stop(self):
-        pass
 
     def run(self):
         self.canvas.blank(0)

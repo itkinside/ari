@@ -19,33 +19,21 @@
 #
 
 import random
-import threading
-import time
+import libari.demos.base
 
-import libari.config
-
-class Stars(threading.Thread):
+class Stars(libari.demos.base.Base):
     """A heaven of stars"""
 
-    def __init__(self, canvas, min = 1, max = 99, stars = 300):
+    def setup(self, min = 1, max = 99, stars = 300):
         """
         Input:
-            canvas      Canvas to paint on
             min         Minimum brightness, default 0
             max         Maximum brightness, default 99
             stars       Number of stars, default 300
+
         """
 
-        # Init thread
-        threading.Thread.__init__(self)
-
-        # Load config
-        self.config = libari.config.Config()
-
-        # Setup canvas and variables
-        self.canvas = canvas
-        self.started = False
-
+        # Check input
         if int(min) > 0 and int(min) < 100:
             self.min = int(min)
         else:
@@ -62,6 +50,9 @@ class Stars(threading.Thread):
         if int(stars) > 0:
             self.starcount = int(stars)
 
+        # Set update frequency
+        self.setfps(5)
+
         # Create stars
         self.stars = []
         for i in range(self.starcount):
@@ -69,26 +60,22 @@ class Stars(threading.Thread):
                                    self.config.wallsizey,
                                    self.min,
                                    self.max))
-    def stop(self):
-        self.running = False
+
+    def prepare(self):
+        """Prepare demo run"""
+        self.canvas.blank()
 
     def run(self):
-        # Threading
-        print "%s: Starting run()" % self.getName()
-        self.running = True
-        if not self.started:
-            self.started = True
+        """The demo"""
+        while True:
+            if self.drawable:
+                for i in range(self.starcount):
+                    self.stars[i].run()
+                    (x, y, b) = self.stars[i].get()
+                    self.canvas.setpixel(x, y, b)
+                self.canvas.update()
+            self.sleep()
 
-        # The demo
-        self.canvas.blank()
-        while self.running:
-            for i in range(self.starcount):
-                self.stars[i].run()
-                (x, y, b) = self.stars[i].get()
-                self.canvas.setpixel(x, y, b)
-            self.canvas.update()
-            time.sleep(0.2)
-        print "%s: Ending run()" % self.getName()
 
 class Star:
     def __init__(self, wx, wy, min, max):
@@ -111,7 +98,7 @@ class Star:
         # If star is dead, make another one
         if self.b == 0:
             self.setpos()
-            self.b = self.min
+            #self.b = self.min
             self.rising = True
 
         # Fade

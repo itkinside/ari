@@ -19,33 +19,20 @@
 #
 
 import random
-import threading
-import time
+import libari.demos.base
 
-import libari.config
-
-class Chess(threading.Thread):
+class Chess(libari.demos.base.Base):
     """A flashy chess game"""
 
-    def __init__(self, canvas, min = 0, max = 99, blocksize = False):
+    def setup(self, min = 0, max = 99, blocksize = False):
         """
         Input:
-            canvas      Canvas to paint on
             min         Minimum brightness, default 0
             max         Maximum brightness, default 99
             blocksize   Size of chess fields, default to board size
         """
 
-        # Init thread
-        threading.Thread.__init__(self)
-
-        # Load config
-        self.config = libari.config.Config()
-
-        # Setup canvas and variables
-        self.canvas = canvas
-        self.started = False
-
+        # Check input
         if int(min) >= 0 and int(min) < 100:
             self.min = int(min)
         else:
@@ -64,29 +51,23 @@ class Chess(threading.Thread):
         else:
             self.blocksize = self.config.boardsizex
 
-    def stop(self):
-        self.running = False
+        # Set update frequency
+        self.setfps(5)
 
     def run(self):
-        # Threading
-        print "%s: Starting run()" % self.getName()
-        self.running = True
-        if not self.started:
-            self.started = True
-
         # The demo
         b = Cycler(0, self.max)
-        while self.running:
-            for x in range(0, self.config.wallsizex, self.blocksize):
-                for y in range(0, self.config.wallsizey, self.blocksize):
-                    for bx in range(x, x + self.blocksize):
-                        for by in range(y, y + self.blocksize):
-                            self.canvas.setpixel(bx, by, b.get())
+        while True:
+            if self.drawable:
+                for x in range(0, self.config.wallsizex, self.blocksize):
+                    for y in range(0, self.config.wallsizey, self.blocksize):
+                        for bx in range(x, x + self.blocksize):
+                            for by in range(y, y + self.blocksize):
+                                self.canvas.setpixel(bx, by, b.get())
+                        b.cycle(True)
                     b.cycle(True)
-                b.cycle(True)
-            self.canvas.update()
-            time.sleep(0.2)
-        print "%s: Ending run()" % self.getName()
+                self.canvas.update()
+            self.sleep()
 
 class Cycler:
     def __init__(self, v1, v2):

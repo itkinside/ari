@@ -37,6 +37,7 @@ import time
 import libari.wall
 import libari.canvas
 import libari.martha
+
 import libari.demos.blank
 import libari.demos.chess
 import libari.demos.fade
@@ -83,11 +84,20 @@ class Arid(threading.Thread):
 
         # Load demos
         self.demos = {}
+
+        # Test demos
         self.demos['blank'] = libari.demos.blank.Blank(self.canvas)
+        self.demos['fade'] = libari.demos.fade.Fade(self.canvas)
+        self.demos['fade'].setup(10, 60)
+
+        # Carousel/real demos
         self.demos['chess'] = libari.demos.chess.Chess(self.canvas)
-        self.demos['fade'] = libari.demos.fade.Fade(self.canvas, 10, 60)
-        self.demos['stars'] = libari.demos.stars.Stars(self.canvas, 10, 99)
-        self.defaultdemos = ['stars', 'chess']
+        self.demos['chess'].setup()
+        self.demos['stars'] = libari.demos.stars.Stars(self.canvas)
+        self.demos['stars'].setup(10, 99)
+
+        # Load demos onto the carousel
+        self.democarousel = ['stars', 'chess']
         self.currentdemo = None
 
         # List demos
@@ -97,8 +107,8 @@ class Arid(threading.Thread):
                 demos = self.demos.keys()
                 demos.sort()
                 for demo in demos:
-                    if self.defaultdemos.count(demo):
-                        print "  " + demo + " [default]"
+                    if self.democarousel.count(demo):
+                        print "  " + demo + " [carousel]"
                     else:
                         print "  " + demo
                 sys.exit(0)
@@ -115,10 +125,10 @@ class Arid(threading.Thread):
                     # Wait until it joins or it's interrupted
                     self.demos[optdemo].join()
                 except KeyboardInterrupt, e:
-                    # Ask the demo nicely to stop
+                    # Ask demo to stop drawing
                     while self.demos[optdemo].isAlive():
                         self.demos[optdemo].stop()
-                        self.demos[optdemo].join(10)
+                        self.demos[optdemo].join(2)
                 sys.exit(0)
             else:
                 print >> sys.stderr, "No '%s' demo loaded." % optdemo
@@ -126,34 +136,24 @@ class Arid(threading.Thread):
         # Default: Run a carousel of demos
         try:
             while True:
-                for demo in self.defaultdemos:
+                for demo in self.democarousel:
+                    # Start demo
                     self.currentdemo = demo
-                    print "%s: Running demo: %s" % (self.getName(), demo)
-
-                    # Start/run demo
-                    if not self.demos[demo].started:
-                        self.demos[demo].start()
-                    else:
-                        self.demos[demo].run()
+                    self.demos[demo].start()
                     
-                    # Wait for demo to end
-                    print "%s: Asking '%s' to join()..." % (self.getName(), demo)
+                    # Wait for demo. If it exits we will immediately continue
                     self.demos[demo].join(5)
-                    print "%s: '%s' join()-ed" % (self.getName(), demo)
 
                     # Timeout reached, ask it to stop
-                    while self.demos[demo].isAlive():
-                        print "%s: Is alive, asking '%s' to stop." % (self.getName(), demo)
+                    if self.demos[demo].isAlive():
                         self.demos[demo].stop()
-                        self.demos[demo].join(10)
-                    print "%s: '%s' done" % (self.getName(), demo)
-
+                    else:
+                        pass # Thread has already exited
                     self.currentdemo = None
         except KeyboardInterrupt, e:
             # Interrupt recieved, ask it to stop
-            while self.demos[self.currentdemo].isAlive():
+            if self.demos[self.currentdemo].isAlive():
                 self.demos[self.currentdemo].stop()
-                self.demos[self.currentdemo].join(10)
         sys.exit(0)
 
 if __name__ == '__main__':
