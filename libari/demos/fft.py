@@ -22,7 +22,7 @@ class FFT(libari.demos.base.Base):
 			if self.drawable:
 				ar.read()
 				minv = 0
-				maxv = 4194304
+				maxv = 65536
 				#minv = min(ar.data[0:105])
 				#maxv = max(ar.data[0:105])
 				step = 30.0 / (maxv - minv)
@@ -31,10 +31,14 @@ class FFT(libari.demos.base.Base):
 				#print step
 				#print "--"
 				for x in range(0, 105, 1):
-					self.canvas.setpixel(x, 30 - (ar.data[x] - minv) * step, 99)
+					for y in range(30, int(30 - (ar.data[x] - minv) * step), -1):
+						self.canvas.setpixel(x, y, 99)
+					#self.canvas.setpixel(x, 30 - (ar.data[x] - minv) * step, 99)
 				self.canvas.update()
 				for x in range(0, 105, 1):
-					self.canvas.setpixel(x, 30 - (ar.data[x] - minv) * step, 0)
+					for y in range(30, int(30 - (ar.data[x] - minv) * step), -1):
+						self.canvas.setpixel(x, y, 0)
+					#self.canvas.setpixel(x, 30 - (ar.data[x] - minv) * step, 0)
 				#self.canvas.setpixel(x, y, 99)
 				#self.canvas.update()
 				#self.canvas.setpixel(x, y, 0)
