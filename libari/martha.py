@@ -110,11 +110,15 @@ class Martha:
         y = y + self.pd / 2
 
         # Read from screen
-        (r, g, b) = self.screen.get_at((x, y))
+        (r, g, b, a) = self.screen.get_at((x, y))
         return (99 * b) / 255
 
     def setpixel(self, x, y, b):
         # Calculate brightness and position
+        if (b < 0):
+            b = 0
+        if (b > 99):
+            b = 99
         b = (255 * b) / 99
         (x, y) = self.__convert((x, y))
         x = x + self.pd / 2

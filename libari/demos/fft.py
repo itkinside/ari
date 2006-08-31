@@ -21,10 +21,12 @@ class FFT(libari.demos.base.Base):
 		while True:
 			if self.drawable:
 				ar.read()
-				minv = 0
-				maxv = 65536
+				#minv = 0
+				#maxv = 65536
 				#minv = min(ar.data[0:105])
 				#maxv = max(ar.data[0:105])
+				minv = 20
+				maxv = 40
 				step = 30.0 / (maxv - minv)
 				#print minv
 				#print maxv
@@ -33,15 +35,13 @@ class FFT(libari.demos.base.Base):
 				for x in range(0, 105, 1):
 					for y in range(30, int(30 - (ar.data[x] - minv) * step), -1):
 						self.canvas.setpixel(x, y, 99)
-					#self.canvas.setpixel(x, 30 - (ar.data[x] - minv) * step, 99)
 				self.canvas.update()
+				#for x in range(0, 105, 1):
+				#	for y in range(30, int(30 - (ar.data[x] - minv) * step), -1):
+				#		self.canvas.setpixel(x, y, 0)
 				for x in range(0, 105, 1):
-					for y in range(30, int(30 - (ar.data[x] - minv) * step), -1):
-						self.canvas.setpixel(x, y, 0)
-					#self.canvas.setpixel(x, 30 - (ar.data[x] - minv) * step, 0)
-				#self.canvas.setpixel(x, y, 99)
-				#self.canvas.update()
-				#self.canvas.setpixel(x, y, 0)
+					for y in range(0, 30, 1):
+						self.canvas.setpixel(x, y, self.canvas.getpixel(x, y) - 33)
 				#ar.quit()
 				#self.stop()
 			#self.sleep()
@@ -49,21 +49,20 @@ class FFT(libari.demos.base.Base):
 class AudioReader:
 	def __init__(self):
 		# python loves self!
-		self.dsp = ossaudiodev.open('/dev/dsp', 'r')
-		self.dsp.setparameters(ossaudiodev.AFMT_S16_LE, 2, 44100)
-		self.lol = 5000.0
+		#self.dsp = ossaudiodev.open('/dev/dsp', 'r')
+		#self.dsp.setparameters(ossaudiodev.AFMT_S16_LE, 2, 44100)
+		self.dsp = open('/dev/dsp', 'r', 0)
 
 	def read(self):
-		self.data = array.array('h', self.dsp.read(2048))
-		#x = numarray.arange(256.0)
-		#self.data = numarray.sin(2 * math.pi * (1250.0 / self.lol) * x) + numarray.sin(2 * math.pi * (625.0 / self.lol) * x)
-		#self.lol += 1
-		#self.data = 10 * numarray.log10(1e-20 + abs(numarray.fft.fft(self.data)))
-		self.data = 1e-20 + abs(numarray.fft.fft(self.data))
-		#return (self.data[0], self.data[1])
+		self.data = array.array('B', self.dsp.read(256))
+		self.data = array.array('h', self.data)
+		for x in range(0, 256, 1):
+			self.data[x] -= 128
 		#print self.data
-		#print self.data[0]
-		#print self.data[1]
+		#self.data = array.array('h', self.dsp.read(8192))
+		self.data = 10 * numarray.log10(1e-20 + abs(numarray.fft.fft(self.data)))
+		#print self.data
+		#print "ok"
 
 	def quit(self):
 		self.dsp.close()
