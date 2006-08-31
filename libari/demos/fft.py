@@ -54,7 +54,7 @@ class AudioReader:
 		self.lol = 5000.0
 
 	def read(self):
-		self.data = array.array('h', self.dsp.read(1024))
+		self.data = array.array('h', self.dsp.read(2048))
 		#x = numarray.arange(256.0)
 		#self.data = numarray.sin(2 * math.pi * (1250.0 / self.lol) * x) + numarray.sin(2 * math.pi * (625.0 / self.lol) * x)
 		#self.lol += 1
