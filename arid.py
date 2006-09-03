@@ -43,6 +43,7 @@ import libari.demos.chess
 import libari.demos.fade
 import libari.demos.stars
 import libari.demos.fft
+import libari.demos.test
 
 class Arid(threading.Thread):
     def __init__(self):
@@ -91,6 +92,7 @@ class Arid(threading.Thread):
         self.demos['fade'] = libari.demos.fade.Fade(self.canvas)
         self.demos['fade'].setup(10, 60)
 	self.demos['fft'] = libari.demos.fft.FFT(self.canvas)
+	self.demos['test'] = libari.demos.test.Test(self.canvas)
 
         # Carousel/real demos
         self.demos['chess'] = libari.demos.chess.Chess(self.canvas)
