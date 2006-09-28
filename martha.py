@@ -43,7 +43,7 @@ class Martha:
                                            pixelspacing)
     
     def main(self, args):
-        time.sleep(10)
+        print 'Not implemented'
         # FIXME: Implement demo loading et al here
 
 if __name__ == '__main__':
