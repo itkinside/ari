@@ -30,6 +30,7 @@ class Base(threading.Thread):
     Demos must inherit from this class.
     """
 
+    runnable = True
     drawable = False
     fps = 25
 
@@ -60,6 +61,9 @@ class Base(threading.Thread):
     def stop(self):
         self.drawable = False
 
+    def exit(self):
+        self.runnable = False
+
     def setup(self):
         """
         setup() is ment as an addition to the inherited __init__()
@@ -80,8 +84,8 @@ class Base(threading.Thread):
         You MUST override this method in your demo
         """
         b = 0
-        while True:
-            if self.__drawable:
+        while self.runnable:
+            if self.drawable:
             # Do your magic here
                 if b == 0:
                     b = 99

@@ -18,7 +18,7 @@ class FFT(libari.demos.base.Base):
 	def run(self):
 		# The demo
 		ar = AudioReader()
-		while True:
+		while self.runnable:
 			if self.drawable:
 				ar.read()
 				#minv = 0

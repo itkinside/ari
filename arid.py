@@ -131,7 +131,7 @@ class Arid(threading.Thread):
                 except KeyboardInterrupt, e:
                     # Ask demo to stop drawing
                     while self.demos[optdemo].isAlive():
-                        self.demos[optdemo].stop()
+                        self.demos[optdemo].exit()
                         self.demos[optdemo].join(2)
                 sys.exit(0)
             else:
@@ -155,9 +155,11 @@ class Arid(threading.Thread):
                         pass # Thread has already exited
                     self.currentdemo = None
         except KeyboardInterrupt, e:
-            # Interrupt recieved, ask it to stop
-            if self.demos[self.currentdemo].isAlive():
-                self.demos[self.currentdemo].stop()
+            # Interrupt recieved, ask all alive demos to exit
+            for demo in self.demos:
+                if self.demos[demo].isAlive():
+                    self.demos[demo].exit()
+                    self.demos[demo].join(2)
         sys.exit(0)
 
 if __name__ == '__main__':

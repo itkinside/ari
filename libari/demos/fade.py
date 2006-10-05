@@ -51,7 +51,7 @@ class Fade(libari.demos.base.Base):
             self.step = 3
 
     def run(self):
-        while True:
+        while self.runnable:
             if self.drawable:
                 for b in range(self.min, self.max, self.step):
                     self.canvas.blank(b)

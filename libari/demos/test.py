@@ -11,7 +11,7 @@ class Test(libari.demos.base.Base):
 
 	def run(self):
 		# The demo
-		while True:
+		while self.runnable:
 			if self.drawable:
 				for x in range(0, 105, 1):
 					for y in range(0, 30, 1):

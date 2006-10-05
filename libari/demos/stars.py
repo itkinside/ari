@@ -67,7 +67,7 @@ class Stars(libari.demos.base.Base):
 
     def run(self):
         """The demo"""
-        while True:
+        while self.runnable:
             if self.drawable:
                 for i in range(self.starcount):
                     self.stars[i].run()

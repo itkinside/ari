@@ -57,7 +57,7 @@ class Chess(libari.demos.base.Base):
     def run(self):
         # The demo
         b = Cycler(0, self.max)
-        while True:
+        while self.runnable:
             if self.drawable:
                 for x in range(0, self.config.wallsizex, self.blocksize):
                     for y in range(0, self.config.wallsizey, self.blocksize):
