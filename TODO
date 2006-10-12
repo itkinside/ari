@@ -1,0 +1,23 @@
+ari - todo
+==========
+
+arid
+----
+- Modularize it
+- Daemonize it
+- Create control interface
+
+aric
+----
+- Create controller
+
+libari
+------
+- Create magic array as set/getpixel alternative without the function call
+  overhead (needed for demos by canidae)
+- Update deb package (v0.2 is from August)
+
+libari/demos
+------------
+- Port Martha-custom demos from ari.demos.adamcik to the libari.demos.base
+  framework
