@@ -39,6 +39,7 @@ import libari.canvas
 import libari.martha
 
 import libari.demos.blank
+import libari.demos.blob
 import libari.demos.chess
 import libari.demos.fade
 import libari.demos.stars
@@ -48,6 +49,7 @@ import libari.demos.test
 class Arid(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
+        self.timeout = 5
 
     def main(self, args):
         # Get command line arguments
@@ -89,6 +91,7 @@ class Arid(threading.Thread):
 
         # Test demos
         self.demos['blank'] = libari.demos.blank.Blank(self.canvas)
+        self.demos['blank'] = libari.demos.blob.Blob(self.canvas)
         self.demos['fade'] = libari.demos.fade.Fade(self.canvas)
         self.demos['fade'].setup(10, 60)
 	self.demos['fft'] = libari.demos.fft.FFT(self.canvas)
@@ -120,20 +123,10 @@ class Arid(threading.Thread):
                 print 'No demos loaded.'
                 sys.exit(1)
 
-        # Run requested demo
+        # Requested demo: put it on the carousel
         if optdemo:
             if self.demos.has_key(optdemo):
-                # Start demo
-                self.demos[optdemo].start()
-                try:
-                    # Wait until it joins or it's interrupted
-                    self.demos[optdemo].join()
-                except KeyboardInterrupt, e:
-                    # Ask demo to stop drawing
-                    while self.demos[optdemo].isAlive():
-                        self.demos[optdemo].exit()
-                        self.demos[optdemo].join(2)
-                sys.exit(0)
+                self.democarousel = [optdemo]
             else:
                 print >> sys.stderr, "No '%s' demo loaded." % optdemo
 
@@ -146,7 +139,10 @@ class Arid(threading.Thread):
                     self.demos[demo].start()
                     
                     # Wait for demo. If it exits we will immediately continue
-                    self.demos[demo].join(5)
+                    if len(self.democarousel) == 1:
+                        self.demos[demo].join()
+                    else:
+                        self.demos[demo].join(self.timeout)
 
                     # Timeout reached, ask it to stop
                     if self.demos[demo].isAlive():
