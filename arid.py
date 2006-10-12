@@ -91,7 +91,7 @@ class Arid(threading.Thread):
 
         # Test demos
         self.demos['blank'] = libari.demos.blank.Blank(self.canvas)
-        self.demos['blank'] = libari.demos.blob.Blob(self.canvas)
+        self.demos['blob'] = libari.demos.blob.Blob(self.canvas)
         self.demos['fade'] = libari.demos.fade.Fade(self.canvas)
         self.demos['fade'].setup(10, 60)
 	self.demos['fft'] = libari.demos.fft.FFT(self.canvas)
