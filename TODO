@@ -3,18 +3,25 @@ ari - todo
 
 arid
 ----
+- Move demo selection, demo setup etc to some config file
 - Modularize it
 - Daemonize it
-- Create control interface
+- Create control backend
 
 aric
 ----
-- Create controller
+- Create control interface (CLI, ncurses, GTK, whatever)
+
+martha
+------
+- Canvas simulator over net, so demos can be played at the lysfontene machine
+  with sound input et al?
 
 libari
 ------
 - Create magic array as set/getpixel alternative without the function call
   overhead (needed for demos by canidae)
+- Add fading for use when switching demo (use transparency added by canidae)
 - Update deb package (v0.2 is from August)
 
 libari/demos
