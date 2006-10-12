@@ -101,7 +101,7 @@ class Arid(threading.Thread):
         self.demos['chess'] = libari.demos.chess.Chess(self.canvas)
         self.demos['chess'].setup()
         self.demos['stars'] = libari.demos.stars.Stars(self.canvas)
-        self.demos['stars'].setup(10, 99)
+        self.demos['stars'].setup(20, 99)
 
         # Load demos onto the carousel
         self.democarousel = ['stars', 'chess']

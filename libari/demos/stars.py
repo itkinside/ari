@@ -24,7 +24,7 @@ import libari.demos.base
 class Stars(libari.demos.base.Base):
     """A heaven of stars"""
 
-    def setup(self, min = 1, max = 99, stars = 300):
+    def setup(self, min = 1, max = 99, stars = 200):
         """
         Input:
             min         Minimum brightness, default 0
@@ -51,7 +51,7 @@ class Stars(libari.demos.base.Base):
             self.starcount = int(stars)
 
         # Set update frequency
-        self.setfps(5)
+        self.setfps(10)
 
         # Create stars
         self.stars = []
@@ -70,8 +70,7 @@ class Stars(libari.demos.base.Base):
         while self.runnable:
             if self.drawable:
                 for i in range(self.starcount):
-                    self.stars[i].run()
-                    (x, y, b) = self.stars[i].get()
+                    (x, y, b) = self.stars[i].run()
                     self.canvas.setpixel(x, y, b)
                 self.canvas.update()
             self.sleep()
@@ -84,7 +83,10 @@ class Star:
 
         self.setpos(wx, wy)
         self.b = self.min
-        self.rising = True
+        if random.randint(0, 1):
+            self.rising = True
+        else:
+            self.rising = False
 
     def setpos(self, wx = False, wy = False):
         if wx:
@@ -103,9 +105,9 @@ class Star:
 
         # Fade
         if self.rising:
-            self.b += random.randint(1, 5)
+            self.b += random.randint(0, 2)
         else:
-            self.b -= random.randint(1, 5)
+            self.b -= random.randint(0, 2)
 
         # Fade in done, start fade out
         if self.b >= self.max:
@@ -116,5 +118,5 @@ class Star:
         if not self.rising and self.b <= self.min:
             self.b = 0
 
-    def get(self):
+        # Return position and brightness
         return (self.x, self.y, self.b)
