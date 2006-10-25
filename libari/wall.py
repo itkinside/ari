@@ -17,26 +17,25 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
+#
+# Authors: Stein Magnus Jodal <jodal@samfundet.no>
+#
 
+import libari.canvas
+import libari.wallnet
 import math
 
-import libari.config
-import libari.wallnet
-
-class Wall:
-    """Paint on the canvas, and the wall shows your art!"""
+class Wall(libari.canvas.Canvas):
+    """Canvas for the physical wall"""
 
     def __init__(self):
         """
         Setup the Wall object.
 
-        Input:
-            output  Output object, e.g. Wall
-
         """
 
-        # Load config
-        self.config = libari.config.Config()
+        # Init mother
+        libari.canvas.Canvas.__init__(self)
 
         # Setup output
         self.output = libari.wallnet.WallNet()
@@ -128,18 +127,7 @@ class Wall:
         return boards
 
     def getpixel(self, x, y):
-        """
-        Get brightness of pixel at pos x,y
-
-        Input:
-            x   Position in canvas, x direction
-            y   Position in canvas, y direction
-
-        Returns:
-            b   Brightness of pixel
-            False if pixel is outside the canvas
-
-        """
+        """For doc, see Canvas"""
 
         # Check boundaries
         if x < 0 or x >= self.config.wallsizex or \
@@ -151,19 +139,7 @@ class Wall:
         return self.canvas[p][bx][by][px][py]
 
     def setpixel(self, x, y, b, o = 100):
-        """
-        Set brightness of pixel at pos x,y
-
-        Input:
-            x   Position in canvas, x direction
-            y   Position in canvas, y direction
-            o   Opacity (0-100), default 100
-
-        Returns:
-            True if brightness is set 
-            False if pixel is outside the canvas
-
-        """
+        """For doc, see Canvas"""
 
         # Check boundaries
         if x < 0 or x >= self.config.wallsizex or \
@@ -174,7 +150,8 @@ class Wall:
 
         if o < 100:
             # Set opacity
-            b = self.canvas[p][bx][by][px][py] * (100.0 - o) / 100.0 + b * o / 100.0
+            b = self.canvas[p][bx][by][px][py] * (100.0 - o) / 100.0 \
+                + b * o / 100.0
 
         # Check previous brightness of this pixel
         if self.canvas[p][bx][by][px][py] == b:
@@ -190,14 +167,7 @@ class Wall:
         return True
 
     def update(self):
-        """
-        Paint the canvas to the wall
-
-        Only boards with changed pixels are updated.
-
-        Returns:
-            n   Number of boards updated
-        """
+        """For doc, see Canvas"""
 
         # Loop over all boards
         n = 0
@@ -231,17 +201,7 @@ class Wall:
         return n
 
     def blank(self, b = 0):
-        """
-        Blank entire wall
-
-        Also updates the canvas with then new state of the wall.
-
-        Input:
-            b   Brightness, default 0
-
-        Returns:
-            b   Brightness
-        """
+        """For doc, see Canvas"""
 
         # Build data struct
         data = []
@@ -263,3 +223,4 @@ class Wall:
 
         # Update canvas with the current brightness
         self.canvas = self.__createcanvas(b)
+

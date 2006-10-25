@@ -22,16 +22,17 @@
 #          Stein Magnus Jodal <jodal@samfundet.no>
 #
 
+import libari.canvas
 import pygame
 from pygame.locals import *
 import sys
 
-import libari.config
+class Martha(libari.canvas.Canvas):
+    """Canvas for the Martha simulator"""
 
-class Martha:
     def __init__(self, dw = False, dh = False, ps = False, pd = False):
-        # Load config
-        self.config = libari.config.Config()
+        # Init mother
+        libari.canvas.Canvas.__init__(self)
 
         # Get arguments
         # Display size
@@ -103,7 +104,19 @@ class Martha:
         if type(i) is int:
             return (i * (self.pd + self.ps))
 
+    def __processEvents(self):
+        """Process events and take appropriate action"""
+
+        for event in pygame.event.get():
+            if event.type is QUIT:
+                return False
+            elif event.type is KEYDOWN and event.key is K_ESCAPE:
+                return False
+        return True
+
     def getpixel(self, x, y):
+        """For doc, see Canvas"""
+
         # Calculate position
         (x, y) = self.__convert((x, y))
         x = x + self.pd / 2
@@ -113,7 +126,11 @@ class Martha:
         (r, g, b, a) = self.screen.get_at((x, y))
         return (99 * b) / 255
 
-    def setpixel(self, x, y, b):
+    def setpixel(self, x, y, b, o = 100):
+        """For doc, see Canvas"""
+
+        # FIXME: Support opacity
+
         # Calculate brightness and position
         if (b < 0):
             b = 0
@@ -128,6 +145,8 @@ class Martha:
         self.screen.fill((b, b, b), pygame.Rect(x, y, self.ps, self.ps))
 
     def update(self):
+        """For doc, see Canvas"""
+
         # Update screen
         pygame.display.update()
 
@@ -136,18 +155,10 @@ class Martha:
             sys.exit(0)
 
     def blank(self, b = 0):
+        """For doc, see Canvas"""
+
         # Loop over all pixels and set brightness
         for x in range(self.dw):
             for y in range(self.dh):
                 self.setpixel(x, y, b)
         self.update()
-
-    def __processEvents(self):
-        """Process events and take appropriate action"""
-
-        for event in pygame.event.get():
-            if event.type is QUIT:
-                return False
-            elif event.type is KEYDOWN and event.key is K_ESCAPE:
-                return False
-        return True
