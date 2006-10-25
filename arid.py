@@ -35,7 +35,6 @@ import threading
 import time
 
 import libari.wall
-import libari.canvas
 import libari.martha
 
 import libari.demos.blank
@@ -79,12 +78,11 @@ class Arid(threading.Thread):
 
         # Init output device and canvas
         if optsim:
-            # Simulate diode wall
+            # Output to the Martha simulator
             self.canvas = libari.martha.Martha()
         else:
-            # Output to physical wall
-            self.output = libari.wall.Wall()
-            self.canvas = libari.canvas.Canvas(self.output)
+            # Output to the physical wall
+            self.canvas = libari.wall.Wall()
 
         # Load demos
         self.demos = {}

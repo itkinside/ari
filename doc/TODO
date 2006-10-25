@@ -8,15 +8,6 @@ arid
 - Daemonize it
 - Create control backend
 
-aric
-----
-- Create control interface (CLI, ncurses, GTK, whatever)
-
-martha
-------
-- Canvas simulator over net, so demos can be played at the lysfontene machine
-  with sound input et al?
-
 libari
 ------
 - Create magic array as set/getpixel alternative without the function call
@@ -28,3 +19,8 @@ libari/demos
 ------------
 - Port Martha-custom demos from ari.demos.adamcik to the libari.demos.base
   framework
+
+aric - the ari client
+---------------------
+- Create control interface (CLI, ncurses, GTK, whatever)
+

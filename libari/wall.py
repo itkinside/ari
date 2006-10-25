@@ -18,84 +18,248 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
+import math
+
 import libari.config
-import socket
-import struct
+import libari.wallnet
 
 class Wall:
-    """The wall of diodes in Bodegaen at Studentersamfundet."""
+    """Paint on the canvas, and the wall shows your art!"""
 
-    def __init__(self, hosts = [], port = 5001):
+    def __init__(self):
         """
         Setup the Wall object.
 
         Input:
-            hosts   A list of all hosts
-            port    UDP port number to connect to
+            output  Output object, e.g. Wall
 
         """
 
-        # Read input
-        self.hosts = hosts
-        self.port = port
-
-        # Get config object
+        # Load config
         self.config = libari.config.Config()
 
-        # Init UDP socket
-        self.udpsock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        # Setup output
+        self.output = libari.wallnet.WallNet()
 
-    def __pack(self, data):
+        # Build canvas
+        self.canvas = self.__createcanvas(0)
+
+    def __createcanvas(self, b = 0):
         """
-        Pack data into an UDP packet.
-        
+        Create a canvas for storing brightness values
+
         Input:
-            A list with 25 brightness values between 0 and 99.
+            b   Inital brightness
+
         Returns:
-            A UDP packet.
+            The canvas
 
-        Internal info:
-            One UDP pack has 26 bytes, the init byte and one byte for each of
-            the 25 LEDS on a board. The bytes represents a brightness value,
-            and should be between 0 and 99 decimal.
-            
-            WARNING! First/init byte must always be 0x01 as other values may
-            trig undocumented operations, like resetting IP and MAC.
         """
 
-        packet = struct.pack('BBBBBBBBBBBBBBBBBBBBBBBBBB', 1,
-            data[4], data[3], data[2], data[1], data[0],
-            data[9], data[8], data[7], data[6], data[5],
-            data[14], data[13], data[12], data[11], data[10],
-            data[19], data[18], data[17], data[16], data[15],
-            data[24], data[23], data[22], data[21], data[20])
+        canvas = {}
+        for p in self.config.model:
+            panel = self.config.model[p]
+            canvas[p] = {}
+            for bx in range(panel['width']):
+                canvas[p][bx] = {}
+                for by in range(panel['height']):
+                    canvas[p][bx][by] = {}
+                    canvas[p][bx][by]['changed'] = 0
+                    for px in range(5):
+                        canvas[p][bx][by][px] = {}
+                        for py in range(5):
+                            canvas[p][bx][by][px][py] = b
+        return canvas
 
-        return packet
-
-    def sendto(self, data, host):
+    def __getcanvaspos(self, x, y):
         """
-        Send data to one board.
+        Get position in canvas struct, given position in canvas
 
         Input:
-            data: Data to send.
-            host: Destination for the data.
+            x   Position in canvas, x direction
+            y   Position in canvas, y direction
+
+        Return:
+            A tuple containing the following five values:
+            p   Panel number
+            bx  Board position, x direction
+            by  Board position, y direction
+            px  Pixel position, x direction
+            py  Pixel position, y direction
+
         """
 
-        # If only last part of address is given, add prefix
-        if len(str(host)) <= 3:
-            host = self.config.hostprefix + str(host)
+        # Find panel
+        p = 0
+        dx = 0
+        for p in range(len(self.config.model)):
+            dx += self.config.model[p]['width'] * self.config.boardsizex
+            if x < dx:
+                dx -= self.config.model[p]['width'] * self.config.boardsizex
+                break
 
-        packet = self.__pack(data)
-        self.udpsock.sendto(packet, (host, self.port))
+        # Find board positions
+        bx = int(math.floor((x - dx) / self.config.boardsizex))
+        by = int(math.floor(y / self.config.boardsizey))
 
-    def sendtoall(self, data):
+        # Find pixel positions
+        px = (x - dx) % self.config.boardsizex
+        py = y % self.config.boardsizey
+
+        return (p, bx, by, px, py)
+
+    def __getallboards(self):
         """
-        Send data to all boards.
+        Get a list of all boards.
+
+        Returns:
+            A list of boards, one tuple per board, containing:
+            p   Panel number
+            bx  Board position, x direction
+            by  Board position, y direction
+
+        """
+
+        boards = []
+        for p in self.canvas:
+            for bx in self.canvas[p]:
+                for by in self.canvas[p][bx]:
+                    boards.append((p, bx, by))
+        return boards
+
+    def getpixel(self, x, y):
+        """
+        Get brightness of pixel at pos x,y
+
+        Input:
+            x   Position in canvas, x direction
+            y   Position in canvas, y direction
+
+        Returns:
+            b   Brightness of pixel
+            False if pixel is outside the canvas
+
+        """
+
+        # Check boundaries
+        if x < 0 or x >= self.config.wallsizex or \
+            y < 0 or y >= self.config.wallsizey:
+            return False
         
+        # Get pixel from canvas
+        (p, bx, by, px, py) = self.__getcanvaspos(x, y)
+        return self.canvas[p][bx][by][px][py]
+
+    def setpixel(self, x, y, b, o = 100):
+        """
+        Set brightness of pixel at pos x,y
+
         Input:
-            data: Data to send.
+            x   Position in canvas, x direction
+            y   Position in canvas, y direction
+            o   Opacity (0-100), default 100
+
+        Returns:
+            True if brightness is set 
+            False if pixel is outside the canvas
+
         """
 
-        for host in self.hosts:
-            self.send(data, host)
+        # Check boundaries
+        if x < 0 or x >= self.config.wallsizex or \
+            y < 0 or y >= self.config.wallsizey:
+            return False
 
+        (p, bx, by, px, py) = self.__getcanvaspos(x, y)
+
+        if o < 100:
+            # Set opacity
+            b = self.canvas[p][bx][by][px][py] * (100.0 - o) / 100.0 + b * o / 100.0
+
+        # Check previous brightness of this pixel
+        if self.canvas[p][bx][by][px][py] == b:
+            # Pixel already has correct brightness, do not update
+            pass
+        else:
+            # Set pixel in canvas
+            self.canvas[p][bx][by][px][py] = b
+
+            # Update the number of changed pixels on the board
+            self.canvas[p][bx][by]['changed'] += 1
+
+        return True
+
+    def update(self):
+        """
+        Paint the canvas to the wall
+
+        Only boards with changed pixels are updated.
+
+        Returns:
+            n   Number of boards updated
+        """
+
+        # Loop over all boards
+        n = 0
+        for board in self.__getallboards():
+            # Read board position
+            (p, bx, by) = board
+
+            # Check if changed since last update
+            if not self.canvas[p][bx][by]['changed']:
+                # Skip to next board
+                continue
+            else:
+                # Reset counter
+                self.canvas[p][bx][by]['changed'] = 0
+
+            # Init data struct
+            data = []
+            # Loop over all pixels on the board
+            for py in range(self.config.boardsizey):
+                for px in range(self.config.boardsizex):
+                    # Add brightness value to the data struct
+                    data.append(self.canvas[p][bx][by][px][py])
+
+            # Get address of board
+            address = self.config.model[p]['%d,%d' % (bx, by)]
+
+            # Send data to board
+            self.output.sendto(data, address)
+            n += 1
+
+        return n
+
+    def blank(self, b = 0):
+        """
+        Blank entire wall
+
+        Also updates the canvas with then new state of the wall.
+
+        Input:
+            b   Brightness, default 0
+
+        Returns:
+            b   Brightness
+        """
+
+        # Build data struct
+        data = []
+        for i in range(self.config.boardsizex * self.config.boardsizey):
+            data.append(b)
+
+        # Loop over all boards
+        n = 0
+        for board in self.__getallboards():
+            # Read board position
+            (p, bx, by) = board
+
+            # Get address of board
+            host = self.config.model[p]['%d,%d' % (bx, by)]
+
+            # Send data to board
+            self.output.sendto(data, host)
+            n += 1
+
+        # Update canvas with the current brightness
+        self.canvas = self.__createcanvas(b)

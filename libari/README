@@ -3,7 +3,7 @@ libari - a light fontain library
 See http://itk.samfundet.no/dok/ari for more/updated information.
 
 
-Installation from VCS
+Installation from RCS
 ---------------------
 The following procedure installs the latest version of libari into
 /usr/lib/python2.4/site-packages/libari/:
@@ -20,15 +20,21 @@ Use Python's built in help() function on the modules for documentation.
 
 Usage example
 -------------
-Turn all diodes on, then off.
+Turn all diodes on, then off:
 
 $ python
 >>> import libari.wall
->>> import libari.canvas
 >>> w = libari.wall.Wall()
->>> c = libari.canvas.Canvas(w)
->>> c.blank(99)
-(99, 126)
->>> c.blank(0)
-(0, 126)
+>>> w.blank(99)
+>>> w.blank(0)
 >>> 
+
+Use of the Martha simulator is analogous:
+
+$ python
+>>> import libari.martha
+>>> m = libari.martha.Martha()
+>>> m.blank(99)
+>>> m.blank(0)
+>>> 
+
