@@ -22,11 +22,11 @@
 #          Vidar Wahlberg <canidae@samfundet.no>
 #
 
+import libari.config
+from numarray import *
 import sys
 import threading
 import time
-import libari.config
-import numarray
 
 class Base(threading.Thread):
     """
