@@ -1,4 +1,7 @@
 #! /usr/bin/env python
+#
+# Authors: Stein Magnus Jodal <jodal@samfundet.no>
+#
 
 import socket
 import struct

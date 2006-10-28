@@ -17,6 +17,9 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
+#
+# Authors: Stein Magnus Jodal <jodal@samfundet.no>
+#
 
 class Config:
     """A very simple form of config file. ;-)"""
