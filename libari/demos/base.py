@@ -17,11 +17,16 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
+#
+# Authors: Stein Magnus Jodal <jodal@samfundet.no>
+#          Vidar Wahlberg <canidae@samfundet.no>
+#
 
 import sys
 import threading
 import time
 import libari.config
+import numarray
 
 class Base(threading.Thread):
     """
@@ -34,7 +39,7 @@ class Base(threading.Thread):
     drawable = False
     fps = 25
 
-    def __init__(self, canvas):
+    def __init__(self, canvas, sizex = -1, sizey = -1):
         """
         Input:
             canvas  Canvas to paint on.
@@ -43,6 +48,11 @@ class Base(threading.Thread):
         threading.Thread.__init__(self)
         self.config = libari.config.Config()
         self.canvas = canvas
+        if sizex == -1:
+            sizex = self.config.wallsizex
+        if sizey == -1:
+            sizey = self.config.wallsizey
+        self.image = zeros([sizex, sizey], Int)
         self.setup()
 
     def setfps(self, fps):
