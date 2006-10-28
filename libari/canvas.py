@@ -68,7 +68,7 @@ class Canvas:
 
         raise CanvasException, "Not Implemented"
 
-    def update(self):
+    def update(self, image = False):
         """
         Paint the canvas to the wall
 

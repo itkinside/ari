@@ -23,6 +23,7 @@
 #
 
 import libari.canvas
+import numarray
 import pygame
 from pygame.locals import *
 import sys
@@ -155,12 +156,20 @@ class Martha(libari.canvas.Canvas):
         # Paint on screen
         self.screen.fill((b, b, b), pygame.Rect(x, y, self.ps, self.ps))
 
-    def update(self):
+    def update(self, image = False):
         """For doc, see Canvas"""
 
         # Create window
         if not self.windowcreated:
             self.__createwindow()
+
+        # draw image (if given)
+        if image:
+            (width, height) = numarray.shape(image)
+            for x in xrange(0, width, 1): # need to fix this if we're drawing to a specific panel
+                for y in xrange(0, height, 1): # this one too
+                    b = image[x][y]
+                    self.screen.fill((b, b, b), pygame.Rect(x * (self.ps + self.pd), y * (self.ps + self.pd), self.ps, self.ps))
 
         # Update screen
         pygame.display.update()
