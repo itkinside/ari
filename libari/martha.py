@@ -55,10 +55,19 @@ class Martha(libari.canvas.Canvas):
             self.pd = self.config.simpixeldistance
 
         # Calculate panel spacing
-        self.panelcount = len(self.config.model)
         self.paneldistance = self.config.simpixelsize * 20
 
-        # Create screen
+        # Create window
+        self.windowcreated = False
+        if not self.windowcreated:
+            # FIXME: Should be invoked from update(). Temporary until array
+            # support is implemented.
+            self.__createwindow()
+ 
+    def __createwindow(self):
+        """Create Martha window"""
+ 
+        # Create window
         pygame.display.init()
         pygame.display.set_caption('Martha')
         self.screen = pygame.display.set_mode(self.__convert((self.dw,
@@ -66,7 +75,7 @@ class Martha(libari.canvas.Canvas):
     
         # Add panel spacing
         px = 0
-        for p in range(len(self.config.model) - 1):
+        for p in xrange(len(self.config.model) - 1):
             # Panel start in x direction
             px += self.config.model[p]['width'] * self.config.boardsizex
 
@@ -80,15 +89,17 @@ class Martha(libari.canvas.Canvas):
             dy = self.__convert(self.dh)
 
             # Paint panel spacer
-            self.screen.fill((70, 20, 0), pygame.Rect(x, y, dx, dy))
-            
+            self.screen.fill((70, 70, 70), pygame.Rect(x, y, dx, dy))
+
+        self.windowcreated = True
+
     def __convert(self, i):
         if type(i) is tuple:
             (x, y) = i
             # Find panel
             p = 0
             dx = 0
-            for p in range(len(self.config.model)):
+            for p in xrange(len(self.config.model)):
                 dx += self.config.model[p]['width'] * self.config.boardsizex
                 if x < dx:
                     dx -= self.config.model[p]['width'] * self.config.boardsizex
@@ -104,7 +115,7 @@ class Martha(libari.canvas.Canvas):
         if type(i) is int:
             return (i * (self.pd + self.ps))
 
-    def __processEvents(self):
+    def __processevents(self):
         """Process events and take appropriate action"""
 
         for event in pygame.event.get():
@@ -147,18 +158,22 @@ class Martha(libari.canvas.Canvas):
     def update(self):
         """For doc, see Canvas"""
 
+        # Create window
+        if not self.windowcreated:
+            self.__createwindow()
+
         # Update screen
         pygame.display.update()
 
         # Check events
-        if not self.__processEvents():
+        if not self.__processevents():
             sys.exit(0)
 
     def blank(self, b = 0):
         """For doc, see Canvas"""
 
         # Loop over all pixels and set brightness
-        for x in range(self.dw):
-            for y in range(self.dh):
+        for x in xrange(self.dw):
+            for y in xrange(self.dh):
                 self.setpixel(x, y, b)
         self.update()

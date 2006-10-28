@@ -17,6 +17,8 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
+# Authors: Stein Magnus Jodal <jodal@samfundet.no>
+#
 
 """
 arid - Daemon for running demos on a diode wall
@@ -48,7 +50,7 @@ import libari.demos.test
 class Arid(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
-        self.timeout = 5
+        self.timeout = 10
 
     def main(self, args):
         # Get command line arguments
@@ -102,7 +104,7 @@ class Arid(threading.Thread):
         self.demos['stars'].setup(20, 99)
 
         # Load demos onto the carousel
-        self.democarousel = ['stars', 'chess']
+        self.democarousel = ['stars', 'chess', 'blob']
         self.currentdemo = None
 
         # List demos
