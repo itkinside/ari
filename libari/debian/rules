@@ -32,8 +32,8 @@ install-python%:
 binary-indep: build install
 	dh_testdir
 	dh_testroot
-	dh_installchangelogs CHANGES
-	dh_installdocs README
+	dh_installchangelogs doc/CHANGES
+	dh_installdocs doc/README
 #	dh_installexamples examples/*
 #	dh_installman
 #	FIXME: Replace #! calls to python?
