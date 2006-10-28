@@ -8,7 +8,8 @@ XS-Python-Version: all
 
 Package: libari
 Architecture: all
-Depends: ${python:Depends} 
+Depends: ${python:Depends}, python-numarray, python-numarray-ext
+Recommends: python-pygame
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
 Description: Library for manipulating a diode wall 
