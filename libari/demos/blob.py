@@ -55,8 +55,8 @@ class Blob(libari.demos.base.Base):
         w = self.config.wallsizex
         h = self.config.wallsizey
 
-        self.colors = zeros((self.config.wallsizex, self.config.wallsizey))
-        self.blob = OneBlob(5, h, w, self.colors, self.canvas)
+        self.colors = zeros((w, h))
+        self.blob = OneBlob(5, w, h, self.colors, self.canvas)
         self.i1 = Iter(randint(0, w), randint(0, h),
             w, h, self.blob, self.canvas)
         self.i2 = Iter(randint(0, w), randint(0, h),
@@ -101,13 +101,6 @@ class OneBlob:
             + blob[tx+1][ty] + blob[tx][ty+1]) / 4
         self.blob = blob
         
-#        for y in range(r*2):
-#            for x in range(r*2):
-#                print blob[x][y],
-#            print ''
-#        import sys
-#        sys.exit(0)
-
     def draw(self, x, y, add=1, p=1):
         r = self.r
         x -=r
@@ -116,7 +109,6 @@ class OneBlob:
         for a in range(r*2):
             for b in range(r*2):
                 if x+a >= 0 and y+b >= 0 and x+a < self.w and y+b < self.h:
-                    print self.blob[a][b]
                     if add:
                         self.colors[x+a][y+b] += self.blob[a][b] / p
                     else:
