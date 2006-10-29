@@ -22,7 +22,7 @@
 #
 
 class Config:
-    """A very simple form of config file. ;-)"""
+    """The config file"""
 
     def __init__(self):
         """
@@ -44,8 +44,10 @@ class Config:
         # A model of the physical and logical layout of the wall
         #
         # Panels
-        #   xpos    Physical position of panel, x direction, in boards
-        #   ypos    Physical position of panel, y direction, in boards
+        #   fxpos    Physical position of panel, x direction, in boards
+        #   fypos    Physical position of panel, y direction, in boards
+        #   pxpos   Virtual position of panel, x direction, in pixels
+        #   pypos   Virtual position of panel, y direction, in pixels
         #   width   Width of panel, in boards
         #   height  Height of panel, in boards
         #
@@ -56,8 +58,10 @@ class Config:
         #
         self.model = {
             0: {
-                'xpos': 0,
-                'ypos': 0,
+                'fxpos': 0,
+                'fypos': 0,
+                'pxpos': 0,
+                'pypos': 0,
                 'width': 2,
                 'height': 6,
                 '0,0': 12, '1,0': 13,
@@ -68,8 +72,10 @@ class Config:
                 '0,5':  2, '1,5':  3
             },
             1: {
-                'xpos': 7,
-                'ypos': 0,
+                'fxpos': 7,
+                'fypos': 0,
+                'pxpos': 10,
+                'pypos': 0,
                 'width': 9,
                 'height': 6,
                 '0,0': 59, '1,0': 60, '2,0': 61, '3,0': 62, '4,0': 63,
@@ -86,8 +92,10 @@ class Config:
                     '5,5': 19, '6,5': 20, '7,5': 21, '8,5': 22
             },
             2: {
-                'xpos': 25,
-                'ypos': 0,
+                'fxpos': 25,
+                'fypos': 0,
+                'pxpos': 55,
+                'pypos': 0,
                 'width': 3,
                 'height': 6,
                 '0,0': 83, '1,0': 84, '2,0': 85,
@@ -98,8 +106,10 @@ class Config:
                 '0,5': 68, '1,5': 69, '2,5': 70
             },
             3: {
-                'xpos': 49,
-                'ypos': 0,
+                'fxpos': 49,
+                'fypos': 0,
+                'pxpos': 70,
+                'pypos': 0,
                 'width': 6,
                 'height': 6,
                 '0,0': 116, '1,0': 117, '2,0': 118, '3,0': 119, '4,0': 120,
@@ -116,8 +126,10 @@ class Config:
                     '5,5':  91
             },
             4: {
-                'xpos': 67,
-                'ypos': 0,
+                'fxpos': 67,
+                'fypos': 0,
+                'pxpos': 100,
+                'pypos': 0,
                 'width': 1,
                 'height': 6,
                 '0,0': 127,
