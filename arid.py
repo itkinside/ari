@@ -44,8 +44,9 @@ import libari.demos.blank
 import libari.demos.blob
 import libari.demos.chess
 import libari.demos.fade
-import libari.demos.stars
 import libari.demos.fft
+import libari.demos.spiral
+import libari.demos.stars
 import libari.demos.test
 
 class Arid:
@@ -124,8 +125,9 @@ class Arid:
         demos['blank'] = libari.demos.blank.Blank(canvas)
         demos['fade'] = libari.demos.fade.Fade(canvas)
         demos['fade'].setup(10, 60)
-	demos['fft'] = libari.demos.fft.FFT(canvas)
-	demos['test'] = libari.demos.test.Test(canvas)
+        demos['fft'] = libari.demos.fft.FFT(canvas)
+        demos['spiral'] = libari.demos.spiral.Spiral(canvas)
+        demos['test'] = libari.demos.test.Test(canvas)
 
         # Carousel/real demos
         demos['chess'] = libari.demos.chess.Chess(canvas)
