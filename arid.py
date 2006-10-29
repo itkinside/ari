@@ -47,7 +47,6 @@ import libari.demos.fade
 import libari.demos.stars
 import libari.demos.fft
 import libari.demos.test
-import libari.demos.spiral
 
 class Arid:
     def __init__(self):
@@ -69,7 +68,7 @@ class Arid:
 
         # List demos
         if opts['list']:
-            self.listdemos(demos.keys())
+            self.listdemos(demos.keys(), carousel)
 
         # Requested demo
         if opts['demo']:
@@ -122,13 +121,11 @@ class Arid:
         demos = {}
 
         # Test demos
-        self.demos['blank'] = libari.demos.blank.Blank(self.canvas)
-        self.demos['blob'] = libari.demos.blob.Blob(self.canvas)
-        self.demos['fade'] = libari.demos.fade.Fade(self.canvas)
-        self.demos['fade'].setup(10, 60)
-	self.demos['fft'] = libari.demos.fft.FFT(self.canvas)
-	self.demos['test'] = libari.demos.test.Test(self.canvas)
-	self.demos['spiral'] = libari.demos.spiral.Spiral(self.canvas)
+        demos['blank'] = libari.demos.blank.Blank(canvas)
+        demos['fade'] = libari.demos.fade.Fade(canvas)
+        demos['fade'].setup(10, 60)
+	demos['fft'] = libari.demos.fft.FFT(canvas)
+	demos['test'] = libari.demos.test.Test(canvas)
 
         # Carousel/real demos
         demos['chess'] = libari.demos.chess.Chess(canvas)
