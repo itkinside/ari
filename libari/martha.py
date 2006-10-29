@@ -27,6 +27,7 @@ import numarray
 import pygame
 from pygame.locals import *
 import sys
+import time
 
 class Martha(libari.canvas.Canvas):
     """Canvas for the Martha simulator"""
@@ -34,6 +35,7 @@ class Martha(libari.canvas.Canvas):
     def __init__(self, dw = False, dh = False, ps = False, pd = False):
         # Init mother
         libari.canvas.Canvas.__init__(self)
+        self.time = 0
 
         # Get arguments
         # Display size
@@ -156,7 +158,7 @@ class Martha(libari.canvas.Canvas):
         # Paint on screen
         self.screen.fill((b, b, b), pygame.Rect(x, y, self.ps, self.ps))
 
-    def update(self, image = False):
+    def update(self, image = numarray.zeros([0, 0], numarray.Int)):
         """For doc, see Canvas"""
 
         # Create window
@@ -164,12 +166,29 @@ class Martha(libari.canvas.Canvas):
             self.__createwindow()
 
         # draw image (if given)
-        if image:
-            (width, height) = numarray.shape(image)
-            for x in xrange(0, width, 1): # need to fix this if we're drawing to a specific panel
-                for y in xrange(0, height, 1): # this one too
-                    b = image[x][y]
-                    self.screen.fill((b, b, b), pygame.Rect(x * (self.ps + self.pd), y * (self.ps + self.pd), self.ps, self.ps))
+        (width, height) = numarray.shape(image)
+        for x in xrange(width): # need to fix this if we're drawing to a specific panel
+            for y in xrange(height): # this one too
+                b = image[x][y] * 255 / 99
+                if b > 255:
+                    b = 255
+                elif b < 0:
+                    b = 0
+                px = x
+                if x >= 100:
+                    px += self.paneldistance / (self.ps + self.pd) * 4
+                elif x >= 70:
+                    px += self.paneldistance / (self.ps + self.pd) * 3
+                elif x >= 55:
+                    px += self.paneldistance / (self.ps + self.pd) * 2
+                elif x >= 10:
+                    px += self.paneldistance / (self.ps + self.pd)
+                py = y
+                self.screen.fill((b, b, b), pygame.Rect(px * (self.ps + self.pd) + self.pd / 2, py * (self.ps + self.pd) + self.pd / 2, self.ps, self.ps))
+
+        # FPS
+        print "\rFPS:", str(1 / (time.time() - self.time)), "        ",
+        self.time = time.time()
 
         # Update screen
         pygame.display.update()

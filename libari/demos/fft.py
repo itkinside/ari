@@ -49,16 +49,18 @@ class FFT(libari.demos.base.Base):
 				#print maxv
 				#print step
 				#print "--"
-				for x in range(0, 105, 1):
-					for y in range(30, int(30 - (ar.data[x] - minv) * step), -1):
-						self.canvas.setpixel(x, y, 99)
-				self.canvas.update()
+				for x in xrange(105):
+					for y in xrange(29, int(29 - (ar.data[x] - minv) * step) or 0, -1):
+						self.image[x][y] = 99
+						#self.canvas.setpixel(x, y, 99)
+				self.canvas.update(self.image)
 				#for x in range(0, 105, 1):
 				#	for y in range(30, int(30 - (ar.data[x] - minv) * step), -1):
 				#		self.canvas.setpixel(x, y, 0)
-				for x in range(0, 105, 1):
-					for y in range(0, 30, 1):
-						self.canvas.setpixel(x, y, self.canvas.getpixel(x, y) - 33)
+				for x in xrange(105):
+					for y in xrange(30):
+						self.image[x][y] = self.image[x][y] - 33
+						#self.canvas.setpixel(x, y, self.canvas.getpixel(x, y) - 33)
 				#ar.quit()
 				#self.stop()
 			#self.sleep()

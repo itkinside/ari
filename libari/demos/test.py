@@ -24,14 +24,16 @@
 import libari.demos.base
 
 class Test(libari.demos.base.Base):
-	"""A test to see how slow Python is"""
+    """A test to see how slow Python is"""
 
-	def run(self):
-		# The demo
-		while self.runnable:
-			if self.drawable:
-				for x in xrange(0, 105, 1):
-					for y in xrange(0, 30, 1):
-						self.canvas.setpixel(x, y, 99 - self.canvas.getpixel(x, y))
-				self.canvas.update()
-			#self.sleep()
+    def run(self):
+        # The demo
+        while self.runnable:
+            if self.drawable:
+                for x in xrange(0, 105, 1):
+                    for y in xrange(0, 30, 1):
+                        self.image[x][y] = 99 - self.image[x][y]
+                        #self.canvas.setpixel(x, y, 99 - self.canvas.getpixel(x, y))
+                self.canvas.update(self.image)
+                #self.canvas.update()
+            #self.sleep()
