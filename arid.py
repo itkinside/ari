@@ -17,6 +17,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
+#
 # Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
@@ -47,116 +48,153 @@ import libari.demos.stars
 import libari.demos.fft
 import libari.demos.test
 
-class Arid(threading.Thread):
+class Arid:
     def __init__(self):
-        threading.Thread.__init__(self)
         self.timeout = 10
 
     def main(self, args):
         # Get command line arguments
+        opts = self.getopt(args)
+
+        # Init canvas
+        if opts['simulate']:
+            canvas = libari.martha.Martha()
+        else:
+            canvas = libari.wall.Wall()
+
+        # Load demos
+        demos = self.loaddemos(canvas)
+        carousel = ['stars', 'chess', 'blob']
+
+        # List demos
+        if opts['list']:
+            self.listdemos(demos.keys())
+
+        # Requested demo
+        if opts['demo']:
+            carousel = self.requestdemo(demos.keys(), opts['demo'])
+
+        # Run the demo carousel
+        self.runcarousel(demos, carousel)
+
+        # Exit nicely
+        sys.exit(0)
+
+    def getopt(self, args):
+        """Get command line arguments"""
+
         try:
             opts, args = getopt.getopt(args, 'hsld:',
                 ['help', 'simulate', 'list', 'demo='])
         except getopt.GetoptError, error:
             print >> sys.stderr, 'Option does not exist.'
             sys.exit(1)
-        optsim = False
-        optlist = False
-        optdemo = False
+
+        result = {}
+        result['simulate'] = False
+        result['list'] = False
+        result['demo'] = False
+
         for opt, val in opts:
             # Show help
             if opt in ('-h', '--help'):
                 print >> sys.stderr, __doc__
                 sys.exit(0)
+
             # Simulate diode wall
             if opt in ('-s', '--simulate'):
-                optsim = True
+                result['simulate'] = True
+
             # List demos
             if opt in ('-l', '--list'):
-                optlist = True
+                result['list'] = True
+
             # Run requested demo
             if opt in ('-d', '--demo'):
-                optdemo = val
+                result['demo'] = val
 
-        # Init output device and canvas
-        if optsim:
-            # Output to the Martha simulator
-            self.canvas = libari.martha.Martha()
-        else:
-            # Output to the physical wall
-            self.canvas = libari.wall.Wall()
+        return result
 
-        # Load demos
-        self.demos = {}
+    def loaddemos(self, canvas):
+        """Load demos"""
+
+        demos = {}
 
         # Test demos
-        self.demos['blank'] = libari.demos.blank.Blank(self.canvas)
-        self.demos['blob'] = libari.demos.blob.Blob(self.canvas)
-        self.demos['fade'] = libari.demos.fade.Fade(self.canvas)
-        self.demos['fade'].setup(10, 60)
-	self.demos['fft'] = libari.demos.fft.FFT(self.canvas)
-	self.demos['test'] = libari.demos.test.Test(self.canvas)
+        demos['blank'] = libari.demos.blank.Blank(canvas)
+        demos['fade'] = libari.demos.fade.Fade(canvas)
+        demos['fade'].setup(10, 60)
+	demos['fft'] = libari.demos.fft.FFT(canvas)
+	demos['test'] = libari.demos.test.Test(canvas)
 
         # Carousel/real demos
-        self.demos['chess'] = libari.demos.chess.Chess(self.canvas)
-        self.demos['chess'].setup()
-        self.demos['stars'] = libari.demos.stars.Stars(self.canvas)
-        self.demos['stars'].setup(20, 99)
+        demos['chess'] = libari.demos.chess.Chess(canvas)
+        demos['chess'].setup()
+        demos['blob'] = libari.demos.blob.Blob(canvas)
+        demos['stars'] = libari.demos.stars.Stars(canvas)
+        demos['stars'].setup(20, 99)
 
-        # Load demos onto the carousel
-        self.democarousel = ['stars', 'chess', 'blob']
-        self.currentdemo = None
+        return demos
 
-        # List demos
-        if optlist:
-            if len(self.demos):
-                print 'Loaded demos:'
-                demos = self.demos.keys()
-                demos.sort()
-                for demo in demos:
-                    if self.democarousel.count(demo):
-                        print "  " + demo + " [carousel]"
-                    else:
-                        print "  " + demo
-                sys.exit(0)
-            else:
-                print 'No demos loaded.'
-                sys.exit(1)
+    def listdemos(self, demos, carousel):
+        """List demos"""
 
-        # Requested demo: put it on the carousel
-        if optdemo:
-            if self.demos.has_key(optdemo):
-                self.democarousel = [optdemo]
-            else:
-                print >> sys.stderr, "No '%s' demo loaded." % optdemo
+        if len(demos):
+            print 'Loaded demos:'
+            demos.sort()
+            for demo in demos:
+                if carousel.count(demo):
+                    print "  " + demo + " [carousel]"
+                else:
+                    print "  " + demo
+            sys.exit(0)
+        else:
+            print >> sys.stderr, 'No demos loaded.'
+            sys.exit(1)
 
-        # Default: Run a carousel of demos
+    def requestdemo(self, demos, requested):
+        """Put requested demo on the carousel"""
+        if requested in demos:
+            return [requested]
+        else:
+            print >> sys.stderr, "No '%s' demo loaded." % requested
+            sys.exit(1)
+
+    def runcarousel(self, demos, carousel):
+        """Run a carousel of demos"""
+
+        runnable = True
+
         try:
-            while True:
-                for demo in self.democarousel:
+            while runnable:
+                for demo in carousel:
                     # Start demo
-                    self.currentdemo = demo
-                    self.demos[demo].start()
+                    demos[demo].start()
                     
                     # Wait for demo. If it exits we will immediately continue
-                    if len(self.democarousel) == 1:
-                        self.demos[demo].join()
+                    if len(carousel) == 1:
+                        demos[demo].join()
+                        return True
                     else:
-                        self.demos[demo].join(self.timeout)
+                        demos[demo].join(self.timeout)
 
                     # Timeout reached, ask it to stop
-                    if self.demos[demo].isAlive():
-                        self.demos[demo].stop()
+                    if demos[demo].isAlive():
+                        demos[demo].stop()
                     else:
-                        pass # Thread has already exited
-                    self.currentdemo = None
+                        # Thread has already exited
+                        # (e.g. it's done or ESC was pushed)
+                        runnable = False
+                        break
         except KeyboardInterrupt, e:
-            # Interrupt recieved, ask all alive demos to exit
-            for demo in self.demos:
-                if self.demos[demo].isAlive():
-                    self.demos[demo].exit()
-                    self.demos[demo].join(2)
-        sys.exit(0)
+            # Interrupt recieved (Ctrl-C or DEL)
+            pass
+
+        # Ask all alive demos to exit
+        for demo in demos:
+            if demos[demo].isAlive():
+                demos[demo].exit()
+                demos[demo].join(2)
 
 if __name__ == '__main__':
     arid = Arid()

@@ -4,7 +4,6 @@ ari - todo
 arid
 ----
 - Move demo selection, demo setup etc to some config file
-- Modularize it
 - Daemonize it
 - Create control backend for aric
 
