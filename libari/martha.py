@@ -187,7 +187,7 @@ class Martha(libari.canvas.Canvas):
                 self.screen.fill((b, b, b), pygame.Rect(px * (self.ps + self.pd) + self.pd / 2, py * (self.ps + self.pd) + self.pd / 2, self.ps, self.ps))
 
         # FPS
-        print "\rFPS:", str(1 / (time.time() - self.time)), "        ",
+        print "\rFPS: %8.3f" % (1 / (time.time() - self.time)),
         self.time = time.time()
 
         # Update screen
