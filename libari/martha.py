@@ -26,6 +26,7 @@ import libari.canvas
 import numarray
 import pygame
 from pygame.locals import *
+import numarray
 import sys
 import time
 

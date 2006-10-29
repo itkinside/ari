@@ -2,6 +2,24 @@ libari - a light fontain library
 ================================
 See http://itk.samfundet.no/dok/ari for more/updated information.
 
+Library 
+-------
+The library contains multiple modules and the package libari.demos. Documentation of all methods is available through starting a Python shell, loading the module and running help(libari.modulename).
+
+Configuration
+libari.config has no methods, but contains some useful variables and a data struct which describes the physical layout of the wall.
+
+Canvas
+All canvas modules implements the base class libari.canvas. Available modules
+includes:
+- libari.wall paints on the physical wall via the helper libari.wallnet. This
+  module is normally used.
+- libari.martha is a simulator and paints i a GUI window on your machine
+  instead of the wall. This is usefull for development of new plugins.
+
+Demos
+The package libari.demos.* contains the demo effects for the wall.
+
 
 Installation from RCS
 ---------------------

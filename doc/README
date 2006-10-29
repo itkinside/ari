@@ -8,29 +8,12 @@ arid
 	Daemon for running the demos 24/7.
 aric
 	Client for connecting to arid and changing settings on-the-fly.
-martha
-	Wall simulator so you can develop and test demos without a physical
-	wall at your service.
+lib/
+	General modules used by arid and aric, that do not have anything to do
+	with libari.
 tools/
 	Various standalone tools related to the diode wall.
 
 Library
 -------
-libari.config
-	Contains settings and a structure describing the physical layout of the
-	wall.
-
-libari.wall
-	The bottom layer which creates and sends UDP packets to the wall.
-
-libari.canvas
-	Layer on top of libari.wall with graphic oriented methods such as
-	setpixel() and getpixel().
-
-libari.martha
-	Simulator serving as a drop-in replacement for libari.canvas, employing
-	the same methods, but outputting to a graphical window with the help of
-	the pygame library.
-
-libari.demos.*
-	Graphical demos for the ari system.
+See libari's own README.
