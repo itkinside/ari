@@ -20,6 +20,7 @@
 #
 # Authors: Thomas Adamcik <adamcik@samfundet.no>
 #          Stein Magnus Jodal <jodal@samfundet.no>
+#          Vidar Wahlberg <canidae@samfundet.no>
 #
 
 import libari.canvas
@@ -36,6 +37,8 @@ class Martha(libari.canvas.Canvas):
     def __init__(self, dw = False, dh = False, ps = False, pd = False):
         # Init mother
         libari.canvas.Canvas.__init__(self)
+
+        # Prepare FPS calculation
         self.time = 0
 
         # Get arguments
@@ -59,14 +62,10 @@ class Martha(libari.canvas.Canvas):
             self.pd = self.config.simpixeldistance
 
         # Calculate panel spacing
-        self.paneldistance = self.config.simpixelsize * 20
+        self.paneldistance = self.ps * 20
 
         # Create window
         self.windowcreated = False
-        if not self.windowcreated:
-            # FIXME: Should be invoked from update(). Temporary until array
-            # support is implemented.
-            self.__createwindow()
  
     def __createwindow(self):
         """Create Martha window"""
@@ -98,6 +97,8 @@ class Martha(libari.canvas.Canvas):
         self.windowcreated = True
 
     def __convert(self, i):
+        """Convert from virtual pixels to Martha pixels"""
+
         if type(i) is tuple:
             (x, y) = i
             # Find panel
@@ -129,29 +130,20 @@ class Martha(libari.canvas.Canvas):
                 return False
         return True
 
-    def getpixel(self, x, y):
-        """For doc, see Canvas"""
-
-        # Calculate position
-        (x, y) = self.__convert((x, y))
-        x = x + self.pd / 2
-        y = y + self.pd / 2
-
-        # Read from screen
-        (r, g, b, a) = self.screen.get_at((x, y))
-        return (99 * b) / 255
-
     def setpixel(self, x, y, b, o = 100):
         """For doc, see Canvas"""
 
-        # FIXME: Support opacity
+        # Call mother
+        b = libari.canvas.Canvas.setpixel(self, x, y, b, o)
 
-        # Calculate brightness and position
-        if (b < 0):
-            b = 0
-        if (b > 99):
-            b = 99
-        b = (255 * b) / 99
+        # Create window
+        if not self.windowcreated:
+            self.__createwindow()
+
+        # Brightness
+        b = b * 255 / 99
+
+        # Position
         (x, y) = self.__convert((x, y))
         x = x + self.pd / 2
         y = y + self.pd / 2
@@ -159,22 +151,29 @@ class Martha(libari.canvas.Canvas):
         # Paint on screen
         self.screen.fill((b, b, b), pygame.Rect(x, y, self.ps, self.ps))
 
-    def update(self, image = numarray.zeros([0, 0], numarray.Int)):
+    def update(self, canvas = None, cx = 0, cy = 0):
         """For doc, see Canvas"""
+
+        # Call mother
+        libari.canvas.Canvas.update(self, canvas, cx, cy)
 
         # Create window
         if not self.windowcreated:
             self.__createwindow()
 
-        # draw image (if given)
-        (width, height) = numarray.shape(image)
-        for x in xrange(width): # need to fix this if we're drawing to a specific panel
-            for y in xrange(height): # this one too
-                b = image[x][y] * 255 / 99
+        # Draw wall (but only if canvas was supplied)
+        for x in xrange(cx, cx + self.cw):
+            for y in xrange(cy, cy + self.ch):
+                # Calculate brightness
+                b = self.wall[x][y] * 255 / 99
                 if b > 255:
                     b = 255
                 elif b < 0:
                     b = 0
+
+                # Add pixelspacing
+                # FIXME: This is a hack, but we don't want the overhead of
+                # using __convert() 3150 times per frame
                 px = x
                 if x >= 100:
                     px += self.paneldistance / (self.ps + self.pd) * 4
@@ -185,24 +184,25 @@ class Martha(libari.canvas.Canvas):
                 elif x >= 10:
                     px += self.paneldistance / (self.ps + self.pd)
                 py = y
-                self.screen.fill((b, b, b), pygame.Rect(px * (self.ps + self.pd) + self.pd / 2, py * (self.ps + self.pd) + self.pd / 2, self.ps, self.ps))
 
-        # FPS
+                # Paint to screen
+                # FIXME: This is ugly
+                self.screen.fill((b, b, b),
+                                 pygame.Rect(px * (self.ps + self.pd) \
+                                               + self.pd / 2, \
+                                             py * (self.ps + self.pd) \
+                                               + self.pd / 2,
+                                             self.ps,
+                                             self.ps))
+
+        # Flush screen to display
+        pygame.display.update()
+
+        # Calculate FPS
         print "\rFPS: %8.3f" % (1 / (time.time() - self.time)),
         self.time = time.time()
-
-        # Update screen
-        pygame.display.update()
 
         # Check events
         if not self.__processevents():
             sys.exit(0)
 
-    def blank(self, b = 0):
-        """For doc, see Canvas"""
-
-        # Loop over all pixels and set brightness
-        for x in xrange(self.dw):
-            for y in xrange(self.dh):
-                self.setpixel(x, y, b)
-        self.update()
