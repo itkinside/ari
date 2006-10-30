@@ -23,7 +23,6 @@
 
 import libari.canvas
 import libari.wallnet
-import math
 
 class Wall(libari.canvas.Canvas):
     """Canvas for the physical wall"""
@@ -40,73 +39,6 @@ class Wall(libari.canvas.Canvas):
         # Setup output
         self.output = libari.wallnet.WallNet()
 
-        # Build canvas
-        self.canvas = self.__createcanvas(0)
-
-    def __createcanvas(self, b = 0):
-        """
-        Create a canvas for storing brightness values
-
-        Input:
-            b   Inital brightness
-
-        Returns:
-            The canvas
-
-        """
-
-        canvas = {}
-        for p in self.config.model:
-            panel = self.config.model[p]
-            canvas[p] = {}
-            for bx in range(panel['width']):
-                canvas[p][bx] = {}
-                for by in range(panel['height']):
-                    canvas[p][bx][by] = {}
-                    canvas[p][bx][by]['changed'] = 0
-                    for px in range(5):
-                        canvas[p][bx][by][px] = {}
-                        for py in range(5):
-                            canvas[p][bx][by][px][py] = b
-        return canvas
-
-    def __getcanvaspos(self, x, y):
-        """
-        Get position in canvas struct, given position in canvas
-
-        Input:
-            x   Position in canvas, x direction
-            y   Position in canvas, y direction
-
-        Return:
-            A tuple containing the following five values:
-            p   Panel number
-            bx  Board position, x direction
-            by  Board position, y direction
-            px  Pixel position, x direction
-            py  Pixel position, y direction
-
-        """
-
-        # Find panel
-        p = 0
-        dx = 0
-        for p in range(len(self.config.model)):
-            dx += self.config.model[p]['width'] * self.config.boardsizex
-            if x < dx:
-                dx -= self.config.model[p]['width'] * self.config.boardsizex
-                break
-
-        # Find board positions
-        bx = int(math.floor((x - dx) / self.config.boardsizex))
-        by = int(math.floor(y / self.config.boardsizey))
-
-        # Find pixel positions
-        px = (x - dx) % self.config.boardsizex
-        py = y % self.config.boardsizey
-
-        return (p, bx, by, px, py)
-
     def __getallboards(self):
         """
         Get a list of all boards.
@@ -120,107 +52,38 @@ class Wall(libari.canvas.Canvas):
         """
 
         boards = []
-        for p in self.canvas:
-            for bx in self.canvas[p]:
-                for by in self.canvas[p][bx]:
+        for p in self.config.model:
+            for bx in xrange(self.config.model[p]['width']):
+                for by in xrange(self.config.model[p]['height']):
                     boards.append((p, bx, by))
         return boards
 
-    def getpixel(self, x, y):
+    def update(self, canvas = None, cx = 0, cy = 0):
         """For doc, see Canvas"""
 
-        # Check boundaries
-        if x < 0 or x >= self.config.wallsizex or \
-            y < 0 or y >= self.config.wallsizey:
-            return False
-        
-        # Get pixel from canvas
-        (p, bx, by, px, py) = self.__getcanvaspos(x, y)
-        return self.canvas[p][bx][by][px][py]
+        # Call mother
+        libari.canvas.Canvas.update(self, canvas, cx, cy)
 
-    def setpixel(self, x, y, b, o = 100):
-        """For doc, see Canvas"""
-
-        # Check boundaries
-        if x < 0 or x >= self.config.wallsizex or \
-            y < 0 or y >= self.config.wallsizey:
-            return False
-
-        (p, bx, by, px, py) = self.__getcanvaspos(x, y)
-
-        if o < 100:
-            # Set opacity
-            b = self.canvas[p][bx][by][px][py] * (100.0 - o) / 100.0 \
-                + b * o / 100.0
-
-        # Check previous brightness of this pixel
-        if self.canvas[p][bx][by][px][py] == b:
-            # Pixel already has correct brightness, do not update
-            pass
-        else:
-            # Set pixel in canvas
-            self.canvas[p][bx][by][px][py] = b
-
-            # Update the number of changed pixels on the board
-            self.canvas[p][bx][by]['changed'] += 1
-
-        return True
-
-    def update(self):
-        """For doc, see Canvas"""
+        # FIXME: Loop over the canvas instead of all boards?
 
         # Loop over all boards
-        n = 0
-        for board in self.__getallboards():
-            # Read board position
-            (p, bx, by) = board
-
-            # Check if changed since last update
-            if not self.canvas[p][bx][by]['changed']:
-                # Skip to next board
-                continue
-            else:
-                # Reset counter
-                self.canvas[p][bx][by]['changed'] = 0
+        for (p, bx, by) in self.__getallboards():
+            # Find board position in canvas
+            px = self.config.model[p]['pxpos'] + bx * self.config.boardsizex
+            py = by * self.config.boardsizey
 
             # Init data struct
             data = []
+
             # Loop over all pixels on the board
-            for py in range(self.config.boardsizey):
-                for px in range(self.config.boardsizex):
+            for y in xrange(py, py + self.config.boardsizey):
+                for x in xrange(px, px + self.config.boardsizex):
                     # Add brightness value to the data struct
-                    data.append(self.canvas[p][bx][by][px][py])
+                    data.append(self.wall[x][y])
 
             # Get address of board
             address = self.config.model[p]['%d,%d' % (bx, by)]
 
             # Send data to board
             self.output.sendto(data, address)
-            n += 1
-
-        return n
-
-    def blank(self, b = 0):
-        """For doc, see Canvas"""
-
-        # Build data struct
-        data = []
-        for i in range(self.config.boardsizex * self.config.boardsizey):
-            data.append(b)
-
-        # Loop over all boards
-        n = 0
-        for board in self.__getallboards():
-            # Read board position
-            (p, bx, by) = board
-
-            # Get address of board
-            host = self.config.model[p]['%d,%d' % (bx, by)]
-
-            # Send data to board
-            self.output.sendto(data, host)
-            n += 1
-
-        # Update canvas with the current brightness
-        self.canvas = self.__createcanvas(b)
 
