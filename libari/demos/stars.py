@@ -96,8 +96,8 @@ class Star:
             self.wx = wx
         if wy:
             self.wy = wy
-        self.x = random.randint(0, self.wx)
-        self.y = random.randint(0, self.wy)
+        self.x = random.randint(0, self.wx - 1)
+        self.y = random.randint(0, self.wy - 1)
 
     def run(self):
         # If star is dead, make another one
