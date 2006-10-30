@@ -22,6 +22,7 @@
 #
 
 import libari.config
+import numarray
 
 class Canvas:
     """Interface for modules implementing a canvas"""
@@ -35,6 +36,14 @@ class Canvas:
         # Load config
         self.config = libari.config.Config()
 
+        # Local canvas for get/setpixel
+        self.canvasw = self.config.wallsizex
+        self.canvash = self.config.wallsizey
+        self.canvas = numarray.zeros((self.canvasw, self.canvash))
+
+        # What is displayed at the wall right now
+        self.wall = self.canvas
+
     def getpixel(self, x, y):
         """
         Get brightness of pixel at pos x,y
@@ -45,11 +54,22 @@ class Canvas:
 
         Returns:
             b   Brightness of pixel
-            False if pixel is outside the canvas
+
+        Raises:
+            CanvasOutOfBoundsException
 
         """
 
-        raise CanvasException, "Not Implemented"
+        # Check boundaries
+        if x < 0 or x >= self.canvasw:
+            raise CanvasOutOfBoundsException, \
+                "getpixel: x is out of bounds: (%d, %d)" % (x, y)
+        if y < 0 or y >= self.canvash:
+            raise CanvasOutOfBoundsException, \
+                "getpixel: y is out of bounds: (%d, %d)" % (x, y)
+
+        # Return brightness
+        return self.canvas[x][y]
 
     def setpixel(self, x, y, b, o = 100):
         """
@@ -58,38 +78,87 @@ class Canvas:
         Input:
             x   Position in canvas, x direction
             y   Position in canvas, y direction
+            b   Brightness (0-99)
             o   Opacity (0-100), default 100
 
         Returns:
-            True if brightness is set 
-            False if pixel is outside the canvas
+            b   Brightness of pixel, adjusted for opacity
+
+        Raises:
+            CanvasOutOfBoundsException
 
         """
 
-        raise CanvasException, "Not Implemented"
+        # Check boundaries
+        if x < 0 or x >= self.canvasw:
+            raise CanvasOutOfBoundsException, \
+                "setpixel: x is out of bounds: (%d, %d)" % (x, y)
+        if y < 0 or y >= self.canvash:
+            raise CanvasOutOfBoundsException, \
+                "setpixel: y is out of bounds: (%d, %d)" % (x, y)
+        if b < 0:
+            b = 0
+        elif b > 99:
+            b = 99
+        if o < 0:
+            o = 0
+        elif o > 100:
+            o = 100
 
-    def update(self, image = False):
+        # Opacity
+        if o < 100:
+            b = int(self.canvas[x][y] * (100.0 - o) / 100.0 \
+                    + b * o / 100.0)
+
+        # Set brightness
+        self.canvas[x][y] = b
+        return b
+
+    def update(self, canvas = None, cx = 0, cy = 0):
         """
-        Paint the canvas to the wall
+        Paint the canvas on the wall
 
-        Only boards with changed pixels are updated.
+        Input:
+            canvas  Canvas array with brightness values, optional
+            cx      Position of canvas on wall, x direction, optional
+            cy      Position of canvas on wall, y direction, optional
 
         """
 
-        raise CanvasException, "Not Implemented"
+        if canvas is None:
+            # Use get/setpixel canvas
+            self.wall = self.canvas
+            self.cw = 0
+            self.ch = 0
+        else: 
+            # Use supplied canvas
+            (self.cw, self.ch) = canvas.shape
+            if (cx == 0 and cy == 0 and
+                self.cw == self.canvasw and self.ch == self.canvash):
+                # Full size canvas, just copy
+                self.wall = canvas
+            else:
+                # Add canvas to wall
+                for x in xrange(self.cw):
+                    for y in xrange(self.ch):
+                        self.wall[cx+x][cy+y] = canvas[x][y]
+
+        # Implement the acctual painting in the children
 
     def blank(self, b = 0):
         """
         Blank entire wall
-
-        Also updates the canvas with the new state of the wall.
 
         Input:
             b   Brightness, default 0
 
         """
 
-        raise CanvasException, "Not Implemented"
+        # Loop over all pixels and set brightness
+        for x in xrange(self.canvasw):
+            for y in xrange(self.canvash):
+                self.canvas[x][y] = b
+        self.update()
 
 class CanvasException(Exception):
     """Base class for all exceptions raised by canvas."""
