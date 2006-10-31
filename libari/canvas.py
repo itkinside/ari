@@ -154,11 +154,17 @@ class Canvas:
 
         """
 
+        # Create canvas with brightness 0
+        canvas = numarray.zeros((self.config.wallsizex,
+                                 self.config.wallsizey))
+
         # Loop over all pixels and set brightness
-        for x in xrange(self.canvasw):
-            for y in xrange(self.canvash):
-                self.canvas[x][y] = b
-        self.update()
+        if b > 0:
+            for x in xrange(canvas.shape[0]):
+                for y in xrange(canvas.shape[1]):
+                    canvas[x][y] = b
+
+        self.update(canvas)
 
 class CanvasException(Exception):
     """Base class for all exceptions raised by canvas."""
