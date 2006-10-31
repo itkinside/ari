@@ -22,12 +22,13 @@
 #
 
 """
-arid - Daemon for running demos on a diode wall
+arid - Diode wall demo player daemon
 
-Usage: arid [-h] [-s] [-l] [-d demo]
+Usage: arid [-h] [-w | -s] [-l] [-d demo]
 
   -h, --help        Show this help text
-  -s, --simulate    Start simulator and use as output
+  -w, --wall        Output to physical wall
+  -s, --simulator   Output to Martha wall simulator
   -l, --list        List loaded demos
   -d, --demo        Run given demo
 """
@@ -58,10 +59,11 @@ class Arid:
         opts = self.getopt(args)
 
         # Init canvas
-        if opts['simulate']:
-            canvas = libari.martha.Martha()
-        else:
+        canvas = None
+        if opts['wall']:
             canvas = libari.wall.Wall()
+        elif opts['simulator']:
+            canvas = libari.martha.Martha()
 
         # Load demos
         demos = self.loaddemos(canvas)
@@ -72,11 +74,12 @@ class Arid:
             self.listdemos(demos.keys(), carousel)
 
         # Requested demo
-        if opts['demo']:
+        if canvas is not None and opts['demo']:
             carousel = self.requestdemo(demos.keys(), opts['demo'])
 
         # Run the demo carousel
-        self.runcarousel(demos, carousel)
+        if canvas is not None:
+            self.runcarousel(demos, carousel)
 
         # Exit nicely
         sys.exit(0)
@@ -85,14 +88,20 @@ class Arid:
         """Get command line arguments"""
 
         try:
-            opts, args = getopt.getopt(args, 'hsld:',
-                ['help', 'simulate', 'list', 'demo='])
+            opts, args = getopt.getopt(args, 'hwsld:',
+                ['help', 'wall', 'simulator', 'list', 'demo='])
         except getopt.GetoptError, error:
             print >> sys.stderr, 'Option does not exist.'
             sys.exit(1)
 
+        # No opts, show help
+        if len(opts) == 0:
+            print >> sys.stderr, __doc__
+            sys.exit(0)
+
         result = {}
-        result['simulate'] = False
+        result['wall'] = False
+        result['simulator'] = False
         result['list'] = False
         result['demo'] = False
 
@@ -102,9 +111,13 @@ class Arid:
                 print >> sys.stderr, __doc__
                 sys.exit(0)
 
-            # Simulate diode wall
-            if opt in ('-s', '--simulate'):
-                result['simulate'] = True
+            # Output to physical wall
+            if opt in ('-w', '--wall'):
+                result['wall'] = True
+
+            # Output to simulator
+            if opt in ('-s', '--simulator'):
+                result['simulator'] = True
 
             # List demos
             if opt in ('-l', '--list'):
