@@ -49,6 +49,7 @@ import libari.demos.fft
 import libari.demos.spiral
 import libari.demos.stars
 import libari.demos.test
+import libari.demos.xpm
 
 class Arid:
     def __init__(self):
@@ -141,6 +142,8 @@ class Arid:
         demos['fft'] = libari.demos.fft.FFT(canvas)
         demos['spiral'] = libari.demos.spiral.Spiral(canvas)
         demos['test'] = libari.demos.test.Test(canvas)
+        demos['xpm'] = libari.demos.xpm.XPM(canvas)
+        demos['xpm'].setup()
 
         # Carousel/real demos
         demos['chess'] = libari.demos.chess.Chess(canvas)
