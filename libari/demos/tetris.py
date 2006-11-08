@@ -37,7 +37,7 @@ class Tetris(libari.demos.base.Base):
     movesperdrop = 2
 
     # height penalty
-    heightpenalty = 10
+    heightpenalty = 20
     # space beneath piece penalty
     spacebeneathpiecepenalty = 42
 
@@ -200,7 +200,7 @@ class Tetris(libari.demos.base.Base):
                         if self.canvas.getpixel(sx + px, sy) == 0:
                             sbpp += self.spacebeneathpiecepenalty
                     for py in xrange(1, len(self.piece[self.curpiece][piecedir])):
-                        if (len(self.piece[self.curpiece][piecedir][py]) <= px or self.piece[self.curpiece][piecedir][py][px] == 0) and self.canvas.getpixel(sx + px, totheight - len(self.piece[self.curpiece][piecedir]) + py) == 0:
+                        if (len(self.piece[self.curpiece][piecedir][py]) <= px or self.piece[self.curpiece][piecedir][py][px] == 0) and totheight - len(self.piece[self.curpiece][piecedir]) + py >= 0 and self.canvas.getpixel(sx + px, totheight - len(self.piece[self.curpiece][piecedir]) + py) == 0:
                             sbpp += self.spacebeneathpiecepenalty
                 if score == -1 or hp + sbpp < score or (hp + sbpp == score and random.randint(0, self.sizex) == 0):
                     score = hp + sbpp
@@ -276,7 +276,7 @@ class Tetris(libari.demos.base.Base):
                                     self.canvas.setpixel(sx, sy2 + 1, value)
                                     self.canvas.setpixel(sx, sy2, 0)
                                 self.canvas.update()
-                                self.sleep()
+                                self.sync()
                                 if norowsleft:
                                     break
                     # fetch a new piece
@@ -285,4 +285,4 @@ class Tetris(libari.demos.base.Base):
                     self.curpiecex = self.sizex / 2
                     self.curpiecey = 0
                     self.findtarget()
-            #self.sleep()
+            self.sync()

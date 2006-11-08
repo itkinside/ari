@@ -38,6 +38,7 @@ class Base(threading.Thread):
     runnable = True
     drawable = False
     fps = 25
+    lasttime = 0
 
     def __init__(self, canvas, sizex = -1, sizey = -1):
         """
@@ -60,6 +61,12 @@ class Base(threading.Thread):
     def setfps(self, fps):
         if type(fps) is int or type(fps) is float:
             self.fps = fps
+
+    def sync(self):
+        sleeptime = (1.0 / self.fps) + self.lasttime - time.time()
+        if sleeptime > 0:
+            time.sleep(sleeptime)
+        self.lasttime = time.time()
 
     def sleep(self):
         time.sleep(1.0 / self.fps)
