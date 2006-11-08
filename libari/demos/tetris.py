@@ -58,101 +58,101 @@ class Tetris(libari.demos.base.Base):
     piece = [
                 [
                     [
-                        [99, 99, 99, 99]
+                        [14, 14, 14, 14]
                     ],
                     [
-                        [99],
-                        [99],
-                        [99],
-                        [99]
+                        [14],
+                        [14],
+                        [14],
+                        [14]
                     ]
                 ],
                 [
                     [
-                        [99, 99],
-                        [ 0, 99, 99]
+                        [28, 28],
+                        [ 0, 28, 28]
                     ],
                     [
-                        [ 0, 99],
-                        [99, 99],
-                        [99]
+                        [ 0, 28],
+                        [28, 28],
+                        [28]
                     ]
                 ],
                 [
                     [
-                        [ 0, 99, 99],
-                        [99, 99]
+                        [ 0, 42, 42],
+                        [42, 42]
                     ],
                     [
-                        [99],
-                        [99, 99],
-                        [ 0, 99]
+                        [42],
+                        [42, 42],
+                        [ 0, 42]
                     ]
                 ],
                 [
                     [
-                        [99, 99, 99],
-                        [ 0, 99]
+                        [56, 56, 56],
+                        [ 0, 56]
                     ],
                     [
-                        [ 0, 99],
-                        [99, 99],
-                        [ 0, 99]
+                        [ 0, 56],
+                        [56, 56],
+                        [ 0, 56]
                     ],
                     [
-                        [ 0, 99],
-                        [99, 99, 99]
+                        [ 0, 56],
+                        [56, 56, 56]
                     ],
                     [
-                        [99],
-                        [99, 99],
-                        [99]
+                        [56],
+                        [56, 56],
+                        [56]
                     ]
                 ],
                 [
                     [
-                        [99, 99, 99],
-                        [99]
+                        [70, 70, 70],
+                        [70]
                     ],
                     [
-                        [99, 99],
-                        [ 0, 99],
-                        [ 0, 99]
+                        [70, 70],
+                        [ 0, 70],
+                        [ 0, 70]
                     ],
                     [
-                        [ 0,  0, 99],
-                        [99, 99, 99]
+                        [ 0,  0, 70],
+                        [70, 70, 70]
                     ],
                     [
-                        [99],
-                        [99],
-                        [99, 99]
+                        [70],
+                        [70],
+                        [70, 70]
                     ]
                 ],
                 [
                     [
-                        [99, 99, 99],
-                        [ 0,  0, 99]
+                        [84, 84, 84],
+                        [ 0,  0, 84]
                     ],
                     [
-                        [ 0, 99],
-                        [ 0, 99],
-                        [99, 99]
+                        [ 0, 84],
+                        [ 0, 84],
+                        [84, 84]
                     ],
                     [
-                        [99],
-                        [99, 99, 99]
+                        [84],
+                        [84, 84, 84]
                     ],
                     [
-                        [99, 99],
-                        [99],
-                        [99]
+                        [84, 84],
+                        [84],
+                        [84]
                     ]
                 ],
                 [
                     [
-                        [99, 99],
-                        [99, 99]
+                        [98, 98],
+                        [98, 98]
                     ]
                 ]
             ]
@@ -160,7 +160,7 @@ class Tetris(libari.demos.base.Base):
     def prepare(self):
         self.curpiece = random.randint(0, len(self.piece) - 1)
         self.curpiecedir = random.randint(0, len(self.piece[self.curpiece]) - 1)
-        self.curpiecex = self.sizex / 2 - 20
+        self.curpiecex = self.sizex / 2
         self.curpiecey = 0
         self.movesperdrop = int(self.sizex / self.sizey) + 1
         if self.movesperdrop <= 0:
@@ -222,11 +222,23 @@ class Tetris(libari.demos.base.Base):
                             self.canvas.setpixel(self.curpiecex + px, self.curpiecey + py, 0)
                 # do the move
                 for move in xrange(self.movesperdrop):
-                    if self.curpiecedir != self.tardir: # and random.randint(0, self.sizey) == 0:
+                    if self.curpiecedir != self.tardir and random.randint(0, self.movesperdrop * 3) == 0:
+                        # FIXME
+                        # check for collisions when we rotate?
                         self.curpiecedir = (self.curpiecedir + 1) % len(self.piece[self.curpiece])
+                        piecewidth = 1
+                        for py in xrange(len(self.piece[self.curpiece][self.curpiecedir])):
+                            if len(self.piece[self.curpiece][self.curpiecedir][py]) > piecewidth:
+                                piecewidth = len(self.piece[self.curpiece][self.curpiecedir][py])
+                        if self.curpiecex + piecewidth >= 105:
+                            self.curpiecex -= self.curpiecex + piecewidth - 105
                     elif self.curpiecex < self.tarx:
+                        # FIXME
+                        # we'll have to check for collisions to the right
                         self.curpiecex += 1
                     elif self.curpiecex > self.tarx:
+                        # FIXME
+                        # we'll have to check for collisions to the left
                         self.curpiecex -= 1
                 self.curpiecey += 1
                 # check if we hit something
@@ -248,8 +260,6 @@ class Tetris(libari.demos.base.Base):
                 self.canvas.update()
                 if crash:
                     # check if we can remove some lines
-                    # FIXME
-                    print self.curpiecey, self.curpiecey + len(self.piece[self.curpiece][self.curpiecedir])
                     for sy in xrange(self.curpiecey, self.curpiecey + len(self.piece[self.curpiece][self.curpiecedir])):
                         remove = True
                         for sx in xrange(self.sizex):
@@ -257,13 +267,22 @@ class Tetris(libari.demos.base.Base):
                                 remove = False
                                 break
                         if remove:
-                            for sy2 in xrange(sy):
+                            for sy2 in xrange(sy - 1, -1, -1):
+                                norowsleft = True
                                 for sx in xrange(self.sizex):
-                                    self.canvas.setpixel(sx, sy, self.canvas.getpixel(sx, sy2))
+                                    value = self.canvas.getpixel(sx, sy2)
+                                    if (value > 0):
+                                        norowsleft = False
+                                    self.canvas.setpixel(sx, sy2 + 1, value)
+                                    self.canvas.setpixel(sx, sy2, 0)
+                                self.canvas.update()
+                                self.sleep()
+                                if norowsleft:
+                                    break
                     # fetch a new piece
                     self.curpiece = random.randint(0, len(self.piece) - 1)
                     self.curpiecedir = random.randint(0, len(self.piece[self.curpiece]) - 1)
-                    self.curpiecex = self.sizex / 2 - 20
+                    self.curpiecex = self.sizex / 2
                     self.curpiecey = 0
                     self.findtarget()
             #self.sleep()
