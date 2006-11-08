@@ -52,6 +52,8 @@ class Base(threading.Thread):
             sizex = self.config.wallsizex
         if sizey == -1:
             sizey = self.config.wallsizey
+        self.sizex = sizex
+        self.sizey = sizey
         self.image = zeros([sizex, sizey], Int)
         self.setup()
 
