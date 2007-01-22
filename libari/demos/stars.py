@@ -58,7 +58,7 @@ class Stars(libari.demos.base.Base):
 
         # Create stars
         self.stars = []
-        for i in range(self.starcount):
+        for _ in range(self.starcount):
             self.stars.append(Star(self.config.wallsizex,
                                    self.config.wallsizey,
                                    self.min,

@@ -21,11 +21,9 @@
 # Authors: Vidar Wahlberg <canidae@samfundet.no>
 #
 
-import random
 import libari.demos.base
-import ossaudiodev
+#import ossaudiodev
 import array
-import math
 import numarray
 import numarray.fft
 

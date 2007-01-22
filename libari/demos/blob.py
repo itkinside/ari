@@ -154,7 +154,7 @@ class Iter:
         self.coords.append((x, y))
         if len(self.coords) > 20:
             old = self.coords.pop(0)
-        for i in range(p):
+        for _ in range(p):
             if old:
                 self.blob.draw(old[0], old[1], 0, p)
             self.blob.draw(x, y, 1, p)
