@@ -100,5 +100,5 @@ class WallNet:
         """
 
         for host in self.hosts:
-            self.send(data, host)
+            self.sendto(data, host)
 

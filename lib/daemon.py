@@ -65,6 +65,7 @@ class UserNotFoundError(DaemonError):
     """Raised if requested user is not found and we have to run as root."""
 
     def __init__(self, username):
+        DaemonError.__init__()
         self.username = username
 
     def __str__(self):
@@ -75,6 +76,7 @@ class SwitchUserError(DaemonError):
     """Raised if user switch failes, e.g. we don't have enough permissions."""
 
     def __init__(self, olduid, oldgid, newuid, newgid):
+        DaemonError.__init__()
         self.olduid = olduid
         self.oldgid = oldgid
         self.newuid = newuid
@@ -88,6 +90,7 @@ class AlreadyRunningError(DaemonError):
     """Raised if the daemon is alrady running."""
 
     def __init__(self, pid):
+        DaemonError.__init__()
         self.pid = pid
 
     def __str__(self):
@@ -97,6 +100,7 @@ class PidFileReadError(DaemonError):
     """Raised if we can't read a numeric pid from the pidfile."""
 
     def __init__(self, pidfile):
+        DaemonError.__init__()
         self.pidfile = pidfile
 
     def __str__(self):
@@ -106,6 +110,7 @@ class PidFileWriteError(DaemonError):
     """Raised if we can't write the pid to the pidfile."""
 
     def __init__(self, pidfile, error):
+        DaemonError.__init__()
         self.pidfile = pidfile
         self.error = error
 
@@ -117,6 +122,7 @@ class ForkError(DaemonError):
     """Raised if a fork fails."""
 
     def __init__(self, forkno, error):
+        DaemonError.__init__()
         self.forkno = forkno
         self.error = error
 
@@ -146,8 +152,8 @@ def switchuser(username):
 
     try:
         # Try to get information about the given username
-        name, passwd, uid, gid, gecos, dir, shell = pwd.getpwnam(username)
-    except KeyError, error:
+        name, passwd, uid, gid, gecos, homedir, shell = pwd.getpwnam(username)
+    except KeyError:
         raise UserNotFoundError(username)
     else:
         if olduid != uid:
@@ -211,7 +217,7 @@ def justme(pidfile):
         try:
             # Sending signal 0 to check if process is alive
             os.kill(pid, 0)
-        except OSError, error:
+        except OSError:
             # Normally this means "No such process", and thus we're alone
             return True
         else:

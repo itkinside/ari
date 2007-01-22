@@ -83,14 +83,14 @@ class Base(threading.Thread):
     def exit(self):
         self.runnable = False
 
-    def setup(self):
+    def setup(self, *args, **kwargs):
         """
         setup() is ment as an addition to the inherited __init__()
         You MAY override this method in your demo
         """
         pass
 
-    def prepare(self):
+    def prepare(self, *args, **kwargs):
         """
         prepare() is where you clear the wall and prepare for a new run
         You MAY override this method in your demo

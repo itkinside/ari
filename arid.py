@@ -35,8 +35,6 @@ Usage: arid [-h] [-w | -s] [-l] [-d demo]
 
 import getopt
 import sys
-import threading
-import time
 
 import libari.wall
 import libari.martha
@@ -92,7 +90,7 @@ class Arid:
         try:
             opts, args = getopt.getopt(args, 'hwsld:',
                 ['help', 'wall', 'simulator', 'list', 'demo='])
-        except getopt.GetoptError, error:
+        except getopt.GetoptError:
             print >> sys.stderr, 'Option does not exist.'
             sys.exit(1)
 
@@ -206,7 +204,7 @@ class Arid:
                         # (e.g. it's done or ESC was pushed)
                         runnable = False
                         break
-        except KeyboardInterrupt, e:
+        except KeyboardInterrupt:
             # Interrupt recieved (Ctrl-C or DEL)
             pass
 
