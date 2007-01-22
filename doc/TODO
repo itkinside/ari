@@ -21,6 +21,7 @@ libari/demos
   libari.demos.base framework
 - Port C++ demos by canidae
 - Port demos from the old DiodeVegg project
+- Finish the plasma demo
 
 aric - the ari client
 ---------------------
