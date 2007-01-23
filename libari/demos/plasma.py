@@ -19,6 +19,9 @@
 #
 
 import libari.demos.base
+import math
+import numarray
+import time
 
 class Plasma(libari.demos.base.Base):
     """Plasma demo"""
@@ -50,39 +53,39 @@ class Plasma(libari.demos.base.Base):
         else:
             self.step = 3
 
+    def prepare(self):
+        self.plasmaframe = PlasmaFrame(self.config.wallsizex,
+                                       self.config.wallsizey)
+        #self.setfps(20)
+
     def run(self):
         while True:
             if self.drawable:
-                pass # FIXME
+                self.plasmaframe.generate(time.time())
+                self.canvas.update(self.plasmaframe.buffer, 0, 0)
+                # It's slow enough without any sleep
+                #self.sleep()
 
-"""
-void
-generatePlasmaFrame(float timervalue)
-{
-  int x, y;
-  float z1, z2, z3, freq1, freq2, freq3, shiftx, shifty, val;
-  
-  if (!imgbuffer) { 
-    printf("EffectLib: Not initialized!\n");
-    return;
-  }
- 
-  freq1 = 30.0 + 20.0*sinf(timervalue);
-  freq2 = 30.0 + 10.0*cosf(timervalue*2);
-  freq3 = 30.0 + 20.*sinf(freq1); 
-        
-  shiftx = bufferwidth*sinf(timervalue) / 4.0;
-  shifty = bufferheight*cosf(timervalue) / 4.0;
- 
-  for (y=0;y < bufferheight;++y) {
-    for (x=0;x < bufferwidth;++x) {
-      z1 = sinf( ((float) x)/freq1*1.7*3.1415 + shiftx);
-      z2 = sinf( ((float) x)/3.0 + ((float) y)/freq2*1.5*3.1415 + shifty);
-      z3 = sinf( ((float) y)/freq3*0.1*3.1415);
-      val = fabs(z1+z2+z3) * 255;
-      if (val > 255) val = 255;
-      imgbuffer[(y*bufferwidth) + x] = (unsigned char) val;
-    } 
-  }
-}
-"""
+class PlasmaFrame:
+    def __init__(self, sx, sy):
+        self.sx = sx
+        self.sy = sy
+        self.buffer = numarray.zeros((self.sx, self.sy))
+
+    def generate(self, timervalue):
+        freq1 = 30.0 + 20.0 * math.sin(timervalue)
+        freq2 = 30.0 + 10.0 * math.cos(timervalue*2)
+        freq3 = 30.0 + 20.0 * math.sin(freq1)
+
+        shiftx = self.sx * math.sin(timervalue) / 4.0
+        shifty = self.sy * math.cos(timervalue) / 4.0
+
+        for y in range(self.sy):
+            for x in range(self.sx):
+                z1 = math.sin(x / freq1 * 1.7 * math.pi + shiftx)
+                z2 = math.sin(x / 3.0 + y / freq2 * 1.5 * math.pi + shifty)
+                z3 = math.sin(y / freq3 * 0.1 * math.pi)
+                val = math.fabs(z1 + z2 + z3) * 100
+                if val > 100:
+                    val = 100 
+                self.buffer[x][y] = val

@@ -24,13 +24,13 @@
 """
 arid - Diode wall demo player daemon
 
-Usage: arid [-h] [-w | -s] [-l] [-d demo]
+Usage: arid [-h|-l] [-w|-s [-d demo]]
 
   -h, --help        Show this help text
+  -l, --list        List loaded demos
   -w, --wall        Output to physical wall
   -s, --simulator   Output to Martha wall simulator
-  -l, --list        List loaded demos
-  -d, --demo        Run given demo
+  -d, --demo DEMO   Run DEMO, else run carousel
 """
 
 import getopt
@@ -44,6 +44,7 @@ import libari.demos.blob
 import libari.demos.chess
 import libari.demos.fade
 import libari.demos.fft
+import libari.demos.plasma
 import libari.demos.spiral
 import libari.demos.stars
 import libari.demos.test
@@ -127,6 +128,10 @@ class Arid:
             if opt in ('-d', '--demo'):
                 result['demo'] = val
 
+        if result['demo'] and not (result['wall'] or result['simulator']):
+            print >> sys.stderr, __doc__
+            sys.exit(0)
+
         return result
 
     def loaddemos(self, canvas):
@@ -139,6 +144,7 @@ class Arid:
         demos['fade'] = libari.demos.fade.Fade(canvas)
         demos['fade'].setup(10, 60)
         demos['fft'] = libari.demos.fft.FFT(canvas)
+        demos['plasma'] = libari.demos.plasma.Plasma(canvas)
         demos['spiral'] = libari.demos.spiral.Spiral(canvas)
         demos['test'] = libari.demos.test.Test(canvas)
         demos['tetris'] = libari.demos.tetris.Tetris(canvas)
