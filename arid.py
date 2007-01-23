@@ -68,7 +68,7 @@ class Arid:
 
         # Load demos
         demos = self.loaddemos(canvas)
-        carousel = ['stars', 'chess', 'blob']
+        carousel = ['stars', 'chess', 'blob', 'plasma']
 
         # List demos
         if opts['list']:
