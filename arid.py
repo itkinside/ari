@@ -50,7 +50,7 @@ import libari.demos.stars
 import libari.demos.test
 import libari.demos.tetris
 import libari.demos.xpm
-
+import libari.demos.arrows
 class Arid:
     def __init__(self):
         self.timeout = 10
@@ -147,6 +147,7 @@ class Arid:
         demos['plasma'] = libari.demos.plasma.Plasma(canvas)
         demos['spiral'] = libari.demos.spiral.Spiral(canvas)
         demos['test'] = libari.demos.test.Test(canvas)
+        demos['arrows'] = libari.demos.arrows.Arrows(canvas)
         demos['tetris'] = libari.demos.tetris.Tetris(canvas)
         demos['xpm'] = libari.demos.xpm.XPM(canvas)
         demos['xpm'].setup()
