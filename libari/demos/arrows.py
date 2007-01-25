@@ -21,18 +21,23 @@
 # Authors: Kristian Klette <klette@samfundet.no>
 
 import libari.demos.base
+import math
 
 class Arrows(libari.demos.base.Base):
     """A test to see how slow Python is"""
 
     def buildRow(self, yRow, step):
-        pattern = [99, 99, 99, 99, 0, 0, 0, 0]
-        row = pattern*(self.config.wallsizex/8);
-        if yRow < (self.config.wallsizey/2):
+        pattern = [40, 60, 99, 99, 0, 0, 0, 0]
+        row = pattern * (self.config.wallsizex / len(pattern));
+        if yRow < math.ceil(self.config.wallsizey / 2):
             for _ in range(yRow + step):
                 row.insert(0, row.pop())
         else:
-            for _ in range(4):
+            nonzero = 0
+            for p in pattern:
+                if p > 0:
+                    nonzero += 1
+            for _ in range(nonzero):
                 row.append(row[0])
                 del row[0]
             for _ in range(yRow - step):
@@ -41,7 +46,6 @@ class Arrows(libari.demos.base.Base):
         return row
 
     def run(self):
-        
         step = 0
         while self.runnable:
             if self.drawable:

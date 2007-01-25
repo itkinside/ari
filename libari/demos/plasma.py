@@ -54,7 +54,6 @@ class Plasma(libari.demos.base.Base):
             self.step = 3
 
     def prepare(self):
-        #self.setfps(20)
         st = time.time()
         self.plasmas = []
         t = 0
@@ -62,7 +61,7 @@ class Plasma(libari.demos.base.Base):
             self.plasmas.append(PlasmaFrame(self.config.wallsizex,
                 self.config.wallsizey, t))
             t += 0.01
-        print "Precalc done in: "  + str(time.time()-st)
+        print "Precalc done in: %3.3f" % (time.time() - st)
 
     def run(self):
         t = 0
@@ -78,8 +77,6 @@ class Plasma(libari.demos.base.Base):
                 if t == 0: 
                     a = True
                     t += 1
-                # It's slow enough without any sleep
-                #self.sleep()
 
 class PlasmaFrame:
     def __init__(self, sx, sy, step):
@@ -99,8 +96,8 @@ class PlasmaFrame:
         for y in range(self.sy):
             for x in range(self.sx):
                 z1 = math.sin(x / freq1 * 1.7 * math.pi + shiftx)
-                z2 = math.cos(x / 3.0 + y / freq2 * 1.5 * math.pi + shifty)
-                z3 = math.tan(y / freq3 * 0.1 * math.pi)
+                z2 = math.sin(x / 3.0 + y / freq2 * 1.5 * math.pi + shifty)
+                z3 = math.sin(y / freq3 * 0.1 * math.pi)
                 val = math.fabs(z1 + z2 + z3) * 100
                 if val > 100:
                     val = 100 
