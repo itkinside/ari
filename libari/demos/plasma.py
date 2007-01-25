@@ -60,7 +60,7 @@ class Plasma(libari.demos.base.Base):
         while t <= math.pi:
             self.plasmas.append(PlasmaFrame(self.config.wallsizex,
                 self.config.wallsizey, t))
-            t += 0.01
+            t += 0.02
         print "Precalc done in: %3.3f" % (time.time() - st)
 
     def run(self):
@@ -98,7 +98,7 @@ class PlasmaFrame:
                 z1 = math.sin(x / freq1 * 1.7 * math.pi + shiftx)
                 z2 = math.sin(x / 3.0 + y / freq2 * 1.5 * math.pi + shifty)
                 z3 = math.sin(y / freq3 * 0.1 * math.pi)
-                val = math.fabs(z1 + z2 + z3) * 100
-                if val > 100:
-                    val = 100 
+                val = math.fabs(z1 + z2 + z3) * 99
+                if val > 99:
+                    val = 99 
                 self.buffer[x][y] = val
