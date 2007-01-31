@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 #
-# arid - Daemon for running demos on a diode wall
+# Chess demo for libari
 # Copyright (C) 2006 Stein Magnus Jodal
 #
 # This program is free software; you can redistribute it and/or modify
@@ -62,8 +62,8 @@ class Chess(libari.demos.base.Base):
         b = Cycler(0, self.max)
         while self.runnable:
             if self.drawable:
-                for x in range(0, self.config.wallsizex, self.blocksize):
-                    for y in range(0, self.config.wallsizey, self.blocksize):
+                for x in range(0, self.sizex, self.blocksize):
+                    for y in range(0, self.sizey, self.blocksize):
                         for bx in range(x, x + self.blocksize):
                             for by in range(y, y + self.blocksize):
                                 self.canvas.setpixel(bx, by, b.get())

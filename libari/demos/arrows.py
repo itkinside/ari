@@ -22,15 +22,14 @@
 #
 
 import libari.demos.base
-import math
 
 class Arrows(libari.demos.base.Base):
     """A test to see how slow Python is"""
 
     def buildRow(self, yRow, step):
         pattern = [40, 60, 99, 99, 0, 0, 0, 0]
-        row = pattern * ((self.config.wallsizex / len(pattern)) + 1)
-        if yRow < math.ceil(self.config.wallsizey / 2):
+        row = pattern * ((self.sizex / len(pattern)) + 1)
+        if yRow < (self.sizey / 2):
             for _ in range(yRow + step):
                 row.insert(0, row.pop())
         else:
@@ -50,9 +49,9 @@ class Arrows(libari.demos.base.Base):
         step = 0
         while self.runnable:
             if self.drawable:
-                for y in range(self.config.wallsizey):
+                for y in range(self.sizey):
                     curRow = self.buildRow(y, step)
-                    for x in range(self.config.wallsizex):
+                    for x in range(self.sizex):
                         try:
                             self.canvas.setpixel(x, y, curRow[x])
                         except:
@@ -60,5 +59,5 @@ class Arrows(libari.demos.base.Base):
                 
                 self.canvas.update()
                 step += 1
-                if step > (self.config.wallsizey/2):
+                if step > (self.sizey/2):
                     step = 0

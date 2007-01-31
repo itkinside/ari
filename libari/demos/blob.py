@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 #
-# arid - Daemon for running demos on a diode wall 
+# Blob demo for libari
 # Copyright (C) 2006 Thomas Adamcik, Stein Magnus Jodal
 #
 # This program is free software; you can redistribute it and/or modify
@@ -29,46 +29,17 @@ from random import randint
 class Blob(libari.demos.base.Base):
     """Blob demo"""
 
-    def setup(self, min = 0, max = 99, step = 3):
-        """
-        Input:
-            min     Minimum brightness, default 0
-            max     Maximum brightness, default 99
-            step    Brightness steps, default 3
-        """
-
-        # Check input
-        if int(min) >= 0 and int(min) < 100:
-            self.min = int(min)
-        else:
-            self.min = 0
-
-        if int(max) >= 0 and int(min) < 100:
-            self.max = int(max)
-        else:
-            self.max = 99
-
-        if self.min > self.max:
-            self.min, self.max = self.max, self.min
-
-        if int(step) < 99:
-            self.step = step
-        else:
-            self.step = 3
-
-        w = self.config.wallsizex
-        h = self.config.wallsizey
-
-        self.colors = zeros((w, h))
-        self.blob = OneBlob(5, w, h, self.colors, self.canvas)
-        self.i1 = Iter(randint(0, w), randint(0, h),
-            w, h, self.blob, self.canvas)
-        self.i2 = Iter(randint(0, w), randint(0, h),
-            w, h, self.blob, self.canvas)
-        self.i3 = Iter(randint(0, w), randint(0, h),
-            w, h, self.blob, self.canvas)
-        self.i4 = Iter(randint(0, w), randint(0, h),
-            w, h, self.blob, self.canvas)
+    def setup(self):
+        self.colors = zeros((self.sizex, self.sizey))
+        self.blob = OneBlob(5, self.sizex, self.sizey, self.colors, self.canvas)
+        self.i1 = Iter(randint(0, self.sizex), randint(0, self.sizey),
+            self.sizex, self.sizey, self.blob, self.canvas)
+        self.i2 = Iter(randint(0, self.sizex), randint(0, self.sizey),
+            self.sizex, self.sizey, self.blob, self.canvas)
+        self.i3 = Iter(randint(0, self.sizex), randint(0, self.sizey),
+            self.sizex, self.sizey, self.blob, self.canvas)
+        self.i4 = Iter(randint(0, self.sizex), randint(0, self.sizey),
+            self.sizex, self.sizey, self.blob, self.canvas)
 
     def prepare(self):
         self.canvas.blank()

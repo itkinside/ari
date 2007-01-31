@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 #
-# arid - Daemon for running demos on a diode wall
+# Star sky demo for libari
 # Copyright (C) 2006 Stein Magnus Jodal
 #
 # This program is free software; you can redistribute it and/or modify
@@ -59,8 +59,8 @@ class Stars(libari.demos.base.Base):
         # Create stars
         self.stars = []
         for _ in range(self.starcount):
-            self.stars.append(Star(self.config.wallsizex,
-                                   self.config.wallsizey,
+            self.stars.append(Star(self.sizex,
+                                   self.sizey,
                                    self.min,
                                    self.max))
 

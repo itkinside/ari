@@ -65,7 +65,7 @@ class XPM(libari.demos.base.Base):
 
                 self.canvas.update(self.pix, x, y)
 
-                if x == self.config.wallsizex - self.iw:
+                if x == self.sizex - self.iw:
                     sx = -1
                 if x == 0:
                     sx = 1

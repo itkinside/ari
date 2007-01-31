@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 #
-# libari - Library for manipulating a diode wall
+# Spiral demo for libari
 # Copyright (C) 2006 Vidar Wahlberg
 #
 # This program is free software; you can redistribute it and/or modify

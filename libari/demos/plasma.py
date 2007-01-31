@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 #
-# arid - Daemon for running demos on a diode wall 
+# Plasma demo for libari
 # Copyright (C) 2007 Stein Magnus Jodal
 #
 # This program is free software; you can redistribute it and/or modify
@@ -29,40 +29,12 @@ import time
 class Plasma(libari.demos.base.Base):
     """Plasma demo"""
 
-    def setup(self, min = 0, max = 99, step = 3):
-        """
-        Input:
-            min     Minimum brightness, default 0
-            max     Maximum brightness, default 99
-            step    Brightness steps, default 3
-        """
-
-        # Check input
-        if int(min) >= 0 and int(min) < 100:
-            self.min = int(min)
-        else:
-            self.min = 0
-
-        if int(max) >= 0 and int(min) < 100:
-            self.max = int(max)
-        else:
-            self.max = 99
-
-        if self.min > self.max:
-            self.min, self.max = self.max, self.min
-
-        if int(step) < 99:
-            self.step = step
-        else:
-            self.step = 3
-
     def prepare(self):
         st = time.time()
         self.plasmas = []
         t = 0
         while t <= math.pi:
-            self.plasmas.append(PlasmaFrame(self.config.wallsizex,
-                self.config.wallsizey, t))
+            self.plasmas.append(PlasmaFrame(self.sizex, self.sizey, t))
             t += 0.02
         print "Precalc done in: %3.3f" % (time.time() - st)
 
