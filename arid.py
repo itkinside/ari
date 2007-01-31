@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 #
 # arid - Daemon for running demos on a diode wall
-# Copyright (C) 2006 Stein Magnus Jodal
+# Copyright (C) 2006-2007 Stein Magnus Jodal
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -47,12 +47,13 @@ import libari.demos.fft
 import libari.demos.plasma
 import libari.demos.spiral
 import libari.demos.stars
-import libari.demos.test
 import libari.demos.tetris
 import libari.demos.xpm
 import libari.demos.arrows
+
 class Arid:
     def __init__(self):
+        # Time given to each demo in the carousel
         self.timeout = 10
 
     def main(self, args):
@@ -68,13 +69,13 @@ class Arid:
 
         # Load demos
         demos = self.loaddemos(canvas)
-        carousel = ['stars', 'chess', 'blob', 'plasma']
+        carousel = ['stars', 'arrows', 'chess', 'blob', 'plasma']
 
         # List demos
         if opts['list']:
             self.listdemos(demos.keys(), carousel)
 
-        # Requested demo
+        # Run requested demo
         if canvas is not None and opts['demo']:
             carousel = self.requestdemo(demos.keys(), opts['demo'])
 
@@ -142,22 +143,17 @@ class Arid:
         # Test demos
         demos['blank'] = libari.demos.blank.Blank(canvas)
         demos['fade'] = libari.demos.fade.Fade(canvas)
-        demos['fade'].setup(10, 60)
         demos['fft'] = libari.demos.fft.FFT(canvas)
-        demos['plasma'] = libari.demos.plasma.Plasma(canvas)
         demos['spiral'] = libari.demos.spiral.Spiral(canvas)
-        demos['test'] = libari.demos.test.Test(canvas)
-        demos['arrows'] = libari.demos.arrows.Arrows(canvas)
         demos['tetris'] = libari.demos.tetris.Tetris(canvas)
         demos['xpm'] = libari.demos.xpm.XPM(canvas)
-        demos['xpm'].setup()
 
         # Carousel/real demos
-        demos['chess'] = libari.demos.chess.Chess(canvas)
-        demos['chess'].setup()
+        demos['arrows'] = libari.demos.arrows.Arrows(canvas)
         demos['blob'] = libari.demos.blob.Blob(canvas)
+        demos['chess'] = libari.demos.chess.Chess(canvas)
+        demos['plasma'] = libari.demos.plasma.Plasma(canvas)
         demos['stars'] = libari.demos.stars.Stars(canvas)
-        demos['stars'].setup(20, 99)
 
         return demos
 
