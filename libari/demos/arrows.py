@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 #
-# arrows demo for libari - Library for manipulating a diode wall
-# Copyright (C) 2006 Kristian Klette
+# Arrows demo for libari
+# Copyright (C) 2007 Kristian Klette
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #
 #
 # Authors: Kristian Klette <klette@samfundet.no>
+#
 
 import libari.demos.base
 import math
@@ -28,7 +29,7 @@ class Arrows(libari.demos.base.Base):
 
     def buildRow(self, yRow, step):
         pattern = [40, 60, 99, 99, 0, 0, 0, 0]
-        row = pattern * (self.config.wallsizex / len(pattern));
+        row = pattern * ((self.config.wallsizex / len(pattern)) + 1)
         if yRow < math.ceil(self.config.wallsizey / 2):
             for _ in range(yRow + step):
                 row.insert(0, row.pop())
@@ -59,4 +60,5 @@ class Arrows(libari.demos.base.Base):
                 
                 self.canvas.update()
                 step += 1
-                if step > (self.config.wallsizey/2): step = 0
+                if step > (self.config.wallsizey/2):
+                    step = 0

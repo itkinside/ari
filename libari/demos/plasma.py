@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 #
 # arid - Daemon for running demos on a diode wall 
-# Copyright (C) 2006 Stein Magnus Jodal
+# Copyright (C) 2007 Stein Magnus Jodal
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,6 +16,9 @@
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+#
+# Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
 import libari.demos.base
