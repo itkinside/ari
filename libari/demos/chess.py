@@ -70,6 +70,7 @@ class Chess(libari.demos.base.Base):
                         b.cycle(True)
                     b.cycle(True)
                 self.canvas.update()
+                self.canvas.flush()
             self.sleep()
 
 class Cycler:

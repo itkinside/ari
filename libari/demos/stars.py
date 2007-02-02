@@ -76,6 +76,7 @@ class Stars(libari.demos.base.Base):
                     (x, y, b) = self.stars[i].run()
                     self.canvas.setpixel(x, y, b)
                 self.canvas.update()
+                self.canvas.flush()
             self.sleep()
 
 

@@ -187,12 +187,17 @@ class Martha(libari.canvas.Canvas):
                 # Paint to screen
                 # FIXME: This is ugly
                 self.screen.fill((b, b, b),
-                                 pygame.Rect(px * (self.ps + self.pd) \
-                                               + self.pd / 2, \
-                                             py * (self.ps + self.pd) \
-                                               + self.pd / 2,
-                                             self.ps,
-                                             self.ps))
+                    pygame.Rect(px * (self.ps + self.pd) + self.pd / 2, \
+                                py * (self.ps + self.pd) + self.pd / 2,
+                                self.ps,
+                                self.ps))
+
+        # Check events
+        if not self.__processevents():
+            sys.exit(0)
+
+    def flush(self):
+        """For doc, see Canvas"""
 
         # Flush screen to display
         pygame.display.update()

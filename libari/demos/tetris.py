@@ -258,6 +258,7 @@ class Tetris(libari.demos.base.Base):
                             self.canvas.setpixel(self.curpiecex + px, self.curpiecey + py, self.piece[self.curpiece][self.curpiecedir][py][px])
                 # update
                 self.canvas.update()
+                self.canvas.flush()
                 if crash:
                     # check if we can remove some lines
                     for sy in xrange(self.curpiecey, self.curpiecey + len(self.piece[self.curpiece][self.curpiecedir])):
@@ -276,6 +277,7 @@ class Tetris(libari.demos.base.Base):
                                     self.canvas.setpixel(sx, sy2 + 1, value)
                                     self.canvas.setpixel(sx, sy2, 0)
                                 self.canvas.update()
+                                self.canvas.flush()
                                 self.sync()
                                 if norowsleft:
                                     break

@@ -130,5 +130,6 @@ class Iter:
                 self.blob.draw(old[0], old[1], 0, p)
             self.blob.draw(x, y, 1, p)
             self.canvas.update()
+            self.canvas.flush()
         self.x = x
         self.y = y

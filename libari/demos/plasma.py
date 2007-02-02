@@ -44,6 +44,7 @@ class Plasma(libari.demos.base.Base):
         while True:
             if self.drawable:
                 self.canvas.update(self.plasmas[t].buffer, 0, 0)
+                self.canvas.flush()
                 if a: t += 1
                 else: t -= 1
                 if t == len(self.plasmas): 

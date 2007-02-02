@@ -42,6 +42,7 @@ class FFT(libari.demos.base.Base):
                     for y in xrange(29, int(29 - (ar.data[x] - minv) * step) or 0, -1):
                         self.image[x][y] = 99
                 self.canvas.update(self.image)
+                self.canvas.flush()
                 for x in xrange(105):
                     for y in xrange(30):
                         self.image[x][y] = self.image[x][y] - 33

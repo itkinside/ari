@@ -111,4 +111,5 @@ class Base(threading.Thread):
                 else:
                     b = 0
                 self.canvas.update()
+                self.canvas.flush()
             self.sleep()

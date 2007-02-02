@@ -58,7 +58,9 @@ class Fade(libari.demos.base.Base):
             if self.drawable:
                 for b in range(self.min, self.max, self.step):
                     self.canvas.blank(b)
+                    self.canvas.flush()
                     self.sleep()
                 for b in range(self.max, self.min, -self.step): 
                     self.canvas.blank(b)
+                    self.canvas.flush()
                     self.sleep()

@@ -145,6 +145,15 @@ class Canvas:
 
         # Implement the acctual painting in the children
 
+    def flush(self):
+        """
+        Flush the canvas to the wall
+
+        """
+
+        # Implement the flushing in the children
+        pass
+
     def blank(self, b = 0):
         """
         Blank entire wall

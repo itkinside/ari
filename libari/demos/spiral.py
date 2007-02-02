@@ -58,4 +58,5 @@ class Spiral(libari.demos.base.Base):
                     self.findxy((n + 450) % 500)
                     self.image[self.x + 25][self.y + 15] = 0
                     self.canvas.update(self.image)
+                    self.canvas.flush()
 #            self.sleep()

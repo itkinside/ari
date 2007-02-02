@@ -58,6 +58,7 @@ class Arrows(libari.demos.base.Base):
                             pass
                 
                 self.canvas.update()
+                self.canvas.flush()
                 step += 1
                 if step > (self.sizey/2):
                     step = 0

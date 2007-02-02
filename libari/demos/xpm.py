@@ -64,6 +64,7 @@ class XPM(libari.demos.base.Base):
                 y += sy
 
                 self.canvas.update(self.pix, x, y)
+                self.canvas.flush()
 
                 if x == self.sizex - self.iw:
                     sx = -1

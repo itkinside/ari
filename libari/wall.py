@@ -64,6 +64,9 @@ class Wall(libari.canvas.Canvas):
         # Call mother
         libari.canvas.Canvas.update(self, canvas, cx, cy)
 
+    def flush(self):
+        """For doc, see Canvas"""
+
         # FIXME: Loop over the canvas instead of all boards?
 
         # Loop over all boards
