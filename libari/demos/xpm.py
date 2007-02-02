@@ -32,48 +32,105 @@ class XPM(libari.demos.base.Base):
     Draw XPM image at wall.
     """
 
-    def setup(self, imagefile = None):
+    def setup(self, imagefile = None, fps = 1, dx = 1, dy = 1, invert = False):
+        """
+        Input:
+            imagefile   Image to display, must recide in libari/demos/xpm
+            fps         Frames per second, default 1
+            dx          Speed in horisontal direction, default 1
+            dy          Speed in vertical direction, default 1
+            invert      Invert image colors, default False
+
+        """
+
+        # Default image
         if imagefile == None:
             imagefile = 'samfundet-logo.xpm'
+            fps = 5
+            invert = True
+
+        # Check input
+        if str(fps).isdigit() and fps > 0:
+            self.fps = fps
+        else:
+            self.fps = 1
+        if str(dx).isdigit() and dx >= 0:
+            self.dx = dx
+        else:
+            self.dx = 1
+        if str(dy).isdigit() and dy >= 0:
+            self.dy = dy
+        else:
+            self.dy = 1
+        if invert == True or invert == False:
+            self.invert = invert
+        else:
+            self.invert = False
+
+        # Load image
         self.image = gd.image(os.getcwd() + '/libari/demos/xpm/' + imagefile)
         (self.iw, self.ih) = self.image.size()
-        self.setfps(2)
+
+        # Set update frequency
+        self.setfps(self.fps)
 
     def prepare(self):
+        # Blank wall
         self.canvas.blank()
-        self.pix = numarray.zeros((self.iw+2, self.ih+2))
+        self.canvas.update()
+
+        # Array the same size as the image
+        self.pix = numarray.zeros((self.iw, self.ih))
+        self.pixblank = numarray.zeros((self.iw, self.ih))
+
+        # Color convertion map
         colormap = {}
+
+        # Convert image to brightness values
         for x in xrange(self.iw):
             for y in xrange(self.ih):
                 i = self.image.getPixel((x, y))
+
+                # Add new colors to colormap
                 if i not in colormap:
                     (r, g, b) = self.image.colorComponents(i)
-                    colormap[i] = math.fabs(((r + g + b) * 99 / (3 * 255)) - 99)
-                    #colormap[i] = (r + g + b) * 99 / (3 * 255)
-                self.pix[x+1][y+1] = colormap[i]
-        (self.iw, self.ih) = (self.iw + 2, self.ih + 2)
+                    colormap[i] = (r + g + b) * 99 / (3 * 255)
+
+                    # Invert color
+                    if self.invert:
+                        colormap[i] = math.fabs(colormap[i] - 99)
+
+                # Fill array with brightness values
+                self.pix[x][y] = colormap[i]
 
     def run(self):
-        x = 0
-        y = 4
-        sx = 1
-        sy = 1
+        # The demo
+
+        # Start position
+        x = y = 0
+        dx = self.dx
+        dy = self.dy
+
         while self.runnable:
             if self.drawable:
-                x += sx
-                y += sy
+                # Clear previous position
+                self.canvas.update(self.pixblank, x, y)
 
+                # Move image
+                x += dx
+                y += dy
+
+                # Paint image
                 self.canvas.update(self.pix, x, y)
+
+                # Flush updates to wall
                 self.canvas.flush()
 
-                if x == self.sizex - self.iw:
-                    sx = -1
-                if x == 0:
-                    sx = 1
+                # Boundary checks
+                if x == 0 or x == self.sizex - self.iw:
+                    dx *= -1
+                if y == 0 or y == self.sizey - self.ih:
+                    dy *= -1
 
-                if y == 6:
-                    sy = -1
-                elif y == 0:
-                    sy = +1
-
+                # Take a nap
                 self.sleep()
