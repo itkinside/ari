@@ -27,15 +27,15 @@ import math
 import numarray
 import os
 
-class XPM(libari.demos.base.Base):
+class Bitmap(libari.demos.base.Base):
     """
-    Draw XPM image at wall.
+    Draw Bitmap image at wall.
     """
 
     def setup(self, imagefile = None, fps = 1, dx = 1, dy = 1, invert = False):
         """
         Input:
-            imagefile   Image to display, must recide in libari/demos/xpm
+            imagefile   Image to display, must recide in libari/demos/bitmap
             fps         Frames per second, default 1
             dx          Speed in horisontal direction, default 1
             dy          Speed in vertical direction, default 1
@@ -68,7 +68,7 @@ class XPM(libari.demos.base.Base):
             self.invert = False
 
         # Load image
-        self.image = gd.image(os.getcwd() + '/libari/demos/xpm/' + imagefile)
+        self.image = gd.image(os.getcwd() + '/libari/demos/bitmap/' + imagefile)
         (self.iw, self.ih) = self.image.size()
 
         # Set update frequency

@@ -39,6 +39,7 @@ import sys
 import libari.wall
 import libari.martha
 
+import libari.demos.bitmap
 import libari.demos.blank
 import libari.demos.blob
 import libari.demos.chess
@@ -48,7 +49,6 @@ import libari.demos.plasma
 import libari.demos.spiral
 import libari.demos.stars
 import libari.demos.tetris
-import libari.demos.xpm
 import libari.demos.arrows
 
 class Arid:
@@ -141,12 +141,12 @@ class Arid:
         demos = {}
 
         # Test demos
+        demos['bitmap'] = libari.demos.bitmap.Bitmap(canvas)
         demos['blank'] = libari.demos.blank.Blank(canvas)
         demos['fade'] = libari.demos.fade.Fade(canvas)
         demos['fft'] = libari.demos.fft.FFT(canvas)
         demos['spiral'] = libari.demos.spiral.Spiral(canvas)
         demos['tetris'] = libari.demos.tetris.Tetris(canvas)
-        demos['xpm'] = libari.demos.xpm.XPM(canvas)
 
         # Carousel/real demos
         demos['arrows'] = libari.demos.arrows.Arrows(canvas)
