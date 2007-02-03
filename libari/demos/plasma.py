@@ -30,29 +30,27 @@ class Plasma(libari.demos.base.Base):
     """Plasma demo"""
 
     def prepare(self):
+        # Precalc
         st = time.time()
         self.plasmas = []
         t = 0
-        while t <= math.pi:
+
+        # The demo has a period of 2*pi
+        while t <= 2 * math.pi:
             self.plasmas.append(PlasmaFrame(self.sizex, self.sizey, t))
-            t += 0.02
-        print "Precalc done in: %3.3f" % (time.time() - st)
+            t += 0.03
+
+        print "Precalc: %3.3fs" % (time.time() - st)
 
     def run(self):
         t = 0
-        a = True
         while True:
             if self.drawable:
                 self.canvas.update(self.plasmas[t].buffer, 0, 0)
                 self.canvas.flush()
-                if a: t += 1
-                else: t -= 1
+                t += 1
                 if t == len(self.plasmas): 
-                    a = False
-                    t -= 1
-                if t == 0: 
-                    a = True
-                    t += 1
+                    t = 0
 
 class PlasmaFrame:
     def __init__(self, sx, sy, step):
