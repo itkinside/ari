@@ -25,6 +25,8 @@ import libari.demos.base
 import math
 import numarray
 import time
+import pickle
+import os
 
 class Plasma(libari.demos.base.Base):
     """Plasma demo"""
@@ -34,12 +36,16 @@ class Plasma(libari.demos.base.Base):
         st = time.time()
         self.plasmas = []
         t = 0
+        if not os.path.isfile('cache/plasma.maud'):
 
-        # The demo has a period of 2*pi
-        while t <= 2 * math.pi:
-            self.plasmas.append(PlasmaFrame(self.sizex, self.sizey, t))
-            t += 0.03
+            # The demo has a period of 2*pi
+            while t <= 2 * math.pi:
+                self.plasmas.append(PlasmaFrame(self.sizex, self.sizey, t))
+                t += 0.03
 
+            pickle.dump(self.plasmas, open('cache/plasma.maud','w'))
+        else:
+            self.plasmas = pickle.load(open('cache/plasma.maud','r'))
         print "Precalc: %3.3fs" % (time.time() - st)
 
         self.setfps(15)
