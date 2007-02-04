@@ -42,6 +42,8 @@ class Plasma(libari.demos.base.Base):
 
         print "Precalc: %3.3fs" % (time.time() - st)
 
+        self.setfps(15)
+
     def run(self):
         t = 0
         while True:
@@ -51,6 +53,7 @@ class Plasma(libari.demos.base.Base):
                 t += 1
                 if t == len(self.plasmas): 
                     t = 0
+                self.sleep()
 
 class PlasmaFrame:
     def __init__(self, sx, sy, step):
