@@ -62,14 +62,11 @@ class Base(threading.Thread):
         if type(fps) is int or type(fps) is float:
             self.fps = fps
 
-    def sync(self):
-        sleeptime = (1.0 / self.fps) + self.lasttime - time.time()
+    def sleep(self):
+        sleeptime = (1.0 / self.fps) - (time.time() - self.lasttime)
         if sleeptime > 0:
             time.sleep(sleeptime)
         self.lasttime = time.time()
-
-    def sleep(self):
-        time.sleep(1.0 / self.fps)
 
     def start(self):
         self.prepare()
