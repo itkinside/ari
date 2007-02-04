@@ -50,6 +50,7 @@ import libari.demos.spiral
 import libari.demos.stars
 import libari.demos.tetris
 import libari.demos.arrows
+import libari.demos.fire
 
 class Arid:
     def __init__(self):
@@ -146,6 +147,8 @@ class Arid:
         demos['fade'] = libari.demos.fade.Fade(canvas)
         demos['fft'] = libari.demos.fft.FFT(canvas)
         demos['spiral'] = libari.demos.spiral.Spiral(canvas)
+        demos['arrows'] = libari.demos.arrows.Arrows(canvas)
+        demos['fire'] = libari.demos.fire.Fire(canvas)
         demos['tetris'] = libari.demos.tetris.Tetris(canvas)
 
         # Carousel/real demos
