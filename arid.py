@@ -142,7 +142,6 @@ class Arid:
         demos = {}
 
         # Test demos
-        demos['bitmap'] = libari.demos.bitmap.Bitmap(canvas)
         demos['blank'] = libari.demos.blank.Blank(canvas)
         demos['fade'] = libari.demos.fade.Fade(canvas)
         demos['fft'] = libari.demos.fft.FFT(canvas)
@@ -151,6 +150,11 @@ class Arid:
         demos['fire'] = libari.demos.fire.Fire(canvas)
         demos['tetris'] = libari.demos.tetris.Tetris(canvas)
 
+        # Sprite demos
+        demos['ball'] = libari.demos.bitmap.Bitmap(canvas)
+        demos['ball'].setup('ball.xpm', 20)
+        demos['samfundet'] = libari.demos.bitmap.Bitmap(canvas)
+        
         # Carousel/real demos
         demos['arrows'] = libari.demos.arrows.Arrows(canvas)
         demos['blob'] = libari.demos.blob.Blob(canvas)
