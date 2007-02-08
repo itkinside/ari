@@ -30,7 +30,7 @@ Usage: arid [-h|-l] [-w|-s [-d demo]]
   -l, --list        List loaded demos
   -w, --wall        Output to physical wall
   -s, --simulator   Output to Martha wall simulator
-  -d, --demo DEMO   Run DEMO, else run carousel
+  -d, --demo DEMO   Run DEMO, else run playlist
 """
 
 import getopt
@@ -54,7 +54,7 @@ import libari.demos.fire
 
 class Arid:
     def __init__(self):
-        # Time given to each demo in the carousel
+        # Time given to each demo in the playlist
         self.timeout = 10
 
     def main(self, args):
@@ -70,19 +70,19 @@ class Arid:
 
         # Load demos
         demos = self.loaddemos(canvas)
-        carousel = ['stars', 'arrows', 'chess', 'blob', 'plasma']
+        playlist = ['stars', 'arrows', 'chess', 'blob', 'plasma']
 
         # List demos
         if opts['list']:
-            self.listdemos(demos.keys(), carousel)
+            self.listdemos(demos.keys(), playlist)
 
         # Run requested demo
         if canvas is not None and opts['demo']:
-            carousel = self.requestdemo(demos.keys(), opts['demo'])
+            playlist = self.requestdemo(demos.keys(), opts['demo'])
 
-        # Run the demo carousel
+        # Run the demo playlist
         if canvas is not None:
-            self.runcarousel(demos, carousel)
+            self.runplaylist(demos, playlist)
 
         # Exit nicely
         sys.exit(0)
@@ -155,7 +155,7 @@ class Arid:
         demos['ball'].setup('ball.xpm', 20)
         demos['samfundet'] = libari.demos.bitmap.Bitmap(canvas)
         
-        # Carousel/real demos
+        # Playlist/real demos
         demos['arrows'] = libari.demos.arrows.Arrows(canvas)
         demos['blob'] = libari.demos.blob.Blob(canvas)
         demos['chess'] = libari.demos.chess.Chess(canvas)
@@ -164,15 +164,15 @@ class Arid:
 
         return demos
 
-    def listdemos(self, demos, carousel):
+    def listdemos(self, demos, playlist):
         """List demos"""
 
         if len(demos):
             print 'Loaded demos:'
             demos.sort()
             for demo in demos:
-                if carousel.count(demo):
-                    print "  " + demo + " [carousel]"
+                if playlist.count(demo):
+                    print "  " + demo + " [playlist]"
                 else:
                     print "  " + demo
             sys.exit(0)
@@ -181,26 +181,26 @@ class Arid:
             sys.exit(1)
 
     def requestdemo(self, demos, requested):
-        """Put requested demo on the carousel"""
+        """Put requested demo on the playlist"""
         if requested in demos:
             return [requested]
         else:
             print >> sys.stderr, "No '%s' demo loaded." % requested
             sys.exit(1)
 
-    def runcarousel(self, demos, carousel):
-        """Run a carousel of demos"""
+    def runplaylist(self, demos, playlist):
+        """Run a playlist of demos"""
 
         runnable = True
 
         try:
             while runnable:
-                for demo in carousel:
+                for demo in playlist:
                     # Start demo
                     demos[demo].start()
                     
                     # Wait for demo. If it exits we will immediately continue
-                    if len(carousel) == 1:
+                    if len(playlist) == 1:
                         demos[demo].join()
                         return True
                     else:
