@@ -68,7 +68,7 @@ class Bitmap(libari.demos.base.Base):
             self.invert = False
 
         # Load image
-        self.image = gd.image(os.getcwd() + '/libari/demos/bitmap/' + imagefile)
+        self.image = gd.image('media/bitmap/%s' % imagefile)
         (self.iw, self.ih) = self.image.size()
 
         # Set update frequency
