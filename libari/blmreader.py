@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 #
-# libari - Library for manipulating a diode wall
+# BlinkenLights Movies (BLM) file format reader for libari
 # Copyright (C) 2007 Stein Magnus Jodal
 #
 # This program is free software; you can redistribute it and/or modify
