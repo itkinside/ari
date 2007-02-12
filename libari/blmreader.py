@@ -43,7 +43,6 @@ class BLMReader:
 
         Returns:
             List of tuples with the following data:
-            - Frame number
             - Frame duration
             - Frame data as a numarray
        
@@ -67,15 +66,12 @@ class BLMReader:
 
         Returns:
             List of tuples with the following data:
-            - Frame number
             - Frame duration
             - Frame data as a numarray
         
         """
 
         frames = []
-
-        number = 0
         duration = 0
         (framew, frameh) = (0, 0)
         frame = numarray.zeros((framew, frameh))
@@ -106,15 +102,18 @@ class BLMReader:
                     y = 0
                     continue
 
+                # Blank line before first frame: Skip to next line
+                if not duration > 0:
+                    continue
+
                 # Blank line: End of frame
                 if len(line) == 0:
-                    frames.append((number, duration, frame))
-                    number += 1
+                    frames.append((duration, frame))
                     continue
 
                 # Else: Data line
                 for x, value in enumerate(line):
-                    frame[x][y] = int(value)
+                    frame[x][y] = int(value) * 99
                 y += 1
         finally:
             file.close()
