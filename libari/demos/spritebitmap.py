@@ -99,7 +99,7 @@ class SpriteBitmap(libari.demos.sprite.Sprite):
                 sprite[x][y] = colormap[i]
         
         # Only got one frame
-        self.frames.append((1000 / self.fps, sprite))
+        self.frames.append((1000.0 / self.fps, sprite))
 
     def run(self):
         # Call parent

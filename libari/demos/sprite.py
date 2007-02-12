@@ -94,7 +94,7 @@ class Sprite(libari.demos.base.Base):
 
                 # Paint frame
                 (frameduration, frame) = self.frames[frameindex]
-                self.setfps(1000 / frameduration)
+                self.setfps(1000.0 / frameduration)
                 self.canvas.update(frame, x, y)
 
                 # Flush updates to wall
