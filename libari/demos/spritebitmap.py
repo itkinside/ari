@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 #
-# arid - Daemon for running demos on a diode wall
-# Copyright (C) 2006 Stein Magnus Jodal
+# Sprite demo for bitmaps for libari
+# Copyright (C) 2006-2007 Stein Magnus Jodal
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,46 +22,46 @@
 #
 
 import gd
-import libari.demos.base
+import libari.demos.sprite
 import math
 import numarray
-import os
 
-class Bitmap(libari.demos.base.Base):
+class SpriteBitmap(libari.demos.sprite.Sprite):
     """
-    Draw Bitmap image at wall.
+    Draw bitmap sprite at wall. Extends the general sprite demo.
+
     """
 
-    def setup(self, imagefile = None, fps = 1, dx = 1, dy = 1, invert = False):
+    def setup(self, dx = 1, dy = 1, imagefile = None, fps = 1, invert = False):
         """
-        Input:
-            imagefile   Image to display, must recide in libari/demos/bitmap
-            fps         Frames per second, default 1
+        Input (inherited from sprite):
             dx          Speed in horisontal direction, default 1
             dy          Speed in vertical direction, default 1
+
+        Input (custom for bitmap):
+            imagefile   Image to display, must recide in media/bitmap
+            fps         Frames per second, default 1
             invert      Invert image colors, default False
 
         """
 
         # Default image
         if imagefile == None:
-            imagefile = 'samfundet-logo.xpm'
+            dx = 1
+            dy = 1
             fps = 5
+            imagefile = 'samfundet-logo.xpm'
             invert = True
+
+        # Call parent
+        libari.demos.sprite.Sprite.setup(self, dx, dy)
 
         # Check input
         if str(fps).isdigit() and fps > 0:
             self.fps = fps
         else:
             self.fps = 1
-        if str(dx).isdigit() and dx >= 0:
-            self.dx = dx
-        else:
-            self.dx = 1
-        if str(dy).isdigit() and dy >= 0:
-            self.dy = dy
-        else:
-            self.dy = 1
+
         if invert == True or invert == False:
             self.invert = invert
         else:
@@ -69,26 +69,21 @@ class Bitmap(libari.demos.base.Base):
 
         # Load image
         self.image = gd.image('media/bitmap/%s' % imagefile)
-        (self.iw, self.ih) = self.image.size()
-
-        # Set update frequency
-        self.setfps(self.fps)
+        (self.spritew, self.spriteh) = self.image.size()
 
     def prepare(self):
-        # Blank wall
-        self.canvas.blank()
-        self.canvas.update()
+        # Call parent
+        libari.demos.sprite.Sprite.prepare(self)
 
-        # Array the same size as the image
-        self.pix = numarray.zeros((self.iw, self.ih))
-        self.pixblank = numarray.zeros((self.iw, self.ih))
+        # Sprite the same size as the image
+        sprite = numarray.zeros((self.spritew, self.spriteh))
 
         # Color convertion map
         colormap = {}
 
         # Convert image to brightness values
-        for x in xrange(self.iw):
-            for y in xrange(self.ih):
+        for x in xrange(self.spritew):
+            for y in xrange(self.spriteh):
                 i = self.image.getPixel((x, y))
 
                 # Add new colors to colormap
@@ -101,36 +96,11 @@ class Bitmap(libari.demos.base.Base):
                         colormap[i] = math.fabs(colormap[i] - 99)
 
                 # Fill array with brightness values
-                self.pix[x][y] = colormap[i]
+                sprite[x][y] = colormap[i]
+        
+        # Only got one frame
+        self.frames.append((1000 / self.fps, sprite))
 
     def run(self):
-        # The demo
-
-        # Start position
-        x = y = 0
-        dx = self.dx
-        dy = self.dy
-
-        while self.runnable:
-            if self.drawable:
-                # Clear previous position
-                self.canvas.update(self.pixblank, x, y)
-
-                # Move image
-                x += dx
-                y += dy
-
-                # Paint image
-                self.canvas.update(self.pix, x, y)
-
-                # Flush updates to wall
-                self.canvas.flush()
-
-                # Boundary checks
-                if x == 0 or x == self.sizex - self.iw:
-                    dx *= -1
-                if y == 0 or y == self.sizey - self.ih:
-                    dy *= -1
-
-                # Take a nap
-                self.sleep()
+        # Call parent
+        libari.demos.sprite.Sprite.run(self)

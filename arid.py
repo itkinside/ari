@@ -39,18 +39,19 @@ import sys
 import libari.wall
 import libari.martha
 
-import libari.demos.bitmap
+import libari.demos.arrows
 import libari.demos.blank
 import libari.demos.blob
 import libari.demos.chess
 import libari.demos.fade
 import libari.demos.fft
+import libari.demos.fire
 import libari.demos.plasma
 import libari.demos.spiral
 import libari.demos.stars
 import libari.demos.tetris
-import libari.demos.arrows
-import libari.demos.fire
+import libari.demos.spritebitmap
+import libari.demos.spriteblm
 
 class Arid:
     def __init__(self):
@@ -151,9 +152,10 @@ class Arid:
         demos['tetris'] = libari.demos.tetris.Tetris(canvas)
 
         # Sprite demos
-        demos['ball'] = libari.demos.bitmap.Bitmap(canvas)
+        demos['ball'] = libari.demos.spritebitmap.SpriteBitmap(canvas)
         demos['ball'].setup('ball.xpm', 20)
-        demos['samfundet'] = libari.demos.bitmap.Bitmap(canvas)
+        demos['camel'] = libari.demos.spriteblm.SpriteBLM(canvas)
+        demos['samfundet'] = libari.demos.spritebitmap.SpriteBitmap(canvas)
         
         # Playlist/real demos
         demos['arrows'] = libari.demos.arrows.Arrows(canvas)
