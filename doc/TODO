@@ -1,29 +1,29 @@
 ari - todo
 ==========
 
-arid
-----
+arid - the ari deamon
+---------------------
 - Move demo selection, demo setup etc to some config file
 - Daemonize it
 - Create control backend for aric
 
 libari
 ------
-- Create magic array as set/getpixel alternative without the function call
-  overhead (speed needed for demos by canidae)
+- DONE: Create magic array as set/getpixel alternative without the function
+  call overhead (speed needed for demos by canidae)
 - Add fading for use when switching demo (use opacity added by canidae)
 - Update deb package (v0.3 is from August)
 
 libari/demos
 ------------
-- Rewrite demos to use array instead of get/setpixel()
+- DONE: Rewrite demos to use array instead of get/setpixel()
 - Port Martha-custom demos in the ari.demos.adamcik repos to the
   libari.demos.base framework
 - Port C++ demos by canidae
 - Port demos from the old DiodeVegg project
-- Finish the plasma demo
+- DONE: Finish the plasma demo
 
-aric - the ari client
----------------------
+angelica - the ari client
+-------------------------
 - Create control interface (CLI, ncurses, GTK, whatever)
 

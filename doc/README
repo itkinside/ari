@@ -6,9 +6,9 @@ Executables
 -----------
 arid
 	Daemon for running the demos 24/7.
-aric
+angelica
 	Client for connecting to arid and changing settings on-the-fly.
-lib/
+arid/
 	General modules used by arid and aric, that do not have anything to do
 	with libari.
 tools/
