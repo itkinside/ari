@@ -152,9 +152,13 @@ class Arid:
         demos['tetris'] = libari.demos.tetris.Tetris(canvas)
 
         # Sprite demos
+        demos['allyourbase'] = libari.demos.spriteblm.SpriteBLM(canvas)
+        demos['allyourbase'].setup(blmfile='allyourbase.blm')
         demos['ball'] = libari.demos.spritebitmap.SpriteBitmap(canvas)
-        demos['ball'].setup('ball.xpm', 20)
+        demos['ball'].setup(imagefile='ball.xpm', fps=20)
         demos['camel'] = libari.demos.spriteblm.SpriteBLM(canvas)
+        demos['cometogether'] = libari.demos.spriteblm.SpriteBLM(canvas)
+        demos['cometogether'].setup(blmfile='cometogether.blm')
         demos['samfundet'] = libari.demos.spritebitmap.SpriteBitmap(canvas)
         
         # Playlist/real demos
