@@ -131,7 +131,7 @@ class BMLReader:
                         # FIXME: Support more than one channel
 
                         # Convert to brightness
-                        b = pixel * 99 / (2**bits)
+                        b = pixel * 99 / (2**bits - 1)
 
                         # Find x position
                         x = i / charsperbit
