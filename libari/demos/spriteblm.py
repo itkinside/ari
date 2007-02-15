@@ -23,6 +23,7 @@
 
 import libari.blmreader
 import libari.demos.sprite
+import libari.utils.array
 
 class SpriteBLM(libari.demos.sprite.Sprite):
     """
@@ -51,6 +52,11 @@ class SpriteBLM(libari.demos.sprite.Sprite):
         # Call parent
         libari.demos.sprite.Sprite.setup(self, dx, dy)
 
+        # Set offset
+        # FIXME: Camel hack
+        self.startx = 15
+        self.starty = 7
+
     def prepare(self):
         # Call parent
         libari.demos.sprite.Sprite.prepare(self)
@@ -58,6 +64,15 @@ class SpriteBLM(libari.demos.sprite.Sprite):
         # Load BLM
         blmr = libari.blmreader.BLMReader()
         self.frames = blmr.load('media/blm/%s' % self.blmfile)
+
+        # Scale frames
+        # FIXME: This is the wrong place to do it
+        for i, frame in enumerate(self.frames):
+            (duration, array) = frame
+            self.frames[i] = (duration,
+              libari.utils.array.growtobox(array,
+                self.config.model[1]['width'] * self.config.boardsizex,
+                self.sizey));
 
         # Find sprite size by looking at first frame
         (_, frame) = self.frames[0]

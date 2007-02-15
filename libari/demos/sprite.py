@@ -40,6 +40,8 @@ class Sprite(libari.demos.base.Base):
         """
 
         # Set defaults
+        self.startx = 0
+        self.starty = 0
         self.spritew = 0
         self.spriteh = 0
 
@@ -70,7 +72,9 @@ class Sprite(libari.demos.base.Base):
         # The demo
 
         # Start position
-        x = y = frameindex = 0
+        frameindex = 0
+        x = self.startx
+        y = self.starty
         dx = self.dx
         dy = self.dy
 
