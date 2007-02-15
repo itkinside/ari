@@ -36,7 +36,9 @@ def growtobox(array, boxw, boxh):
         ratio = ratioh
 
     # Scale array
-    scale(array, ratio)
+    res = scale(array, ratio)
+
+    return res
 
 def scale(array, ratio):
     """Scale numarray with given ratio"""
@@ -46,6 +48,7 @@ def scale(array, ratio):
         return array
 
     # New array of max size
+    (oldw, oldh) = array.shape
     resw = oldw * ratio
     resh = oldh * ratio
     res = numarray.zeros((resw, resh))
