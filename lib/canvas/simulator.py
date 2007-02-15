@@ -1,12 +1,10 @@
 #! /usr/bin/env python
 #
-# Simulator - Diode wall simulator
 # Copyright (C) 2006 Thomas Adamcik, Stein Magnus Jodal
 #
 # This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
+# it under the terms of the GNU General Public License version 2
+# as published by the Free Software Foundation.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -31,7 +29,7 @@ import sys
 import time
 
 class Simulator(lib.canvas.canvas.Canvas):
-    """Canvas for the Simulator simulator"""
+    """Canvas for the wall simulator"""
 
     def __init__(self, dw = False, dh = False, ps = False, pd = False):
         # Init mother
@@ -65,16 +63,16 @@ class Simulator(lib.canvas.canvas.Canvas):
 
         # Create window
         self.windowcreated = False
- 
+
     def __createwindow(self):
-        """Create Simulator window"""
- 
+        """Create simulator window"""
+
         # Create window
         pygame.display.init()
-        pygame.display.set_caption('Simulator')
+        pygame.display.set_caption('Ari Simulator')
         self.screen = pygame.display.set_mode(self.__convert((self.dw,
                                                               self.dh)))
-    
+
         # Add panel spacing
         px = 0
         for p in xrange(len(self.config.model) - 1):
@@ -85,7 +83,7 @@ class Simulator(lib.canvas.canvas.Canvas):
             # Add distance to skip the panel spacers
             x = self.__convert(px) + (p * self.paneldistance)
             y = 0
-            
+
             # Get size of panel spacer
             dx = self.paneldistance
             dy = self.__convert(self.dh)
@@ -96,7 +94,7 @@ class Simulator(lib.canvas.canvas.Canvas):
         self.windowcreated = True
 
     def __convert(self, i):
-        """Convert from virtual pixels to Simulator pixels"""
+        """Convert from virtual pixels to simulator pixels"""
 
         if type(i) is tuple:
             (x, y) = i

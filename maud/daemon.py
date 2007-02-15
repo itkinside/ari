@@ -1,16 +1,13 @@
 #! /usr/bin/env python
 #
-# lib - Library for manipulating a diode wall
-#
 # This module is based on the nav.daemon module created for UNINETT AS by
 # Stein Magnus Jodal, so the copyright is theirs:
 #
 # Copyright (C) 2006 UNINETT AS
 #
 # This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
+# it under the terms of the GNU General Public License version 2
+# as published by the Free Software Foundation.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
