@@ -58,106 +58,155 @@ class Tetris(libari.demos.base.Base):
     piece = [
                 [
                     [
-                        [28, 28, 28, 28]
+                        [28, 28, 28, 28, 28, 28, 28, 28],
+                        [28, 28, 28, 28, 28, 28, 28, 28]
                     ],
                     [
-                        [28],
-                        [28],
-                        [28],
-                        [28]
+                        [28, 28],
+                        [28, 28],
+                        [28, 28],
+                        [28, 28],
+                        [28, 28],
+                        [28, 28],
+                        [28, 28],
+                        [28, 28]
                     ]
                 ],
                 [
                     [
-                        [40, 40],
-                        [ 0, 40, 40]
+                        [40, 40, 40, 40],
+                        [40, 40, 40, 40],
+                        [ 0,  0, 40, 40, 40, 40],
+                        [ 0,  0, 40, 40, 40, 40]
                     ],
                     [
-                        [ 0, 40],
+                        [ 0,  0, 40, 40],
+                        [ 0,  0, 40, 40],
+                        [40, 40, 40, 40],
+                        [40, 40, 40, 40],
                         [40, 40],
-                        [40]
+                        [40, 40],
                     ]
                 ],
                 [
                     [
-                        [ 0, 52, 52],
-                        [52, 52]
+                        [ 0,  0, 52, 52, 52, 52],
+                        [ 0,  0, 52, 52, 52, 52],
+                        [52, 52, 52, 52],
+                        [52, 52, 52, 52]
                     ],
                     [
-                        [52],
                         [52, 52],
-                        [ 0, 52]
+                        [52, 52],
+                        [52, 52, 52, 52],
+                        [52, 52, 52, 52],
+                        [ 0,  0, 52, 52],
+                        [ 0,  0, 52, 52]
                     ]
                 ],
                 [
                     [
-                        [64, 64, 64],
-                        [ 0, 64]
+                        [64, 64, 64, 64, 64, 64],
+                        [64, 64, 64, 64, 64, 64],
+                        [ 0,  0, 64, 64],
+                        [ 0,  0, 64, 64]
                     ],
                     [
-                        [ 0, 64],
-                        [64, 64],
-                        [ 0, 64]
+                        [ 0,  0, 64, 64],
+                        [ 0,  0, 64, 64],
+                        [64, 64, 64, 64],
+                        [64, 64, 64, 64],
+                        [ 0,  0, 64, 64],
+                        [ 0,  0, 64, 64]
                     ],
                     [
-                        [ 0, 64],
-                        [64, 64, 64]
+                        [ 0,  0, 64, 64],
+                        [ 0,  0, 64, 64],
+                        [64, 64, 64, 64, 64, 64],
+                        [64, 64, 64, 64, 64, 64]
                     ],
                     [
-                        [64],
-                        [64, 64],
-                        [64]
+                        [64, 64,  0,  0],
+                        [64, 64,  0,  0],
+                        [64, 64, 64, 64],
+                        [64, 64, 64, 64],
+                        [64, 64,  0,  0],
+                        [64, 64,  0,  0]
                     ]
                 ],
                 [
                     [
-                        [76, 76, 76],
-                        [76]
-                    ],
-                    [
+                        [76, 76, 76, 76, 76, 76],
+                        [76, 76, 76, 76, 76, 76],
                         [76, 76],
-                        [ 0, 76],
-                        [ 0, 76]
-                    ],
-                    [
-                        [ 0,  0, 76],
-                        [76, 76, 76]
-                    ],
-                    [
-                        [76],
-                        [76],
                         [76, 76]
+                    ],
+                    [
+                        [76, 76, 76, 76],
+                        [76, 76, 76, 76],
+                        [ 0,  0, 76, 76],
+                        [ 0,  0, 76, 76],
+                        [ 0,  0, 76, 76],
+                        [ 0,  0, 76, 76]
+                    ],
+                    [
+                        [ 0,  0,  0,  0, 76, 76],
+                        [ 0,  0,  0,  0, 76, 76],
+                        [76, 76, 76, 76, 76, 76],
+                        [76, 76, 76, 76, 76, 76]
+                    ],
+                    [
+                        [76, 76,  0,  0],
+                        [76, 76,  0,  0],
+                        [76, 76,  0,  0],
+                        [76, 76,  0,  0],
+                        [76, 76, 76, 76],
+                        [76, 76, 76, 76]
                     ]
                 ],
                 [
                     [
-                        [88, 88, 88],
-                        [ 0,  0, 88]
+                        [88, 88, 88, 88, 88, 88],
+                        [88, 88, 88, 88, 88, 88],
+                        [ 0,  0,  0,  0, 88, 88],
+                        [ 0,  0,  0,  0, 88, 88]
                     ],
                     [
-                        [ 0, 88],
-                        [ 0, 88],
-                        [88, 88]
-                    ],
-                    [
-                        [88],
-                        [88, 88, 88]
+                        [ 0,  0, 88, 88],
+                        [ 0,  0, 88, 88],
+                        [ 0,  0, 88, 88],
+                        [ 0,  0, 88, 88],
+                        [88, 88, 88, 88],
+                        [88, 88, 88, 88]
                     ],
                     [
                         [88, 88],
-                        [88],
-                        [88]
+                        [88, 88],
+                        [88, 88, 88, 88, 88, 88],
+                        [88, 88, 88, 88, 88, 88]
+                    ],
+                    [
+                        [88, 88, 88, 88],
+                        [88, 88, 88, 88],
+                        [88, 88],
+                        [88, 88],
+                        [88, 88],
+                        [88, 88]
                     ]
                 ],
                 [
                     [
-                        [98, 98],
-                        [98, 98]
+                        [98, 98, 98, 98],
+                        [98, 98, 98, 98],
+                        [98, 98, 98, 98],
+                        [98, 98, 98, 98]
                     ]
                 ]
             ]
 
     def prepare(self):
+        if self.sizex % 2 != 0:
+            self.sizex -= 1;
         self.curpiece = random.randint(0, len(self.piece) - 1)
         self.curpiecedir = random.randint(0, len(self.piece[self.curpiece]) - 1)
         self.curpiecex = self.sizex / 2
@@ -225,21 +274,23 @@ class Tetris(libari.demos.base.Base):
                     if self.curpiecedir != self.tardir and random.randint(0, self.movesperdrop * 3) == 0:
                         # FIXME
                         # check for collisions when we rotate?
+                        # check if we can rotate? maybe shape will "collide" if we try to rotate?
+                        # also, when rotating shape may get out of bounds which can cause an error
                         self.curpiecedir = (self.curpiecedir + 1) % len(self.piece[self.curpiece])
                         piecewidth = 1
                         for py in xrange(len(self.piece[self.curpiece][self.curpiecedir])):
                             if len(self.piece[self.curpiece][self.curpiecedir][py]) > piecewidth:
                                 piecewidth = len(self.piece[self.curpiece][self.curpiecedir][py])
-                        if self.curpiecex + piecewidth >= 105:
-                            self.curpiecex -= self.curpiecex + piecewidth - 105
+                        if self.curpiecex + piecewidth >= self.sizex:
+                            self.curpiecex -= self.curpiecex + piecewidth - self.sizex
                     elif self.curpiecex < self.tarx:
                         # FIXME
                         # we'll have to check for collisions to the right
-                        self.curpiecex += 1
+                        self.curpiecex += 2
                     elif self.curpiecex > self.tarx:
                         # FIXME
                         # we'll have to check for collisions to the left
-                        self.curpiecex -= 1
+                        self.curpiecex -= 2
                 self.curpiecey += 1
                 # check if we hit something
                 crash = False
@@ -278,7 +329,7 @@ class Tetris(libari.demos.base.Base):
                                     self.canvas.setpixel(sx, sy2, 0)
                                 self.canvas.update()
                                 self.canvas.flush()
-                                self.sync()
+                                self.sleep()
                                 if norowsleft:
                                     break
                     # fetch a new piece
@@ -287,4 +338,4 @@ class Tetris(libari.demos.base.Base):
                     self.curpiecex = self.sizex / 2
                     self.curpiecey = 0
                     self.findtarget()
-            self.sync()
+            self.sleep()
