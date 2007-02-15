@@ -71,7 +71,7 @@ class Arid:
 
         # Load demos
         demos = self.loaddemos(canvas)
-        playlist = ['stars', 'arrows', 'chess', 'blob', 'plasma']
+        playlist = ['isfit']
 
         # List demos
         if opts['list']:
@@ -156,11 +156,15 @@ class Arid:
         demos['allyourbase'].setup(blmfile='allyourbase.blm')
         demos['ball'] = libari.demos.spritebitmap.SpriteBitmap(canvas)
         demos['ball'].setup(imagefile='ball.xpm', fps=20)
+        demos['behappy'] = libari.demos.spriteblm.SpriteBLM(canvas)
+        demos['behappy'].setup(blmfile='behappy.blm')
         demos['camel'] = libari.demos.spriteblm.SpriteBLM(canvas)
         demos['cometogether'] = libari.demos.spriteblm.SpriteBLM(canvas)
         demos['cometogether'].setup(blmfile='cometogether.blm')
+        demos['isfit'] = libari.demos.spriteblm.SpriteBLM(canvas)
+        demos['isfit'].setup(blmfile='isfitcamel.blm')
         demos['samfundet'] = libari.demos.spritebitmap.SpriteBitmap(canvas)
-        
+
         # Playlist/real demos
         demos['arrows'] = libari.demos.arrows.Arrows(canvas)
         demos['blob'] = libari.demos.blob.Blob(canvas)
