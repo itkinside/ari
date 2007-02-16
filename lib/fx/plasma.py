@@ -33,16 +33,17 @@ class Plasma(lib.fx.base.Base):
         # Precalc
         st = time.time()
         self.plasmas = []
-        if not os.path.isfile('cache/plasma.maud'):
+        cachefilename = 'cache/plasma.pickle'
+        if not os.path.isfile(cachefilename):
             # Precalc frames
             t = 0
             while t <= 2 * math.pi:
                 self.plasmas.append(PlasmaFrame(self.sizex, self.sizey, t))
                 t += 0.03
-            pickle.dump(self.plasmas, open('cache/plasma.maud','w'))
+            pickle.dump(self.plasmas, open(cachefilename, 'w'))
         else:
             # Load saved frames
-            self.plasmas = pickle.load(open('cache/plasma.maud','r'))
+            self.plasmas = pickle.load(open(cachefilename, 'r'))
         print "Precalc: %3.3fs" % (time.time() - st)
 
         self.setfps(15)

@@ -48,7 +48,7 @@ class BMLReader:
        
         """
 
-        cachefilename = 'cache/%s.maud' % filename.replace('/', '_')
+        cachefilename = 'cache/%s.pickle' % filename.replace('/', '_')
 
         if not os.path.isfile(cachefilename):
             frames = self.parse(filename)
