@@ -29,22 +29,22 @@ import os
 class Plasma(lib.fx.base.Base):
     """Plasma demo"""
 
-    def prepare(self):
+    def setup(self):
         # Precalc
-        st = time.time()
         self.plasmas = []
         cachefilename = 'cache/plasma.pickle'
         if not os.path.isfile(cachefilename):
             # Precalc frames
+            st = time.time()
             t = 0
             while t <= 2 * math.pi:
                 self.plasmas.append(PlasmaFrame(self.sizex, self.sizey, t))
                 t += 0.03
             pickle.dump(self.plasmas, open(cachefilename, 'w'))
+            print "Precalc: %3.3fs" % (time.time() - st)
         else:
             # Load saved frames
             self.plasmas = pickle.load(open(cachefilename, 'r'))
-        print "Precalc: %3.3fs" % (time.time() - st)
 
         self.setfps(15)
 
