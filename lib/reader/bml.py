@@ -45,7 +45,7 @@ class BMLReader:
             List of tuples with the following data:
             - Frame duration
             - Frame data as a numarray
-       
+
         """
 
         cachefilename = 'cache/%s.pickle' % filename.replace('/', '_')
@@ -60,7 +60,7 @@ class BMLReader:
     def parse(self, filename):
         """
         Loads and parses a BML file
-        
+
         Input:
             filename    File name of the BML file
 
@@ -68,7 +68,7 @@ class BMLReader:
             List of tuples with the following data:
             - Frame duration
             - Frame data as a numarray
-        
+
         """
 
         # Parse file
@@ -91,17 +91,17 @@ class BMLReader:
 
         # Get bits per channel
         try:
-            bits = int(root.attrib['bits'])
+            bitsperchan = int(root.attrib['bits'])
         except:
-            bits = 1
+            bitsperchan = 1
 
-        # Chars per bit, assuming hexadecimal notation
-        charsperbit = int(math.ceil(math.log(2**bits, 16)))
+        # Get chars per channel, assuming hexadecimal notation
+        charsperchan = int(math.ceil(math.log(2**bitsperchan, 16)))
 
         # Get frame size
         framew = int(root.attrib['width'])
         frameh = int(root.attrib['height'])
-        
+
         frames = []
 
         # Loop over frames
@@ -109,37 +109,44 @@ class BMLReader:
             # Ignore header and other non-frame tags
             if element.tag != 'frame':
                 continue
-            
+
             # Get duration
             duration = int(element.attrib['duration'])
 
             # Init frame
             frame = numarray.zeros((framew, frameh))
-            
+
             # Loop over frame rows
             for y, row in enumerate(element.getchildren()):
-                pixelchars = ''
-                for i, char in enumerate(row.text.strip()):
-                    if (i + 1) % charsperbit == 0:
-                        # Pixel completed
-                        pixelchars += char
-                        pixel = int(pixelchars, 16)
-                        pixelchars = ''
+                row = row.text.strip()
+                pixels = []
+                chanchars = ''
 
-                        # FIXME: Support more than one channel
+                # Loop over pixels
+                for x in range(framew):
+                    pixel = []
 
-                        # Convert to brightness
-                        b = pixel * 99 / (2**bits - 1)
+                    # Loop over channels
+                    for ch in range(channels):
+                        chars = ''
 
-                        # Find x position
-                        x = i / charsperbit
+                        # Loop over chars
+                        for char in range(charsperchan):
+                            chars += row[x*channels*charsperchan + ch + char]
 
-                        # Set pixel brightness
-                        frame[x][y] = b
-                    else:
-                        # Building the pixel value
-                        pixelchars += char
+                        # Convert from hex to int and scale to 8 bits
+                        chan = int(chars, 16)
+                        chan = chan * 255 / (2**bitsperchan - 1)
+                        pixel.append(chan)
 
+                    # Convert to Ari graytones
+                    pixel = sum(pixel) / len(pixel)
+                    frame[x][y] = pixel * 99 / 255
+
+                # Row done
+
+            # Frame done
             frames.append((duration, frame))
 
+        # Movie done
         return frames
