@@ -54,7 +54,7 @@ class Arrows(lib.fx.base.Base):
                             self.canvas.setpixel(x, y, curRow[x])
                         except:
                             pass
-                
+
                 self.canvas.update()
                 self.canvas.flush()
                 step += 1
