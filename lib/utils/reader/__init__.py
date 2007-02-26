@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 #
-# Copyright (C) 2006 Stein Magnus Jodal
+# Copyright (C) 2007 Stein Magnus Jodal
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 2
@@ -15,5 +15,78 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
+#
+# Authors: Stein Magnus Jodal <jodal@samfundet.no>
+#
 
-# Empty placeholder file
+from lib.utils.dict import *
+import os
+import pickle
+
+class Reader:
+    """General file reader"""
+
+    def __init__(self):
+        pass
+
+    def load(self, *args, **kwargs):
+        """
+        Loads a media file, if possible from cache
+
+        Uses pickle to cache and reuse previously loaded media files.
+
+        Input:
+            filepath    File name of the BML file
+
+        Returns:
+            List of tuples with the following data:
+            - Frame duration
+            - Frame data as a numarray
+
+        """
+
+        kwargs = explode_kwargs(kwargs)
+        cachefilename = 'cache/%s.pickle' % kwargs['filepath'].replace('/', '_')
+
+        if not os.path.isfile(cachefilename):
+            frames = self.parse(kwargs=kwargs)
+            pickle.dump(frames, open(cachefilename, 'w'))
+            return frames
+        else:
+            return pickle.load(open(cachefilename, 'r'))
+
+    def parse(self, *args, **kwargs):
+        """
+        Loads and parses a media file
+
+        Identifies the correct reader and loads of the dirty work to it.
+
+        Input:
+            filepath    File name of the BML file
+
+        Returns:
+            List of tuples with the following data:
+            - Frame duration
+            - Frame data as a numarray
+
+        """
+
+        kwargs = explode_kwargs(kwargs)
+        (_, ext) = os.path.splitext(kwargs['filepath'])
+        ext = ext.replace('.', '').lower()
+        reader = None
+
+        if ext == 'bml':
+            import lib.utils.reader.bmlreader
+            reader = lib.utils.reader.bmlreader.BMLReader()
+        elif ext == 'blm':
+            import lib.utils.reader.blmreader
+            reader = lib.utils.reader.blmreader.BLMReader()
+        else:
+            import lib.utils.reader.gdreader
+            reader = lib.utils.reader.gdreader.GDReader()
+
+        return reader.parse(kwargs=kwargs)
+
+class ReaderException(Exception):
+    """Base class for all exceptions raised by readers."""
