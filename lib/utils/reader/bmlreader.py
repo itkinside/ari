@@ -20,59 +20,28 @@
 #
 
 import elementtree.ElementTree as ET
+from lib.utils.dict import *
+from lib.utils.reader import Reader, ReaderException
 import math
 import numarray
-import os
-import pickle
 
-class BMLReader:
+class BMLReader(Reader):
     """Reader for the BlinkenLights Markup Language (BML) format"""
 
     def __init__(self):
+        # Call parent
+        Reader.__init__(self)
+
         # List of supported BML format versions
         self.supports = ['1.0']
 
-    def load(self, filename):
-        """
-        Loads a BML file, if possible from cache
+    def parse(self, *args, **kwargs):
+        """Loads and parses a BML file. See parent for more doc."""
 
-        Uses pickle to cache and reuse previously loaded BML files.
-
-        Input:
-            filename    File name of the BML file
-
-        Returns:
-            List of tuples with the following data:
-            - Frame duration
-            - Frame data as a numarray
-
-        """
-
-        cachefilename = 'cache/%s.pickle' % filename.replace('/', '_')
-
-        if not os.path.isfile(cachefilename):
-            frames = self.parse(filename)
-            pickle.dump(frames, open(cachefilename, 'w'))
-            return frames
-        else:
-            return pickle.load(open(cachefilename, 'r'))
-
-    def parse(self, filename):
-        """
-        Loads and parses a BML file
-
-        Input:
-            filename    File name of the BML file
-
-        Returns:
-            List of tuples with the following data:
-            - Frame duration
-            - Frame data as a numarray
-
-        """
+        kwargs = explode_kwargs(kwargs)
 
         # Parse file
-        tree = ET.parse(filename)
+        tree = ET.parse(kwargs['filepath'])
         root = tree.getroot()
 
         # Get and check version
@@ -81,7 +50,7 @@ class BMLReader:
         except:
             version = '1.0'
         if version not in self.supports:
-            raise "BML version %s not supported!" % version
+            raise ReaderException, 'BML version %s not supported!' % version
 
         # Get number of color channels
         try:
@@ -119,8 +88,6 @@ class BMLReader:
             # Loop over frame rows
             for y, row in enumerate(element.getchildren()):
                 row = row.text.strip()
-                pixels = []
-                chanchars = ''
 
                 # Loop over pixels
                 for x in range(framew):

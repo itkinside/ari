@@ -19,64 +19,31 @@
 # Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
+from lib.utils.dict import *
+from lib.utils.reader import Reader, ReaderException
 import numarray
-import os
-import pickle
 import re
 
-class BLMReader:
+class BLMReader(Reader):
     """Reader for the BlinkenLights Movie (BLM) format"""
 
-    def __init__(self):
-        pass
+    def parse(self, *args, **kwargs):
+        """Loads and parses a BLM file. See parent for more doc."""
 
-    def load(self, filename):
-        """
-        Loads a BLM file, if possible from cache
+        kwargs = explode_kwargs(kwargs)
 
-        Uses pickle to cache and reuse previously loaded BLM files.
-
-        Input:
-            filename    File name of the BLM file
-
-        Returns:
-            List of tuples with the following data:
-            - Frame duration
-            - Frame data as a numarray
-       
-        """
-
-        cachefilename = 'cache/%s.pickle' % filename.replace('/', '_')
-
-        if not os.path.isfile(cachefilename):
-            frames = self.parse(filename)
-            pickle.dump(frames, open(cachefilename, 'w'))
-            return frames
-        else:
-            return pickle.load(open(cachefilename, 'r'))
-
-    def parse(self, filename):
-        """
-        Loads and parses a BLM file
-        
-        Input:
-            filename    File name of the BLM file
-
-        Returns:
-            List of tuples with the following data:
-            - Frame duration
-            - Frame data as a numarray
-        
-        """
+        try:
+            duration = kwargs['duration']
+        except:
+            duration = 0
 
         frames = []
-        duration = 0
         (framew, frameh) = (0, 0)
-        frame = numarray.zeros((framew, frameh))
+        frame = None
 
-        file = open(filename)
+        filehandle = open(kwargs['filepath'])
         try:
-            for line in file:
+            for line in filehandle:
                 # Strip whitespace
                 line = line.strip()
 
@@ -84,7 +51,7 @@ class BLMReader:
                 if line.startswith('# BlinkenLights Movie'):
                     m = re.search(r"(\d+)x(\d+)", line)
                     if m is None or len(m.groups()) < 2:
-                        raise 'Error: Dimensions not found'
+                        raise ReaderException, 'BLM frame dimensions not found'
                     framew = int(m.group(1))
                     frameh = int(m.group(2))
                     continue
@@ -101,7 +68,7 @@ class BLMReader:
                     continue
 
                 # Blank line before first frame: Skip to next line
-                if not duration > 0:
+                if frame is None:
                     continue
 
                 # Blank line: End of frame
@@ -114,6 +81,6 @@ class BLMReader:
                     frame[x][y] = int(value) * 99
                 y += 1
         finally:
-            file.close()
+            filehandle.close()
 
         return frames
