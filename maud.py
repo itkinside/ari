@@ -46,10 +46,9 @@ import lib.fx.fft
 import lib.fx.fire
 import lib.fx.plasma
 import lib.fx.spiral
+import lib.fx.sprite
 import lib.fx.stars
 import lib.fx.tetris
-import lib.fx.spritebitmap
-import lib.fx.spriteblm
 
 class Maud:
     def __init__(self):
@@ -142,33 +141,64 @@ class Maud:
 
         # Test demos
         demos['blank'] = lib.fx.blank.Blank(canvas)
+        demos['blank'].setup()
+
         demos['fade'] = lib.fx.fade.Fade(canvas)
+        demos['fade'].setup()
+
         demos['fft'] = lib.fx.fft.FFT(canvas)
+        demos['fft'].setup()
+
         demos['spiral'] = lib.fx.spiral.Spiral(canvas)
-        demos['arrows'] = lib.fx.arrows.Arrows(canvas)
+        demos['spiral'].setup()
+
         demos['fire'] = lib.fx.fire.Fire(canvas)
+        demos['fire'].setup()
+
         demos['tetris'] = lib.fx.tetris.Tetris(canvas)
+        demos['tetris'].setup()
 
         # Sprite demos
-        demos['allyourbase'] = lib.fx.spriteblm.SpriteBLM(canvas)
-        demos['allyourbase'].setup(blmfile='allyourbase.blm')
-        demos['ball'] = lib.fx.spritebitmap.SpriteBitmap(canvas)
-        demos['ball'].setup(imagefile='ball.xpm', fps=20)
-        demos['behappy'] = lib.fx.spriteblm.SpriteBLM(canvas)
-        demos['behappy'].setup(blmfile='behappy.blm')
-        demos['camel'] = lib.fx.spriteblm.SpriteBLM(canvas)
-        demos['cometogether'] = lib.fx.spriteblm.SpriteBLM(canvas)
-        demos['cometogether'].setup(blmfile='cometogether.blm')
-        demos['isfit'] = lib.fx.spriteblm.SpriteBLM(canvas)
-        demos['isfit'].setup(blmfile='isfitcamel.blm')
-        demos['samfundet'] = lib.fx.spritebitmap.SpriteBitmap(canvas)
+        demos['allyourbase'] = lib.fx.sprite.Sprite(canvas)
+        demos['allyourbase'].setup(filepath='media/blm/allyourbase.blm')
+
+        demos['ball'] = lib.fx.sprite.Sprite(canvas)
+        demos['ball'].setup(filepath='media/bitmap/ball.xpm',
+                            dx=1, dy=1, fps=20)
+
+        demos['behappy'] = lib.fx.sprite.Sprite(canvas)
+        demos['behappy'].setup(filepath='media/blm/behappy.blm')
+
+        demos['camel'] = lib.fx.sprite.Sprite(canvas)
+        demos['camel'].setup(filepath='media/blm/camel.blm',
+                             scale=(30, 30))
+
+        demos['cometogether'] = lib.fx.sprite.Sprite(canvas)
+        demos['cometogether'].setup(filepath='media/blm/cometogether.blm')
+
+        demos['isfit'] = lib.fx.sprite.Sprite(canvas)
+        demos['isfit'].setup(filepath='media/blm/isfitcamel.blm')
+
+        demos['samfundet'] = lib.fx.sprite.Sprite(canvas)
+        demos['samfundet'].setup(filepath='media/bitmap/samfundet-logo.xpm',
+                                 dx=1, dy=1, fps=10, invert=True)
 
         # Playlist/real demos
         demos['arrows'] = lib.fx.arrows.Arrows(canvas)
+        demos['arrows'].setup()
+
         demos['blob'] = lib.fx.blob.Blob(canvas)
+        demos['blob'].setup()
+
         demos['chess'] = lib.fx.chess.Chess(canvas)
+        demos['chess'].setup()
+
         demos['plasma'] = lib.fx.plasma.Plasma(canvas)
+        demos['plasma'].setup()
+
         demos['stars'] = lib.fx.stars.Stars(canvas)
+        demos['stars'].setup()
+
 
         return demos
 
