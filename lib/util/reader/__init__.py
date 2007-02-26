@@ -19,7 +19,7 @@
 # Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
-from lib.utils.dict import *
+from lib.util.dict import *
 import os
 import pickle
 
@@ -77,14 +77,14 @@ class Reader:
         reader = None
 
         if ext == 'bml':
-            import lib.utils.reader.bmlreader
-            reader = lib.utils.reader.bmlreader.BMLReader()
+            import lib.util.reader.bmlreader
+            reader = lib.util.reader.bmlreader.BMLReader()
         elif ext == 'blm':
-            import lib.utils.reader.blmreader
-            reader = lib.utils.reader.blmreader.BLMReader()
+            import lib.util.reader.blmreader
+            reader = lib.util.reader.blmreader.BLMReader()
         else:
-            import lib.utils.reader.gdreader
-            reader = lib.utils.reader.gdreader.GDReader()
+            import lib.util.reader.gdreader
+            reader = lib.util.reader.gdreader.GDReader()
 
         return reader.parse(kwargs=kwargs)
 

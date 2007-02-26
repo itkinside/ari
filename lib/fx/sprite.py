@@ -20,8 +20,8 @@
 #
 
 import lib.fx.base
-import lib.utils.array
-import lib.utils.reader
+import lib.util.array
+import lib.util.reader
 import numarray
 
 class Sprite(lib.fx.base.Base):
@@ -73,7 +73,7 @@ class Sprite(lib.fx.base.Base):
             self.invert = False
 
         # Load media
-        reader = lib.utils.reader.Reader()
+        reader = lib.util.reader.Reader()
         self.frames = reader.load(filepath=filepath,
                                   duration=(1000.0 / self.fps),
                                   invert=self.invert)
@@ -85,14 +85,14 @@ class Sprite(lib.fx.base.Base):
             for i, frame in enumerate(self.frames):
                 (duration, array) = frame
                 self.frames[i] = (duration,
-                                  lib.utils.array.scale(array, ratio));
+                                  lib.util.array.scale(array, ratio));
         elif type(scale) == tuple:
             # Grow to fit box
             (w, h) = scale
             for i, frame in enumerate(self.frames):
                 (duration, array) = frame
                 self.frames[i] = (duration,
-                                  lib.utils.array.growtobox(array, w, h));
+                                  lib.util.array.growtobox(array, w, h));
 
         # Find frame size by looking at first frame
         (_, frame) = self.frames[0]
