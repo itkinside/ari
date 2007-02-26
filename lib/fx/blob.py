@@ -41,6 +41,7 @@ class Blob(lib.fx.base.Base):
 
     def prepare(self):
         self.canvas.blank()
+        self.canvas.update()
 
     def run(self):
         while self.runnable:
@@ -76,7 +77,7 @@ class OneBlob:
         blob[tx][ty] = (blob[tx][ty-1] + blob[tx-1][ty]
             + blob[tx+1][ty] + blob[tx][ty+1]) / 4
         self.blob = blob
-        
+
     def draw(self, x, y, add=1, p=1):
         r = self.r
         x -=r
