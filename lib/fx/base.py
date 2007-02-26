@@ -21,7 +21,6 @@
 #
 
 import lib.config
-from numarray import *
 import sys
 import threading
 import time
@@ -29,7 +28,7 @@ import time
 class Base(threading.Thread):
     """
     Base class for demos
-    
+
     Demos must inherit from this class.
     """
 
@@ -53,8 +52,6 @@ class Base(threading.Thread):
             sizey = self.config.wallsizey
         self.sizex = sizex
         self.sizey = sizey
-        self.image = zeros([sizex, sizey], Int)
-        self.setup()
 
     def setfps(self, fps):
         if type(fps) is int or type(fps) is float:
@@ -100,11 +97,7 @@ class Base(threading.Thread):
         b = 0
         while self.runnable:
             if self.drawable:
-            # Do your magic here
-                if b == 0:
-                    b = 99
-                else:
-                    b = 0
+                # Do your magic here
                 self.canvas.update()
                 self.canvas.flush()
             self.sleep()
