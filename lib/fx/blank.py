@@ -27,4 +27,5 @@ class Blank(lib.fx.base.Base):
     """
 
     def run(self):
-        self.canvas.blank(0)
+        self.canvas.blank()
+        self.canvas.flush()

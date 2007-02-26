@@ -58,7 +58,7 @@ class Fade(lib.fx.base.Base):
                     self.canvas.blank(b)
                     self.canvas.flush()
                     self.sleep()
-                for b in range(self.max, self.min, -self.step): 
+                for b in range(self.max, self.min, -self.step):
                     self.canvas.blank(b)
                     self.canvas.flush()
                     self.sleep()

@@ -41,7 +41,7 @@ class Blob(lib.fx.base.Base):
 
     def prepare(self):
         self.canvas.blank()
-        self.canvas.update()
+        self.canvas.flush()
 
     def run(self):
         while self.runnable:

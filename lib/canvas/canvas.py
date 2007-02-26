@@ -128,7 +128,7 @@ class Canvas:
             self.wall = self.canvas
             self.cw = 0
             self.ch = 0
-        else: 
+        else:
             # Use supplied canvas
             (self.cw, self.ch) = canvas.shape
             if (cx == 0 and cy == 0 and

@@ -63,11 +63,10 @@ class Stars(lib.fx.base.Base):
                                    self.max))
 
     def prepare(self):
-        """Prepare demo run"""
         self.canvas.blank()
+        self.canvas.flush()
 
     def run(self):
-        """The demo"""
         while self.runnable:
             if self.drawable:
                 for i in range(self.starcount):

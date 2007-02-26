@@ -99,13 +99,10 @@ class Sprite(lib.fx.base.Base):
         (self.framew, self.frameh) = frame.shape
 
     def prepare(self):
-        # Blank wall
         self.canvas.blank()
-        self.canvas.update()
+        self.canvas.flush()
 
     def run(self):
-        # The demo
-
         # Start position
         frameindex = 0
         x = self.startx

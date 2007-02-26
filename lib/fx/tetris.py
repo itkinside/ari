@@ -213,6 +213,7 @@ class Tetris(lib.fx.base.Base):
         if self.movesperdrop <= 0:
             self.movesperdrop = 1
         self.canvas.blank()
+        self.canvas.flush()
         self.findtarget()
 
     def findtarget(self):
