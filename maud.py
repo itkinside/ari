@@ -68,7 +68,7 @@ class Maud:
 
         # Load demos
         demos = self.loaddemos(canvas)
-        playlist = ['isfit']
+        playlist = ['plasma', 'arrows', 'blob']
 
         # List demos
         if opts['list']:

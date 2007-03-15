@@ -52,7 +52,7 @@ import os
 import pwd
 import sys
 
-logger = logging.getLogger('ari.arid')
+logger = logging.getLogger('maud.daemon')
 
 class DaemonError(Exception):
     """Base class for all exceptions raised by the daemon lib."""
@@ -62,7 +62,7 @@ class UserNotFoundError(DaemonError):
     """Raised if requested user is not found and we have to run as root."""
 
     def __init__(self, username):
-        DaemonError.__init__()
+        DaemonError.__init__(self)
         self.username = username
 
     def __str__(self):
@@ -73,7 +73,7 @@ class SwitchUserError(DaemonError):
     """Raised if user switch failes, e.g. we don't have enough permissions."""
 
     def __init__(self, olduid, oldgid, newuid, newgid):
-        DaemonError.__init__()
+        DaemonError.__init__(self)
         self.olduid = olduid
         self.oldgid = oldgid
         self.newuid = newuid
@@ -87,7 +87,7 @@ class AlreadyRunningError(DaemonError):
     """Raised if the daemon is alrady running."""
 
     def __init__(self, pid):
-        DaemonError.__init__()
+        DaemonError.__init__(self)
         self.pid = pid
 
     def __str__(self):
@@ -97,7 +97,7 @@ class PidFileReadError(DaemonError):
     """Raised if we can't read a numeric pid from the pidfile."""
 
     def __init__(self, pidfile):
-        DaemonError.__init__()
+        DaemonError.__init__(self)
         self.pidfile = pidfile
 
     def __str__(self):
@@ -107,7 +107,7 @@ class PidFileWriteError(DaemonError):
     """Raised if we can't write the pid to the pidfile."""
 
     def __init__(self, pidfile, error):
-        DaemonError.__init__()
+        DaemonError.__init__(self)
         self.pidfile = pidfile
         self.error = error
 
@@ -119,7 +119,7 @@ class ForkError(DaemonError):
     """Raised if a fork fails."""
 
     def __init__(self, forkno, error):
-        DaemonError.__init__()
+        DaemonError.__init__(self)
         self.forkno = forkno
         self.error = error
 
@@ -305,7 +305,7 @@ def daemonize(pidfile, stdout = '/dev/null', stderr = None,
 
     # Set cleanup function to be run at exit so pidfile always is removed
     atexit.register(daemonexit, pidfile)
-    
+
     # Close newfds before dup2-ing them
     sys.stdout.flush()
     sys.stderr.flush()
