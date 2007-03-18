@@ -46,7 +46,7 @@ class Sprite(lib.fx.base.Base):
         """
 
         # Set defaults
-        self.startx = 0
+        self.startx = 10
         self.starty = 0
         self.framew = 0
         self.frameh = 0
