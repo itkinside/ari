@@ -56,13 +56,14 @@ class Maud:
         opts = self.getopt(args)
 
         # Paths
-        aridir = os.path.expanduser('~/.ari/')
-        if not os.path.isdir(aridir):
-            logger.info("Creating %s", aridir)
-            os.mkdir(aridir, 0755)
-        logfile = aridir + 'ari.log'
-        pidfile = aridir + 'maud.pid'
-        configfile = aridir + 'ari.conf'
+        dotdir = os.path.expanduser('~/.ari/')
+        demodir = os.getcwd() + '/demo/'
+        if not os.path.isdir(dotdir):
+            logger.info("Creating %s", dotdir)
+            os.mkdir(dotdir, 0755)
+        logfile = dotdir + 'ari.log'
+        pidfile = dotdir + 'maud.pid'
+        configfile = dotdir + 'ari.conf'
 
         # Read config from file
         config = ConfigParser.RawConfigParser()
@@ -101,6 +102,12 @@ class Maud:
         except maud.daemon.PidFileWriteError:
             logger.error('Write to PID file failed. Exiting.')
             sys.exit(1)
+
+        # Load demos
+        try:
+            self.loaddemos(demodir)
+        except Exception, e:
+            logger.exception(e)
 
         # Program loop
         try:
@@ -175,6 +182,19 @@ class Maud:
         rootLogger.addHandler(handler)
 
         rootLogger.debug('Logging init complete')
+
+    def loaddemos(self, dir):
+        demonames = []
+        for file in os.listdir(dir):
+            if file.endswith('.py') and not file.startswith('__init__'):
+                demonames.append(file.replace('.py', ''))
+        logger.debug('Demos found: %s', demonames)
+
+        for demo in demonames:
+            logger.debug('Importing demo.%s', demo)
+            __import__('demo.%s' % demo)
+
+        # FIXME: Continue here
 
 if __name__ == '__main__':
     maudInstance = Maud()
