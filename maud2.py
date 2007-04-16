@@ -32,17 +32,17 @@ Usage: maud [-h] [-d] -w|-s
 
 import getopt
 import logging
+import os.path
 import sys
 import time
 import lib.util.dict
 import maud.daemon
 
-debug = False
 logger = logging.getLogger('maud')
 
 class Maud:
     def __init__(self):
-        pass
+        self.debug = False
 
     def main(self, args):
         """Maud main method"""
@@ -54,15 +54,20 @@ class Maud:
         # Get command line arguments
         opts = self.getopt(args)
 
+        # Paths
+        aridir = os.path.expanduser('~') + '/.ari/'
+        if not os.path.isdir(aridir):
+            logger.info("Creating %s", aridir)
+            os.mkdir(aridir, 0755)
+        logfile = aridir + 'maud.log'
+        pidfile = aridir + 'maud.pid'
+
         # FIXME: Read config from file using ConfigParser
-        # FIXME: Support pidfile with relative path
-        logfile = '/home/cassarossa/itk/jodal/projects/ari/maud.log'
-        pidfile = '/home/cassarossa/itk/jodal/projects/ari/maud.pid'
 
         # Init logger
         logconf = {}
         logconf['logfile'] = logfile
-        if debug:
+        if self.debug:
             logconf['level'] = logging.DEBUG
         self.initlogging(kwargs=logconf)
 
@@ -125,7 +130,7 @@ class Maud:
             # Debug
             if opt in ('-d', '--debug'):
                 result['debug'] = True
-                debug = True
+                self.debug = True
 
             # Output
             if opt in ('-w', '--wall'):
