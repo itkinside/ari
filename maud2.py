@@ -30,6 +30,7 @@ Usage: maud [-h] [-d] -w|-s
   -s, --simulator   Output to wall simulator
 """
 
+import ConfigParser
 import getopt
 import logging
 import os.path
@@ -55,24 +56,30 @@ class Maud:
         opts = self.getopt(args)
 
         # Paths
-        aridir = os.path.expanduser('~') + '/.ari/'
+        aridir = os.path.expanduser('~/.ari/')
         if not os.path.isdir(aridir):
             logger.info("Creating %s", aridir)
             os.mkdir(aridir, 0755)
-        logfile = aridir + 'maud.log'
+        logfile = aridir + 'ari.log'
         pidfile = aridir + 'maud.pid'
+        configfile = aridir + 'ari.conf'
 
-        # FIXME: Read config from file using ConfigParser
+        # Read config from file
+        config = ConfigParser.RawConfigParser()
+        config.read(['ari.conf', configfile])
 
         # Init logger
         logconf = {}
         logconf['logfile'] = logfile
-        if self.debug:
+        if opts['debug'] or config.get('maud', 'debug'):
+            self.debug = True
             logconf['level'] = logging.DEBUG
         self.initlogging(kwargs=logconf)
 
         # Switch users
         # FIXME: If root, switch to dedicated user
+        #if os.geteuid() == 0: # If we are root
+        #    maud.daemon.switchuser(username)
 
         # Check if alone
         try:
@@ -97,9 +104,9 @@ class Maud:
 
         # Program loop
         try:
-            # FIXME: Do something
             while True:
-                logger.info('Hi!')
+                logger.debug('Starting loop')
+                # FIXME: Do something
                 time.sleep(60)
         except Exception, e:
             # Log all non-fetched exceptions
@@ -130,7 +137,6 @@ class Maud:
             # Debug
             if opt in ('-d', '--debug'):
                 result['debug'] = True
-                self.debug = True
 
             # Output
             if opt in ('-w', '--wall'):
