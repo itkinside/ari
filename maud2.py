@@ -61,7 +61,7 @@ class Maud:
         if not os.path.isdir(dotdir):
             logger.info("Creating %s", dotdir)
             os.mkdir(dotdir, 0755)
-        logfile = dotdir + 'ari.log'
+        logfile = dotdir + 'maud.log'
         pidfile = dotdir + 'maud.pid'
         configfile = dotdir + 'ari.conf'
 
@@ -105,9 +105,11 @@ class Maud:
 
         # Load demos
         try:
-            self.loaddemos(demodir)
+            demos = self.loaddemos(demodir)
         except Exception, e:
             logger.exception(e)
+        else:
+            demos = []
 
         # Program loop
         try:
@@ -183,18 +185,16 @@ class Maud:
 
         rootLogger.debug('Logging init complete')
 
-    def loaddemos(self, dir):
-        demonames = []
-        for file in os.listdir(dir):
-            if file.endswith('.py') and not file.startswith('__init__'):
-                demonames.append(file.replace('.py', ''))
-        logger.debug('Demos found: %s', demonames)
-
-        for demo in demonames:
-            logger.debug('Importing demo.%s', demo)
-            __import__('demo.%s' % demo)
-
-        # FIXME: Continue here
+    def loaddemos(self, demodir):
+        demos = []
+        for demofile in os.listdir(demodir):
+            if demofile.endswith('.py') and not demofile.startswith('__init__'):
+                demoname = demofile.replace('.py', '')
+                logger.debug('Importing demo.%s', demoname)
+                __import__('demo.%s' % demoname)
+                demoinst = eval('demo.%s.Demo()' % demoname)
+                demos.append(demoinst)
+        return demos
 
 if __name__ == '__main__':
     maudInstance = Maud()
