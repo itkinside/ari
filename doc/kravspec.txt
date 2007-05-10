@@ -1,0 +1,94 @@
+=== Specification of ARI ===
+
+The ari package will consist of three parts,
+
+isadora - The library
+maud - The deamon runned on the server
+angelica - The control client used to make playlists and such.
+
+
+== Braindump == 
+
+koordinatsystem:
+	Koordinatsystemene strekker seg fra top-left.
+
+spilleliste:
+	En spilleliste er en oversikt over demoer som skal kjøres, i hvilken
+	rekkefølge, hvor lenge og med hvilke overganger.
+overganger:
+	Hvordan bytte fra demo til demo.
+	En overgang påvirker hele veggen, da en demo påvirker hele veggen. Vi
+	tror også at overganger på canvas-gruppe-nivå vil fremstå som en
+	hjemmevideo med alt for mange overgangseffekter. Clean and pretty!
+	Eksempler er:
+		- cut
+		- fade
+		- slide
+demo:
+	En demo styrer hele veggen.
+	En demo definerer hvordan et sett av effekter (med hjelpefiler).
+	En demo vil bestå av:
+		- Effekt-spilleliste
+		- Generelle effekter
+		- Egne effekter
+		- Eksterne datarepresentasjoner (bitmaps, animasjoner, XML-filer)
+	En demo skal kunne:
+		- Prepare
+			* Kjøre prepare på effektene.
+		- Start
+			* maud starter demotråden.
+			* demo-tråden starter effekttrådene og gir dem layers i ønsket størrelse.
+		- Play
+			* Start avspilling av demo ved å starte effekter ifølge demoens spilleliste.
+			* For hver frame:
+				+ For hver effekt: hent siste ready-layer
+				+ Sorter layerne etter z-index
+				+ For hver layer:
+					- Et layer kan enten tegnes til
+					  main-canvaset, eller et fake-canvas
+					  som tar for seg fysisk mellomrom, og
+					  så mapper dette til main-canvaset.
+					- Tegningen tar for seg opacity for
+					  hvert layer den legger til på
+					  main-canvaset.
+				+ Flush til vegg/simulator
+		- Stop
+			* Stopper avspilling av demo ved å stoppe effekter.
+		- Quit
+			* Avslutter alle effekt-tråder.
+			* Avslutter demo-tråden.
+effekt:
+	Effekter skal om mulig være generelle og samles i lib.fx-pakken.
+	Effekter som kun vil fungere på en demo, skal legges i demopakken.
+	En effekt skal kunne:
+		- Prepare
+			* Last bilder o.l. som skal brukes.
+		- Start
+			* Starte effektråden.
+		- Play
+			* For hver frame:
+				+ Lag ny temp-layer.
+				+ Tegn til temp-layer.
+				+ Sett ready-layer lik temp-layer.
+		- Stop
+			* Stoppe å tegne frames.
+		- Quit
+			* Avslutte effekttråden.
+layer:
+	Effekter forholder seg kun til layers.
+	Layers mappes ned til canvas på demo/lib-nivå.
+	Et layer har:
+		- størrelse
+		- hensyn til fysisk mellomrom (bool)
+		- globalt offset
+		- z-index
+		- enten a) opacity for hele layeret
+		- piksler
+			- pikselverdi
+			- eller b) opacity for én piksel
+canvas:
+	Canvaset er hele veggen i matriseform.
+	En funksjon for å mappe et layer til canvaset med hensyn til fysisk rom
+	mellom panelene skal finnes.
+fysisk lag:
+	Vegg og/eller simulator. Tegning til begge samtidig ønskes sterkt.
