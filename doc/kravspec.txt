@@ -7,7 +7,7 @@ maud - The deamon runned on the server
 angelica - The control client used to make playlists and such.
 
 
-== Braindump == 
+== Braindump ==
 
 koordinatsystem:
 	Koordinatsystemene strekker seg fra top-left.
