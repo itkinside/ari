@@ -37,7 +37,7 @@ class Base(threading.Thread):
     fps = 25
     lasttime = 0
 
-    def __init__(self, canvas, sizex = -1, sizey = -1):
+    def __init__(self, canvas, sizex=None, sizey=None):
         """
         Input:
             canvas  Canvas to paint on.
@@ -46,12 +46,14 @@ class Base(threading.Thread):
         threading.Thread.__init__(self)
         self.config = lib.config.Config()
         self.canvas = canvas
-        if sizex == -1:
-            sizex = self.config.wallsizex
-        if sizey == -1:
-            sizey = self.config.wallsizey
-        self.sizex = sizex
-        self.sizey = sizey
+        if sizex is None:
+            self.sizex = self.config.wallsizex
+        else:
+            self.sizex = sizex
+        if sizey is None:
+            self.sizey = self.config.wallsizey
+        else:
+            self.sizey = sizey
 
     def setfps(self, fps):
         if type(fps) is int or type(fps) is float:
