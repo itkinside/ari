@@ -22,11 +22,14 @@
 #
 
 import lib.canvas.canvas
+import logging
 import numarray
 import pygame
 from pygame.locals import *
 import sys
 import time
+
+logger = logging.getLogger('simulator')
 
 class Simulator(lib.canvas.canvas.Canvas):
     """Canvas for the wall simulator"""
@@ -122,8 +125,10 @@ class Simulator(lib.canvas.canvas.Canvas):
 
         for event in pygame.event.get():
             if event.type is QUIT:
+                logger.info('Recieved QUIT event')
                 return False
             elif event.type is KEYDOWN and event.key is K_ESCAPE:
+                logger.info('Recieved ESCAPE event')
                 return False
         return True
 
@@ -144,7 +149,7 @@ class Simulator(lib.canvas.canvas.Canvas):
         (x, y) = self.__convert((x, y))
         x = x + self.pd / 2
         y = y + self.pd / 2
-    
+
         # Paint on screen
         self.screen.fill((b, b, b), pygame.Rect(x, y, self.ps, self.ps))
 
@@ -201,7 +206,7 @@ class Simulator(lib.canvas.canvas.Canvas):
         pygame.display.update()
 
         # Calculate FPS
-        print "\rFPS: %8.3f" % (1 / (time.time() - self.time)),
+        #print "\rFPS: %8.3f" % (1 / (time.time() - self.time)),
         self.time = time.time()
 
         # Check events

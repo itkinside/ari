@@ -32,6 +32,7 @@ Usage: maud [-h|-l] [-w|-s [-d demo]]
 """
 
 import getopt
+import logging
 import sys
 
 import lib.canvas.wall
@@ -50,6 +51,11 @@ import lib.fx.sprite
 import lib.fx.stars
 import lib.fx.tetris
 
+logging.basicConfig(
+    format='%(levelname)-5s:%(threadName)s:%(name)s:%(message)s',
+    level=logging.DEBUG, stream=sys.stdout)
+logger = logging.getLogger('maud')
+
 class Maud:
     def __init__(self):
         # Time given to each demo in the playlist
@@ -58,17 +64,21 @@ class Maud:
     def main(self, args):
         # Get command line arguments
         opts = self.getopt(args)
+        logger.debug('Command line options parsed: %s', opts)
 
         # Init canvas
         canvas = None
         if opts['wall']:
+            logger.info('Output canvas: wall')
             canvas = lib.canvas.wall.Wall()
         elif opts['simulator']:
+            logger.info('Output canvas: simulator')
             canvas = lib.canvas.simulator.Simulator()
 
         # Load demos
         demos = self.loaddemos(canvas)
         playlist = ['stars', 'arrows', 'chess', 'blob', 'plasma']
+        logger.debug('Demos loaded')
 
         # List demos
         if opts['list']:
@@ -80,9 +90,11 @@ class Maud:
 
         # Run the demo playlist
         if canvas is not None:
+            logger.debug('Running playlist: %s', playlist)
             self.runplaylist(demos, playlist)
 
         # Exit nicely
+        logger.debug('Main exiting')
         sys.exit(0)
 
     def getopt(self, args):
@@ -237,6 +249,7 @@ class Maud:
             while runnable:
                 for demo in playlist:
                     # Start demo
+                    logger.debug('Starting "%s"', demo)
                     demos[demo].start()
 
                     # Wait for demo. If it exits we will immediately continue
@@ -244,24 +257,28 @@ class Maud:
                         demos[demo].join()
                         return True
                     else:
+                        logger.debug('Waiting for %ds', self.timeout)
                         demos[demo].join(self.timeout)
+                        if demos[demo].isAlive():
+                            logger.debug('Timeout reached')
+                        else:
+                            logger.debug('Thread exited')
 
-                    # Timeout reached, ask it to stop
                     if demos[demo].isAlive():
+                        logger.debug('Stopping "%s"', demo)
                         demos[demo].stop()
                     else:
-                        # Thread has already exited
-                        # (e.g. it's done or ESC was pushed)
+                        logger.debug('Thread done or ESC pushed; stopping playlist loop')
                         runnable = False
                         break
         except KeyboardInterrupt:
-            # Interrupt recieved (Ctrl-C or DEL)
+            logger.info('Interrupt recieved (Ctrl-C or DEL)')
             pass
 
-        # Ask all alive demos to exit
         for demo in demos:
-            if demos[demo].isAlive():
-                demos[demo].exit()
+            if demos[demo].runnable and demos[demo].isAlive():
+                logger.debug('Stopping "%s"', demo)
+                demos[demo].stop()
                 demos[demo].join(2)
 
 if __name__ == '__main__':
