@@ -50,12 +50,12 @@ class Plasma(lib.fx.base.Base):
 
     def run(self):
         t = 0
-        while True:
+        while self.runnable:
             if self.drawable:
                 self.canvas.update(self.plasmas[t].buffer, 0, 0)
                 self.canvas.flush()
                 t += 1
-                if t == len(self.plasmas): 
+                if t == len(self.plasmas):
                     t = 0
                 self.sleep()
 
