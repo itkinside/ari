@@ -21,9 +21,12 @@
 #
 
 import lib.config
+import logging
 import sys
 import threading
 import time
+
+logger = logging.getLogger('lib.fx.base')
 
 class Base(threading.Thread):
     """
@@ -32,7 +35,7 @@ class Base(threading.Thread):
     Demos must inherit from this class.
     """
 
-    runnable = True
+    runnable = False
     drawable = False
     fps = 25
     lasttime = 0
@@ -43,7 +46,6 @@ class Base(threading.Thread):
             canvas  Canvas to paint on.
         """
 
-        threading.Thread.__init__(self)
         self.config = lib.config.Config()
         self.canvas = canvas
         if sizex is None:
@@ -66,15 +68,16 @@ class Base(threading.Thread):
         self.lasttime = time.time()
 
     def start(self):
+        logger.debug('Starting demo/thread')
         self.prepare()
+        threading.Thread.__init__(self)
         self.drawable = True
-        if not self.isAlive():
-            threading.Thread.start(self)
+        self.runnable = True
+        threading.Thread.start(self)
 
     def stop(self):
+        logger.debug('Stopping demo/thread')
         self.drawable = False
-
-    def exit(self):
         self.runnable = False
 
     def setup(self, *args, **kwargs):
