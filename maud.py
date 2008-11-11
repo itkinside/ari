@@ -68,7 +68,7 @@ class Maud:
 
         # Load demos
         demos = self.loaddemos(canvas)
-        playlist = ['plasma', 'arrows', 'blob']
+        playlist = ['stars', 'arrows', 'chess', 'blob', 'plasma']
 
         # List demos
         if opts['list']:
@@ -201,7 +201,6 @@ class Maud:
 
         demos['stars'] = lib.fx.stars.Stars(canvas)
         demos['stars'].setup()
-
 
         return demos
 
