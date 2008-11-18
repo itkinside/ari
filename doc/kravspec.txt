@@ -25,8 +25,8 @@ overganger:
 		- fade
 		- slide
 demo:
-	En demo styrer hele veggen.
-	En demo definerer hvordan et sett av effekter (med hjelpefiler).
+	En demo styrer hele veggen i et gitt tidsrom.
+	En demo definerer hvordan et sett av effekter skal få vise seg frem.
 	En demo vil bestå av:
 		- Effekt-spilleliste
 		- Generelle effekter
