@@ -192,7 +192,7 @@ class Maud:
         demos['isfit'].setup(filepath='media/blm/isfitcamel.blm')
 
         demos['mg'] = lib.fx.sprite.Sprite(canvas)
-        demos['mg'].setup(filepath='media/bitmap/mg2.png')
+        demos['mg'].setup(filepath='media/bitmap/mg2.png', invert=True)
 
         demos['samfundet'] = lib.fx.sprite.Sprite(canvas)
         demos['samfundet'].setup(filepath='media/bitmap/samfundet-logo.xpm',

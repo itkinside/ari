@@ -1,0 +1,45 @@
+#!/bin/sh
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+DIR=/root/ari.mainline
+DAEMON=$DIR/maud.py
+PIDFILE=/var/run/ari.pid
+
+OPTIONS="-w"
+
+test -x $DAEMON || exit 0
+
+case "$1" in
+  start)
+	echo -n "Starting Ari: $DAEMON "
+        if start-stop-daemon --pidfile $PIDFILE --quiet --stop --signal 15 --exec $DAEMON
+	then
+		echo "[already running]"
+	else
+		/sbin/start-stop-daemon -d $DIR -m -b --pidfile $PIDFILE --start --quiet --exec $DAEMON -- $OPTIONS
+		echo "."
+	fi
+	;;
+  stop)
+	echo -n "Stopping Ari: $DAEMON "
+	killall python
+	if start-stop-daemon --pidfile $PIDFILE --quiet --stop --signal 15 --exec $DAEMON
+	then
+		start-stop-daemon --pidfile $PIDFILE --quiet --stop --exec $DAEMON 
+		echo "."
+	else
+		echo "[not running]";
+	fi
+	rm -f $PIDFILE
+	;;
+  force-reload|restart)
+	$0 stop
+	sleep 1
+	$0 start
+	;;
+  *)
+	echo "Usage: /etc/init.d/ari {start|stop|restart|force-reload}"
+	exit 1
+esac
+
+exit 0
