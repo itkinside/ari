@@ -26,7 +26,7 @@ import struct
 class WallNet:
     """Packs and sends updates to the physical wall."""
 
-    def __init__(self, hosts = [], port = 5001):
+    def __init__(self, hosts=None, port=5001):
         """
         Setup the WallNet object.
 
@@ -37,7 +37,10 @@ class WallNet:
         """
 
         # Read input
-        self.hosts = hosts
+        if hosts is not None:
+            self.hosts = hosts
+        else:
+            self.hosts = []
         self.port = port
 
         # Get config object
