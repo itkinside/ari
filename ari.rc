@@ -1,45 +1,74 @@
-#!/bin/sh
+#! /bin/sh
+#
+# rc file for the Ari diode wall controller software.
+# Modelled after the Debian/Ubuntu ntpd rc file.
+#
+# Authors: Stein Magnus Jodal <jodal@samfundet.no>
+#
+### BEGIN INIT INFO
+# Provides:		ari
+# Required-Start:	$network
+# Required-Stop:	$network
+# Default-Start:	2 3 4 5
+# Default-Stop:		1
+# Short-Description:	Start Ari daemon
+### END INIT INFO
 
-PATH=/bin:/usr/bin:/sbin:/usr/sbin
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+. /lib/lsb/init-functions
+
+DESC="Ari server"
+NAME=maud
 DIR=/root/ari.mainline
 DAEMON=$DIR/maud.py
-PIDFILE=/var/run/ari.pid
+PIDFILE=/var/run/$NAME.pid
 
-OPTIONS="-w"
+test -x $DAEMON || exit 5
 
-test -x $DAEMON || exit 0
+if [ -r /etc/default/$NAME ]; then
+	. /etc/default/$NAME
+fi
+
+OPTIONS="$OPTIONS -w"
 
 case "$1" in
-  start)
-	echo -n "Starting Ari: $DAEMON "
-        if start-stop-daemon --pidfile $PIDFILE --quiet --stop --signal 15 --exec $DAEMON
-	then
-		echo "[already running]"
-	else
-		/sbin/start-stop-daemon -d $DIR -m -b --pidfile $PIDFILE --start --quiet --exec $DAEMON -- $OPTIONS
-		echo "."
-	fi
-	;;
-  stop)
-	echo -n "Stopping Ari: $DAEMON "
-	killall python
-	if start-stop-daemon --pidfile $PIDFILE --quiet --stop --signal 15 --exec $DAEMON
-	then
-		start-stop-daemon --pidfile $PIDFILE --quiet --stop --exec $DAEMON 
-		echo "."
-	else
-		echo "[not running]";
-	fi
-	rm -f $PIDFILE
-	;;
-  force-reload|restart)
-	$0 stop
-	sleep 1
-	$0 start
-	;;
-  *)
-	echo "Usage: /etc/init.d/ari {start|stop|restart|force-reload}"
-	exit 1
-esac
+	start)
+		log_daemon_msg "Starting $DESC" $NAME
+		start-stop-daemon --start --quiet --oknodo --pidfile $PIDFILE \
+			--make-pidfile --background --chdir $DIR \
+			--exec $DAEMON -- $OPTIONS
+		log_end_msg $?
+		;;
+	stop)
+		log_daemon_msg "Stopping $DESC" $NAME
+		start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
+		log_end_msg $?
+		rm -f $PIDFILE
+		;;
+        restart|force-reload)
+		$0 stop && sleep 2 && $0 start
+                ;;
+	try-restart)
+		if $0 status >/dev/null; then
+			$0 restart
+		else
+			exit 0
+		fi
+		;;
+        status)
+		pidofproc -p $PIDFILE $DAEMON >/dev/null
+		status=$?
+		if [ $status -eq 0 ]; then
+			log_success_msg "$DESC is running."
+		else
+			log_failure_msg "$DESC is not running."
+		fi
+		exit $status
+                ;;
 
-exit 0
+        *)
+                echo "Usage: $0 {start|stop|restart|try-restart|force-reload|status}" >&2
+                exit 2
+                ;;
+esac
