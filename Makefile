@@ -3,5 +3,5 @@
 default:
 
 clean:
-	rm -f cache/*
+	rm -f cache/*.pickle
 	find . -type f -iname \*.pyc -delete
