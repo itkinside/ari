@@ -20,7 +20,7 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 DESC="Ari server"
 NAME=maud
-DIR=/root/ari.mainline
+DIR=/root/ari
 DAEMON=$DIR/maud.py
 PIDFILE=/var/run/$NAME.pid
 
