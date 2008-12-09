@@ -1,3 +1,11 @@
+!!! WARNING !!!
+
+This file is rather outdated and are just provided for historical reference.
+Please see http://itk.samfundet.no/dok/Ari for any current information.
+
+  -jodal, 2008-12-09
+
+
 === Specification of ARI ===
 
 The ari package will consist of three parts,
