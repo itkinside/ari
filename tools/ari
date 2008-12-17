@@ -20,8 +20,7 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 DESC="Ari server"
 NAME=maud
-DIR=/root/ari
-DAEMON=$DIR/maud.py
+DAEMON=$(which maud.py)
 PIDFILE=/var/run/$NAME.pid
 
 test -x $DAEMON || exit 5
@@ -36,7 +35,7 @@ case "$1" in
 	start)
 		log_daemon_msg "Starting $DESC" $NAME
 		start-stop-daemon --start --quiet --oknodo --pidfile $PIDFILE \
-			--make-pidfile --background --chdir $DIR \
+			--make-pidfile --background \
 			--exec $DAEMON -- $OPTIONS
 		log_end_msg $?
 		;;
