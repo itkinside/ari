@@ -19,7 +19,7 @@
 # Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
-import lib.config
+import ari.config
 import numarray
 
 class Canvas:
@@ -32,7 +32,7 @@ class Canvas:
         """
 
         # Load config
-        self.config = lib.config.Config()
+        self.config = ari.config.Config()
 
         # Local canvas for get/setpixel
         self.canvasw = self.config.wallsizex

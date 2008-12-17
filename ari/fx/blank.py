@@ -19,9 +19,9 @@
 # Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
-import lib.fx.base
+import ari.fx.base
 
-class Blank(lib.fx.base.Base):
+class Blank(ari.fx.base.Base):
     """
     Blank wall and exit.
     """

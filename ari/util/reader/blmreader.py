@@ -19,8 +19,8 @@
 # Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
-from lib.util.dict import *
-from lib.util.reader import Reader, ReaderException
+from ari.util.dict import *
+from ari.util.reader import Reader, ReaderException
 import numarray
 import re
 

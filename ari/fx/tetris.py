@@ -19,10 +19,10 @@
 # Authors: Vidar Wahlberg <canidae@samfundet.no>
 #
 
-import lib.fx.base
+import ari.fx.base
 import random
 
-class Tetris(lib.fx.base.Base):
+class Tetris(ari.fx.base.Base):
     """Tetris!"""
 
     # variables

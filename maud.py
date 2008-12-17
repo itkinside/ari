@@ -35,21 +35,21 @@ import getopt
 import logging
 import sys
 
-import lib.canvas.wall
-import lib.canvas.simulator
+import ari.canvas.wall
+import ari.canvas.simulator
 
-import lib.fx.arrows
-import lib.fx.blank
-import lib.fx.blob
-import lib.fx.chess
-import lib.fx.fade
-import lib.fx.fft
-import lib.fx.fire
-import lib.fx.plasma
-import lib.fx.spiral
-import lib.fx.sprite
-import lib.fx.stars
-import lib.fx.tetris
+import ari.fx.arrows
+import ari.fx.blank
+import ari.fx.blob
+import ari.fx.chess
+import ari.fx.fade
+import ari.fx.fft
+import ari.fx.fire
+import ari.fx.plasma
+import ari.fx.spiral
+import ari.fx.sprite
+import ari.fx.stars
+import ari.fx.tetris
 
 logging.basicConfig(
     format='%(levelname)-5s:%(threadName)s:%(name)s:%(message)s',
@@ -70,10 +70,10 @@ class Maud:
         canvas = None
         if opts['wall']:
             logger.info('Output canvas: wall')
-            canvas = lib.canvas.wall.Wall()
+            canvas = ari.canvas.wall.Wall()
         elif opts['simulator']:
             logger.info('Output canvas: simulator')
-            canvas = lib.canvas.simulator.Simulator()
+            canvas = ari.canvas.simulator.Simulator()
 
         # Load demos
         demos = self.loaddemos(canvas)
@@ -152,66 +152,66 @@ class Maud:
         demos = {}
 
         # Test demos
-        demos['blank'] = lib.fx.blank.Blank(canvas)
+        demos['blank'] = ari.fx.blank.Blank(canvas)
         demos['blank'].setup()
 
-        demos['fade'] = lib.fx.fade.Fade(canvas)
+        demos['fade'] = ari.fx.fade.Fade(canvas)
         demos['fade'].setup()
 
-        demos['fft'] = lib.fx.fft.FFT(canvas)
+        demos['fft'] = ari.fx.fft.FFT(canvas)
         demos['fft'].setup()
 
-        demos['spiral'] = lib.fx.spiral.Spiral(canvas)
+        demos['spiral'] = ari.fx.spiral.Spiral(canvas)
         demos['spiral'].setup()
 
-        demos['fire'] = lib.fx.fire.Fire(canvas)
+        demos['fire'] = ari.fx.fire.Fire(canvas)
         demos['fire'].setup()
 
-        demos['tetris'] = lib.fx.tetris.Tetris(canvas)
+        demos['tetris'] = ari.fx.tetris.Tetris(canvas)
         demos['tetris'].setup()
 
         # Sprite demos
-        demos['allyourbase'] = lib.fx.sprite.Sprite(canvas)
+        demos['allyourbase'] = ari.fx.sprite.Sprite(canvas)
         demos['allyourbase'].setup(filepath='media/blm/allyourbase.blm')
 
-        demos['ball'] = lib.fx.sprite.Sprite(canvas)
+        demos['ball'] = ari.fx.sprite.Sprite(canvas)
         demos['ball'].setup(filepath='media/bitmap/ball.xpm',
                             dx=1, dy=1, fps=20)
 
-        demos['behappy'] = lib.fx.sprite.Sprite(canvas)
+        demos['behappy'] = ari.fx.sprite.Sprite(canvas)
         demos['behappy'].setup(filepath='media/blm/behappy.blm')
 
-        demos['camel'] = lib.fx.sprite.Sprite(canvas)
+        demos['camel'] = ari.fx.sprite.Sprite(canvas)
         demos['camel'].setup(filepath='media/blm/camel.blm',
                              scale=(30, 30))
 
-        demos['cometogether'] = lib.fx.sprite.Sprite(canvas)
+        demos['cometogether'] = ari.fx.sprite.Sprite(canvas)
         demos['cometogether'].setup(filepath='media/blm/cometogether.blm')
 
-        demos['isfit'] = lib.fx.sprite.Sprite(canvas)
+        demos['isfit'] = ari.fx.sprite.Sprite(canvas)
         demos['isfit'].setup(filepath='media/blm/isfitcamel.blm')
 
-        demos['mg'] = lib.fx.sprite.Sprite(canvas)
+        demos['mg'] = ari.fx.sprite.Sprite(canvas)
         demos['mg'].setup(filepath='media/bitmap/mg2.png', invert=True)
 
-        demos['samfundet'] = lib.fx.sprite.Sprite(canvas)
+        demos['samfundet'] = ari.fx.sprite.Sprite(canvas)
         demos['samfundet'].setup(filepath='media/bitmap/samfundet-logo.xpm',
                                  dx=1, dy=1, fps=10, invert=True)
 
         # Playlist/real demos
-        demos['arrows'] = lib.fx.arrows.Arrows(canvas)
+        demos['arrows'] = ari.fx.arrows.Arrows(canvas)
         demos['arrows'].setup()
 
-        demos['blob'] = lib.fx.blob.Blob(canvas)
+        demos['blob'] = ari.fx.blob.Blob(canvas)
         demos['blob'].setup()
 
-        demos['chess'] = lib.fx.chess.Chess(canvas)
+        demos['chess'] = ari.fx.chess.Chess(canvas)
         demos['chess'].setup()
 
-        demos['plasma'] = lib.fx.plasma.Plasma(canvas)
+        demos['plasma'] = ari.fx.plasma.Plasma(canvas)
         demos['plasma'].setup()
 
-        demos['stars'] = lib.fx.stars.Stars(canvas)
+        demos['stars'] = ari.fx.stars.Stars(canvas)
         demos['stars'].setup()
 
         return demos

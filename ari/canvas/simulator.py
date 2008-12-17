@@ -21,7 +21,7 @@
 #          Vidar Wahlberg <canidae@samfundet.no>
 #
 
-import lib.canvas.canvas
+import ari.canvas.canvas
 import logging
 import numarray
 import pygame
@@ -31,12 +31,12 @@ import time
 
 logger = logging.getLogger('simulator')
 
-class Simulator(lib.canvas.canvas.Canvas):
+class Simulator(ari.canvas.canvas.Canvas):
     """Canvas for the wall simulator"""
 
     def __init__(self, dw = False, dh = False, ps = False, pd = False):
         # Init mother
-        lib.canvas.canvas.Canvas.__init__(self)
+        ari.canvas.canvas.Canvas.__init__(self)
 
         # Prepare FPS calculation
         self.time = 0
@@ -136,7 +136,7 @@ class Simulator(lib.canvas.canvas.Canvas):
         """For doc, see Canvas"""
 
         # Call mother
-        b = lib.canvas.canvas.Canvas.setpixel(self, x, y, b, o)
+        b = ari.canvas.canvas.Canvas.setpixel(self, x, y, b, o)
 
         # Create window
         if not self.windowcreated:
@@ -157,7 +157,7 @@ class Simulator(lib.canvas.canvas.Canvas):
         """For doc, see Canvas"""
 
         # Call mother
-        lib.canvas.canvas.Canvas.update(self, canvas, cx, cy)
+        ari.canvas.canvas.Canvas.update(self, canvas, cx, cy)
 
         # Create window
         if not self.windowcreated:

@@ -19,14 +19,14 @@
 # Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
-import lib.fx.base
+import ari.fx.base
 import math
 import numarray
 import time
 import pickle
 import os
 
-class Plasma(lib.fx.base.Base):
+class Plasma(ari.fx.base.Base):
     """Plasma demo"""
 
     def setup(self):

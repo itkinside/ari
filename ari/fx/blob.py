@@ -20,11 +20,11 @@
 #          Stein Magnus Jodal <jodal@samfundet.no>
 #
 
-import lib.fx.base
+import ari.fx.base
 from Numeric import zeros
 from random import randint
 
-class Blob(lib.fx.base.Base):
+class Blob(ari.fx.base.Base):
     """Blob demo"""
 
     def setup(self):

@@ -19,12 +19,12 @@
 # Authors: Vidar Wahlberg <canidae@samfundet.no>
 #
 
-import lib.fx.base
+import ari.fx.base
 import array
 import numarray
 import numarray.fft
 
-class FFT(lib.fx.base.Base):
+class FFT(ari.fx.base.Base):
     """A histogrammy demo reflecting the music"""
 
     def run(self):

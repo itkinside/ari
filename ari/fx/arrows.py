@@ -19,9 +19,9 @@
 # Authors: Kristian Klette <klette@samfundet.no>
 #
 
-import lib.fx.base
+import ari.fx.base
 
-class Arrows(lib.fx.base.Base):
+class Arrows(ari.fx.base.Base):
     """A test to see how slow Python is"""
 
     def buildRow(self, yRow, step):

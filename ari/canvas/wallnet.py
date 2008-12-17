@@ -19,7 +19,7 @@
 # Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
-import lib.config
+import ari.config
 import socket
 import struct
 
@@ -44,7 +44,7 @@ class WallNet:
         self.port = port
 
         # Get config object
-        self.config = lib.config.Config()
+        self.config = ari.config.Config()
 
         # Init UDP socket
         self.udpsock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

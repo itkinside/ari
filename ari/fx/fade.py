@@ -19,9 +19,9 @@
 # Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
-import lib.fx.base
+import ari.fx.base
 
-class Fade(lib.fx.base.Base):
+class Fade(ari.fx.base.Base):
     """Fade between to brightness values."""
 
     def setup(self, min = 0, max = 99, step = 3):

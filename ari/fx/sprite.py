@@ -19,12 +19,12 @@
 # Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
-import lib.fx.base
-import lib.util.array
-import lib.util.reader
+import ari.fx.base
+import ari.util.array
+import ari.util.reader
 import numarray
 
-class Sprite(lib.fx.base.Base):
+class Sprite(ari.fx.base.Base):
     """
     Draw sprite image at wall. This is not a demo, but a framework for other
     sprite demos.
@@ -73,7 +73,7 @@ class Sprite(lib.fx.base.Base):
             self.invert = False
 
         # Load media
-        reader = lib.util.reader.Reader()
+        reader = ari.util.reader.Reader()
         self.frames = reader.load(filepath=filepath,
                                   duration=(1000.0 / self.fps),
                                   invert=self.invert)
@@ -85,14 +85,14 @@ class Sprite(lib.fx.base.Base):
             for i, frame in enumerate(self.frames):
                 (duration, array) = frame
                 self.frames[i] = (duration,
-                                  lib.util.array.scale(array, ratio));
+                                  ari.util.array.scale(array, ratio));
         elif type(scale) == tuple:
             # Grow to fit box
             (w, h) = scale
             for i, frame in enumerate(self.frames):
                 (duration, array) = frame
                 self.frames[i] = (duration,
-                                  lib.util.array.growtobox(array, w, h));
+                                  ari.util.array.growtobox(array, w, h));
 
         # Find frame size by looking at first frame
         (_, frame) = self.frames[0]

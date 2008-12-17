@@ -20,8 +20,8 @@
 #
 
 import elementtree.ElementTree as ET
-from lib.util.dict import *
-from lib.util.reader import Reader, ReaderException
+from ari.util.dict import *
+from ari.util.reader import Reader, ReaderException
 import math
 import numarray
 

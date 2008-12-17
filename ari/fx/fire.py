@@ -19,7 +19,7 @@
 # Authors: Kristian Klette <klette@samfundet.no>
 #
 
-import lib.fx.base
+import ari.fx.base
 import random
 
 class Fireball:
@@ -51,7 +51,7 @@ class Fireball:
             self.__init__(self.col, self.canvas)
 
 
-class Fire(lib.fx.base.Base):
+class Fire(ari.fx.base.Base):
     """A test to see how slow Python is"""
 
     def setup(self):

@@ -20,9 +20,9 @@
 #
 
 import random
-import lib.fx.base
+import ari.fx.base
 
-class Stars(lib.fx.base.Base):
+class Stars(ari.fx.base.Base):
     """A heaven of stars"""
 
     def setup(self, min = 1, max = 99, stars = 200):

@@ -20,9 +20,9 @@
 #
 
 import random
-import lib.fx.base
+import ari.fx.base
 
-class Chess(lib.fx.base.Base):
+class Chess(ari.fx.base.Base):
     """A flashy chess game"""
 
     def setup(self, min = 0, max = 99, blocksize = False):

@@ -19,10 +19,10 @@
 # Authors: Vidar Wahlberg <canidae@samfundet.no>
 #
 
-import lib.fx.base
+import ari.fx.base
 import math
 
-class Spiral(lib.fx.base.Base):
+class Spiral(ari.fx.base.Base):
     """A spiral!"""
 
     def findxy(self, n):

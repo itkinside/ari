@@ -20,13 +20,13 @@
 #          Vidar Wahlberg <canidae@samfundet.no>
 #
 
-import lib.config
+import ari.config
 import logging
 import sys
 import threading
 import time
 
-logger = logging.getLogger('lib.fx.base')
+logger = logging.getLogger('ari.fx.base')
 
 class Base(threading.Thread):
     """
@@ -46,7 +46,7 @@ class Base(threading.Thread):
             canvas  Canvas to paint on.
         """
 
-        self.config = lib.config.Config()
+        self.config = ari.config.Config()
         self.canvas = canvas
         if sizex is None:
             self.sizex = self.config.wallsizex

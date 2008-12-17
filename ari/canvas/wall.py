@@ -19,10 +19,10 @@
 # Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
-import lib.canvas.canvas
-import lib.canvas.wallnet
+import ari.canvas.canvas
+import ari.canvas.wallnet
 
-class Wall(lib.canvas.canvas.Canvas):
+class Wall(ari.canvas.canvas.Canvas):
     """Canvas for the physical wall"""
 
     def __init__(self):
@@ -32,10 +32,10 @@ class Wall(lib.canvas.canvas.Canvas):
         """
 
         # Init mother
-        lib.canvas.canvas.Canvas.__init__(self)
+        ari.canvas.canvas.Canvas.__init__(self)
 
         # Setup output
-        self.output = lib.canvas.wallnet.WallNet()
+        self.output = ari.canvas.wallnet.WallNet()
 
     def __getallboards(self):
         """
@@ -60,7 +60,7 @@ class Wall(lib.canvas.canvas.Canvas):
         """For doc, see Canvas"""
 
         # Call mother
-        lib.canvas.canvas.Canvas.update(self, canvas, cx, cy)
+        ari.canvas.canvas.Canvas.update(self, canvas, cx, cy)
 
     def flush(self):
         """For doc, see Canvas"""
