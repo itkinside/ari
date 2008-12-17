@@ -1,4 +1,48 @@
-Ari - a light fontain implementation
-====================================
+Ari - Controlling system for animations on a LED wall
+=====================================================
 
-See http://itk.samfundet.no/dok/Ari for more information.
+Generally, see http://itk.samfundet.no/dok/Ari for information on Ari.
+
+
+Installing
+----------
+
+1. Install all dependencies, as found in docs/requirements.txt.
+
+   On Debian systems, the following should suffice:
+
+	sudo aptitude install python-numarray python-gd \
+		python-numeric python-pygame
+
+   Alternatively, the docs/requirements.txt file can maybe be used by `pip` to
+   install the needed libraries.
+
+2. Install Python library, executable and init.d script:
+
+	sudo python setup.py install
+
+
+Running as a daemon
+-------------------
+
+To run Ari as a daemon, painting to the LED wall:
+
+1. To make Ari start at boot, activate the init.d script:
+
+	sudo update-rc.d ari defaults
+
+2. Start ari using the init.d script:
+
+	sudo invoke-rc.d ari start
+
+
+Running the simulator
+---------------------
+
+To run Ari using the built-in simulator, run:
+
+	maud.py --simulator
+
+To get more help on how to use the maud.py command, run:
+
+	maud.py --help
