@@ -24,9 +24,13 @@ def fullsplit(path, result=None):
 for scheme in INSTALL_SCHEMES.values():
     scheme['data'] = scheme['purelib']
 
-# Find all packages and data files
+# Compile the list of packages available, because distutils doesn't have
+# an easy way to do this.
 packages = []
 data_files = [('/etc/init.d', ['tools/ari'])]
+root_dir = os.path.dirname(__file__)
+if root_dir != '':
+    os.chdir(root_dir)
 ari_dir = 'ari'
 for dirpath, dirnames, filenames in os.walk(ari_dir):
     for i, dirname in enumerate(dirnames):
