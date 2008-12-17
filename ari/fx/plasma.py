@@ -32,7 +32,7 @@ class Plasma(ari.fx.base.Base):
     def setup(self):
         # Precalc
         self.plasmas = []
-        cachefilename = 'cache/plasma.pickle'
+        cachefilename = '%s/plasma.pickle' % self.config.cachedir
         if not os.path.isfile(cachefilename):
             # Precalc frames
             st = time.time()

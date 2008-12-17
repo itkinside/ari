@@ -33,8 +33,10 @@ Usage: maud [-h|-l] [-w|-s [-d demo]]
 
 import getopt
 import logging
+import os
 import sys
 
+import ari
 import ari.canvas.wall
 import ari.canvas.simulator
 
@@ -50,6 +52,9 @@ import ari.fx.spiral
 import ari.fx.sprite
 import ari.fx.stars
 import ari.fx.tetris
+
+# To make media lookup always work
+os.chdir(os.path.dirname(ari.__file__))
 
 logging.basicConfig(
     format='%(levelname)-5s:%(threadName)s:%(name)s:%(message)s',

@@ -19,6 +19,7 @@
 # Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
+import ari.config
 from ari.util.dict import *
 import os
 import pickle
@@ -27,7 +28,7 @@ class Reader:
     """General file reader"""
 
     def __init__(self):
-        pass
+        self.config = ari.config.Config()
 
     def load(self, *args, **kwargs):
         """
@@ -46,7 +47,10 @@ class Reader:
         """
 
         kwargs = explode_kwargs(kwargs)
-        cachefilename = 'cache/%s.pickle' % kwargs['filepath'].replace('/', '_')
+        cachefilename = '%s/%s.pickle' % (
+            self.config.cachedir,
+            kwargs['filepath'].replace('/', '_'),
+        )
 
         if not os.path.isfile(cachefilename):
             frames = self.parse(kwargs=kwargs)

@@ -19,6 +19,9 @@
 # Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
+import os
+import tempfile
+
 class Config:
     """The config file"""
 
@@ -152,3 +155,8 @@ class Config:
 
             if self.model[p]['height'] * self.boardsizey > self.wallsizey:
                 self.wallsizey = self.model[p]['height'] * self.boardsizey
+
+        # Setup directory for cache files
+        self.cachedir = '%s/ari_cache' % tempfile.gettempdir()
+        if not os.path.isdir(self.cachedir):
+            os.mkdir(self.cachedir)
