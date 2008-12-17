@@ -29,7 +29,7 @@ if [ -r /etc/default/$NAME ]; then
 	. /etc/default/$NAME
 fi
 
-OPTIONS="$OPTIONS -w"
+OPTIONS="$OPTIONS --wall"
 
 case "$1" in
 	start)
