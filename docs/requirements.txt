@@ -1,0 +1,4 @@
+numarray
+gd
+numeric
+pygame
