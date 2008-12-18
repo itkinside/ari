@@ -1,7 +1,34 @@
-Ari - Controlling system for animations on a LED wall
-=====================================================
+Ari
+===
 
-Generally, see http://itk.samfundet.no/dok/Ari for information on Ari.
+
+What is it?
+-----------
+
+Ari is a controlling system for animations on a LED wall, specifically
+developed to manage the LED wall in ``Bodegaen'' location of the student
+society in Tronheim, Norway.
+
+Hopefully, it may be possible to use the system for similar installations, like
+the one at the Department of Computer and Information Science at the Norwegian
+University of Science and Technology.
+
+For more information on Ari, please refer to <http://itk.samfundet.no/dok/Ari>.
+
+
+License
+-------
+
+Ari is made publicly available under the terms of the GNU General Public
+License version 2. All contributions are the property of their respective
+contributors.
+
+
+Authors
+-------
+
+A list of persons who have contributed to the development of Ari is available
+in docs/AUTHORS.
 
 
 Installing
@@ -14,10 +41,10 @@ Installing
 	sudo aptitude install python-numarray python-gd \
 		python-numeric python-pygame
 
-   Alternatively, the docs/requirements.txt file can maybe be used by `pip` to
-   install the needed libraries.
+   Alternatively, the docs/requirements.txt file can maybe be used by ``pip''
+   to install the needed libraries.
 
-2. Install Python library, executable and init.d script:
+2. Install the Ari library, executable and init.d script:
 
 	sudo python setup.py install
 
@@ -46,3 +73,4 @@ To run Ari using the built-in simulator, run:
 To get more help on how to use the maud.py command, run:
 
 	maud.py --help
+
