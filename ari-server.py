@@ -20,9 +20,9 @@
 #
 
 """
-Maud - Diode wall demo player daemon
+Ari server -- Controlling system for animations on a LED wall
 
-Usage: maud [-h|-l] [-w|-s [-d demo]]
+Usage: ari-server [-h|-l] [-w|-s [-d demo]]
 
   -h, --help        Show this help text
   -l, --list        List loaded demos
@@ -59,9 +59,9 @@ os.chdir(os.path.dirname(ari.__file__))
 logging.basicConfig(
     format='%(levelname)-5s:%(threadName)s:%(name)s:%(message)s',
     level=logging.DEBUG, stream=sys.stdout)
-logger = logging.getLogger('maud')
+logger = logging.getLogger('ari-server')
 
-class Maud:
+class AriServer:
     def __init__(self):
         # Time given to each demo in the playlist
         self.timeout = 10
@@ -287,5 +287,5 @@ class Maud:
                 demos[demo].join(2)
 
 if __name__ == '__main__':
-    maud = Maud()
-    maud.main(sys.argv[1:])
+    ari_server = AriServer()
+    ari_server.main(sys.argv[1:])

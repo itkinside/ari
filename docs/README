@@ -68,9 +68,9 @@ Running the simulator
 
 To run Ari using the built-in simulator, run:
 
-	maud.py --simulator
+	ari-server.py --simulator
 
-To get more help on how to use the maud.py command, run:
+To get more help on how to use the ari-server.py command, run:
 
-	maud.py --help
+	ari-server.py --help
 

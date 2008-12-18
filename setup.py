@@ -1,5 +1,12 @@
 #! /usr/bin/env python
 
+"""
+distutils installation script for Ari
+
+Parts of this script are taken from the distutils script for Django.
+
+"""
+
 from distutils.core import setup
 from distutils.command.install import INSTALL_SCHEMES
 import os
@@ -27,7 +34,7 @@ for scheme in INSTALL_SCHEMES.values():
 # Compile the list of packages available, because distutils doesn't have
 # an easy way to do this.
 packages = []
-data_files = [('/etc/init.d', ['tools/ari'])]
+data_files = []
 root_dir = os.path.dirname(__file__)
 if root_dir != '':
     os.chdir(root_dir)
@@ -53,6 +60,6 @@ setup(
     license = 'GPLv2',
 
     packages = packages,
-    data_files = data_files,
-    scripts = ['maud.py'],
+    data_files = [('/etc/init.d', ['tools/ari'])] + data_files,
+    scripts = ['ari-server.py'],
 )

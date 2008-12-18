@@ -19,8 +19,8 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 . /lib/lsb/init-functions
 
 DESC="Ari server"
-NAME=maud
-DAEMON=$(which maud.py)
+NAME="ari-server"
+DAEMON=$(which ari-server.py)
 PIDFILE=/var/run/$NAME.pid
 
 test -x $DAEMON || exit 5
