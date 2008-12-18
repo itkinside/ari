@@ -3,7 +3,6 @@
 default:
 
 clean:
-	rm -f cache/*.pickle
 	find . -type f -iname \*.pyc -delete
 
 distclean: clean
