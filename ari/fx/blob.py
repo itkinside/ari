@@ -21,14 +21,14 @@
 #
 
 import ari.fx.base
-from Numeric import zeros
+from numpy import zeros
 from random import randint
 
 class Blob(ari.fx.base.Base):
     """Blob demo"""
 
     def setup(self):
-        self.colors = zeros((self.sizex, self.sizey))
+        self.colors = zeros((self.sizex, self.sizey), dtype=int)
         self.blob = OneBlob(5, self.sizex, self.sizey, self.colors, self.canvas)
         self.i1 = Iter(randint(0, self.sizex), randint(0, self.sizey),
             self.sizex, self.sizey, self.blob, self.canvas)
@@ -60,7 +60,7 @@ class OneBlob:
         self.canvas = canvas
         x = r
         y = r
-        blob = zeros((r*2, r*2))
+        blob = zeros((r*2, r*2), dtype=int)
         tx = 0
         ty = 0
 

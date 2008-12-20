@@ -39,7 +39,7 @@ Installing
    On Debian systems, the following should suffice:
 
 	sudo aptitude install python-numarray python-gd \
-		python-numeric python-pygame
+		python-numpy python-pygame
 
    Alternatively, the docs/requirements.txt file can maybe be used by ``pip''
    to install the needed libraries.

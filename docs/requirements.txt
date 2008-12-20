@@ -1,4 +1,4 @@
-numarray
 gd
-numeric
+numarray
+numpy
 pygame
