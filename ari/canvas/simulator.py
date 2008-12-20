@@ -21,13 +21,13 @@
 #          Vidar Wahlberg <canidae@samfundet.no>
 #
 
-import ari.canvas.canvas
 import logging
-import numarray
 import pygame
 from pygame.locals import *
 import sys
 import time
+
+import ari.canvas.canvas
 
 logger = logging.getLogger('simulator')
 

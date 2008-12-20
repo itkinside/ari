@@ -19,10 +19,11 @@
 # Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
+import numpy
+
 import ari.fx.base
 import ari.util.array
 import ari.util.reader
-import numarray
 
 class Sprite(ari.fx.base.Base):
     """
@@ -111,7 +112,7 @@ class Sprite(ari.fx.base.Base):
         dy = self.dy
 
         # Blanking frame
-        blankframe = numarray.zeros((self.framew, self.frameh))
+        blankframe = numpy.zeros((self.framew, self.frameh), dtype=int)
 
         while self.runnable:
             if self.drawable:

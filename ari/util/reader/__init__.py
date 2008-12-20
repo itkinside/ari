@@ -19,10 +19,11 @@
 # Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
-import ari.config
-from ari.util.dict import *
 import os
 import pickle
+
+import ari.config
+from ari.util.dict import *
 
 class Reader:
     """General file reader"""
@@ -42,7 +43,7 @@ class Reader:
         Returns:
             List of tuples with the following data:
             - Frame duration
-            - Frame data as a numarray
+            - Frame data as a array
 
         """
 
@@ -71,7 +72,7 @@ class Reader:
         Returns:
             List of tuples with the following data:
             - Frame duration
-            - Frame data as a numarray
+            - Frame data as a array
 
         """
 

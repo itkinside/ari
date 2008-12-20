@@ -20,10 +20,11 @@
 #
 
 import gd
+import math
+import numpy
+
 from ari.util.dict import *
 from ari.util.reader import Reader, ReaderException
-import math
-import numarray
 
 class GDReader(Reader):
     """Reader for GD supported formats"""
@@ -49,7 +50,7 @@ class GDReader(Reader):
         frames = []
         (framew, frameh) = image.size()
 
-        frame = numarray.zeros((framew, frameh))
+        frame = numpy.zeros((framew, frameh), dtype=int)
         colormap = {}
 
         # Convert image to brightness values

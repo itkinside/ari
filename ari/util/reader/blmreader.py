@@ -19,10 +19,11 @@
 # Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
+import numpy
+import re
+
 from ari.util.dict import *
 from ari.util.reader import Reader, ReaderException
-import numarray
-import re
 
 class BLMReader(Reader):
     """Reader for the BlinkenLights Movie (BLM) format"""
@@ -63,7 +64,7 @@ class BLMReader(Reader):
                 # Frame duration line: Start of frame
                 if line.startswith('@'):
                     duration = int(line.replace('@', ''))
-                    frame = numarray.zeros((framew, frameh))
+                    frame = numpy.zeros((framew, frameh), dtype=int)
                     y = 0
                     continue
 

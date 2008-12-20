@@ -19,12 +19,13 @@
 # Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
-import ari.fx.base
 import math
-import numarray
+import numpy
 import time
 import pickle
 import os
+
+import ari.fx.base
 
 class Plasma(ari.fx.base.Base):
     """Plasma demo"""
@@ -63,7 +64,7 @@ class PlasmaFrame:
     def __init__(self, sx, sy, step):
         self.sx = sx
         self.sy = sy
-        self.buffer = numarray.zeros((self.sx, self.sy))
+        self.buffer = numpy.zeros((self.sx, self.sy), dtype=int)
         self.generate(step)
 
     def generate(self, timervalue):

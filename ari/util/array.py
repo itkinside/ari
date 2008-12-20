@@ -20,10 +20,10 @@
 #
 
 import math
-import numarray
+import numpy
 
 def growtobox(array, boxw, boxh):
-    """Grow numarray to fill box while keeping aspect ratio"""
+    """Grow array to fill box while keeping aspect ratio"""
 
     # Find max scale ratio
     (oldw, oldh) = array.shape
@@ -40,7 +40,7 @@ def growtobox(array, boxw, boxh):
     return res
 
 def scale(array, ratio):
-    """Scale numarray with given ratio"""
+    """Scale array with given ratio"""
 
     # Growth not possible, return array
     if ratio == 1:
@@ -50,7 +50,7 @@ def scale(array, ratio):
     (oldw, oldh) = array.shape
     resw = oldw * ratio
     resh = oldh * ratio
-    res = numarray.zeros((resw, resh))
+    res = numpy.zeros((resw, resh), dtype=int)
 
     # Scale old array to new array
     for x in range(resw):

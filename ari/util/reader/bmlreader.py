@@ -20,10 +20,11 @@
 #
 
 import elementtree.ElementTree as ET
+import math
+import numpy
+
 from ari.util.dict import *
 from ari.util.reader import Reader, ReaderException
-import math
-import numarray
 
 class BMLReader(Reader):
     """Reader for the BlinkenLights Markup Language (BML) format"""
@@ -83,7 +84,7 @@ class BMLReader(Reader):
             duration = int(element.attrib['duration'])
 
             # Init frame
-            frame = numarray.zeros((framew, frameh))
+            frame = numpy.zeros((framew, frameh), dtype=int)
 
             # Loop over frame rows
             for y, row in enumerate(element.getchildren()):

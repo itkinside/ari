@@ -19,8 +19,9 @@
 # Authors: Stein Magnus Jodal <jodal@samfundet.no>
 #
 
+import numpy
+
 import ari.config
-import numarray
 
 class Canvas:
     """Interface for modules implementing a canvas"""
@@ -37,7 +38,7 @@ class Canvas:
         # Local canvas for get/setpixel
         self.canvasw = self.config.wallsizex
         self.canvash = self.config.wallsizey
-        self.canvas = numarray.zeros((self.canvasw, self.canvash))
+        self.canvas = numpy.zeros((self.canvasw, self.canvash), dtype=int)
 
         # What is displayed at the wall right now
         self.wall = self.canvas
@@ -162,8 +163,8 @@ class Canvas:
         """
 
         # Create canvas with brightness 0
-        canvas = numarray.zeros((self.config.wallsizex,
-                                 self.config.wallsizey))
+        canvas = numpy.zeros((self.config.wallsizex, self.config.wallsizey),
+            dtype=int)
 
         # Loop over all pixels and set brightness
         if b > 0:

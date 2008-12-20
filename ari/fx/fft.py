@@ -19,10 +19,11 @@
 # Authors: Vidar Wahlberg <canidae@samfundet.no>
 #
 
-import ari.fx.base
 import array
-import numarray
-import numarray.fft
+import numpy
+import numpy.fft
+
+import ari.fx.base
 
 class FFT(ari.fx.base.Base):
     """A histogrammy demo reflecting the music"""
@@ -30,20 +31,23 @@ class FFT(ari.fx.base.Base):
     def run(self):
         # The demo
         ar = AudioReader()
+        image = numpy.zeros((self.sizex, self.sizey), dtype=int)
         while self.runnable:
             if self.drawable:
                 ar.read()
                 minv = 20
                 maxv = 40
                 step = 30.0 / (maxv - minv)
-                for x in xrange(105):
-                    for y in xrange(29, int(29 - (ar.data[x] - minv) * step) or 0, -1):
-                        self.image[x][y] = 99
-                self.canvas.update(self.image)
+                for x in xrange(self.sizex):
+                    for y in xrange(self.sizey - 1,
+                        int(self.sizey - 1 - (ar.data[x] - minv) * step) or 0,
+                        -1):
+                        image[x][y] = 99
+                self.canvas.update(image)
                 self.canvas.flush()
-                for x in xrange(105):
-                    for y in xrange(30):
-                        self.image[x][y] = self.image[x][y] - 33
+                for x in xrange(self.sizex):
+                    for y in xrange(self.sizey):
+                        image[x][y] = image[x][y] - 33
 
 class AudioReader:
     def __init__(self):
@@ -54,7 +58,7 @@ class AudioReader:
         self.data = array.array('h', self.data)
         for x in range(0, 256, 1):
             self.data[x] -= 128
-        self.data = 10 * numarray.log10(1e-20 + abs(numarray.fft.fft(self.data)))
+        self.data = 10 * numpy.log10(1e-20 + abs(numpy.fft.fft(self.data)))
 
     def quit(self):
         self.dsp.close()
