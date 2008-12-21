@@ -43,7 +43,7 @@ class Reader:
         Returns:
             List of tuples with the following data:
             - Frame duration
-            - Frame data as a array
+            - Frame data as a numpy array
 
         """
 
@@ -72,7 +72,7 @@ class Reader:
         Returns:
             List of tuples with the following data:
             - Frame duration
-            - Frame data as a array
+            - Frame data as a numpy array
 
         """
 
