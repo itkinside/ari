@@ -22,7 +22,6 @@
 
 import ari.config
 import logging
-import sys
 import threading
 import time
 
