@@ -27,8 +27,14 @@ contributors.
 Authors
 -------
 
-A list of persons who have contributed to the development of Ari is available
-in docs/AUTHORS.
+The following persons have contributed to the development of Ari:
+
+    * Stein Magnus Jodal <jodal@samfundet.no>
+    * Vidar Wahlberg <canidae@samfundet.no>
+    * Thomas Adamcik <adamcik@samfundet.no>
+    * Kristian Klette <klette@samfundet.no>
+
+If you make a contribution to Ari, feel free to add yourself to this list.
 
 
 Installing
